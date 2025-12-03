@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Controle de Certidões - TRT 19ª Região</title>
+    <style>
+        /* Estilos omitidos para brevidade, mantenha os estilos originais */
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #e9ecef; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .header { text-align: center; padding-bottom: 15px; margin-bottom: 25px; border-bottom: 3px solid #0056b3; }
+        .header h1 { color: #0056b3; font-size: 1.8em; margin: 0; }
+        .header img.logo-trt { max-width: 200px; height: auto; margin-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; font-size: 0.9em; }
+        .status-badge { display: inline-block; padding: 5px 10px; border-radius: 12px; font-weight: bold; font-size: 0.8em; text-transform: uppercase; }
+        .status-pendente { background-color: #ffc107; color: #333; }
+        .status-emitida { background-color: #28a745; color: white; }
+        .btn-action { background-color: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; }
+        .btn-success { background-color: #28a745; }
+        /* Estilos do Modal */
+        .modal { display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.4); }
+        .modal-content { background-color: #fefefe; margin: 5% auto; padding: 20px; border: 1px solid #888; width: 80%; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+        .close { color: #aaa; float: right; font-size: 28px; font-weight: bold; }
+        .btn-email { background-color: #dc3545; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png" alt="Logo TRT 19ª Região" class="logo-trt">
+        <h1>Painel de Controle de Certidões</h1>
+    </div>
+
+    <h2 style="color: #dc3545;">Certidões Pendentes de Emissão (Acompanhamento)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data da Solicitação</th>
+                <th>CNPJ</th>
+                <th>Ente Público</th>
+                <th>Solicitante</th> <th>E-mail</th>     <th>Status</th>
+                <th>Ação</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-pendentes"></tbody>
+    </table>
+    
+    <h2 style="color: #28a745;">Certidões Emitidas (Histórico)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Data da Solicitação</th>
+                <th>CNPJ</th>
+                <th>Ente Público</th>
+                <th>Data Emissão</th>
+                <th>Validade</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="tabela-emitidas"></tbody>
+    </table>
+
+</div>
+
+<div id="modalFormulario" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="fecharModal()">&times;</span>
+        <h2>Dados para Emissão da Certidão</h2>
+        <form id="formEmissao">
+            <input type="hidden" id="certidaoId" name="certidaoId">
+            <input type="hidden" id="dataSolicitacaoOriginal" name="dataSolicitacaoOriginal">
+            <input type="hidden" id="emailSolicitante" name="emailSolicitante"> <div class="form-group">
+                <label for="entePublico">Ente Público:</label>
+                <input type="text" id="entePublico" name="entePublico" readonly>
+            </div>
+            
+            <div class="form-group">
+                <label for="cnpj">CNPJ:</label>
+                <input type="text" id="cnpj" name="cnpj" readonly>
+            </div>
+
+            <hr>
+            <h3>Dados Variáveis da Certidão</h3>
+            <div class="form-group">
+                <label for="dataValidade">Validade da Certidão:</label>
+                <input type="text" id="dataValidade" name="dataValidade" required>
+            </div>
+            <div class="form-group">
+                <label for="anoPrecatosVencidos">Ano de Precatórios Vencidos:</label>
+                <input type="number" id="anoPrecatosVencidos" name="anoPrecatosVencidos" required>
+            </div>
+            <div class="form-group">
+                <label for="numPrecatosAVencer">Número de Precatórios a Vencer:</label>
+                <input type="text" id="numPrecatosAVencer" name="numPrecatosAVencer" required>
+            </div>
+            <div class="form-group">
+                <label for="valorPrecatosAVencer">Valor dos Precatórios a Vencer:</label>
+                <input type="text" id="valorPrecatosAVencer" name="valorPrecatosAVencer" required>
+            </div>
+            <div class="form-group">
+                <label for="nomeSecretario">Nome do Secretário de Precatórios:</label>
+                <input type="text" id="nomeSecretario" name="nomeSecretario" required>
+            </div>
+            
+            <button type="button" class="btn-action btn-success" onclick="confirmarEmissao()">Confirmar e Emitir</button>
+            <button type="button" class="btn-action" style="background-color: #6c757d;" onclick="fecharModal()">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    
+    // Função principal para carregar os dados do localStorage ou gerar exemplos
+    function carregarCertidoes() {
+        let pendentes = [];
+        let emitidas = [];
+        let isLocalStorageAvailable = true;
+
+        // Diagnóstico: Verifica se o localStorage é acessível
+        try {
+            localStorage.setItem('__test', 'test');
+            localStorage.removeItem('__test');
+        } catch (e) {
+            isLocalStorageAvailable = false;
+            // O alerta ao usuário será tratado no window.onload.
+        }
+
+        if (isLocalStorageAvailable) {
+            // Carrega Certidões Pendentes
+            const storedPendentes = localStorage.getItem('certidoesPendentes');
+            if (storedPendentes) {
+                try {
+                    pendentes = JSON.parse(storedPendentes);
+                } catch (e) { console.error("Erro ao carregar certidões pendentes.", e); }
+            }
+            
+            // Carrega Certidões Emitidas
+            const storedEmitidas = localStorage.getItem('certidoesEmitidas');
+            if (storedEmitidas) {
+                try {
+                    emitidas = JSON.parse(storedEmitidas);
+                } catch (e) { console.error("Erro ao carregar certidões emitidas.", e); }
+            }
+        }
+
+        // Se não houver certidões PENDENTES carregadas, insere dados de exemplo
+        if (pendentes.length === 0) {
+            pendentes.push(
+                { id: 9001, cnpj: '12.225.546/0001-20', ente: 'Município de Piranhas/AL', dataSolicitacao: '01/11/2025', solicitante: 'João da Silva', email: 'joao.silva@exemplo.com', status: 'PENDENTE' },
+                { id: 9002, cnpj: '08.733.122/0001-98', ente: 'Município de Delmiro Gouveia/AL', dataSolicitacao: '02/11/2025', solicitante: 'Maria Oliveira', email: 'maria.o@exemplo.com', status: 'PENDENTE' }
+            );
+        }
+
+        // Se não houver certidões EMITIDAS carregadas, insere dados de exemplo
+        if (emitidas.length === 0) {
+            emitidas.push(
+                { id: 9003, cnpj: '22.333.444/0001-55', ente: 'Município de Viçosa/AL (Exemplo)', dataSolicitacao: '10/10/2025', dataEmissao: '15/10/2025', validade: '31/12/2026', status: 'EMITIDA' }
+            );
+        }
+
+        return { pendentes, emitidas };
+    }
+
+    // Renderiza as tabelas
+    function renderTabelas() {
+        const { pendentes, emitidas } = carregarCertidoes();
+        const tabelaPendentes = document.getElementById('tabela-pendentes');
+        const tabelaEmitidas = document.getElementById('tabela-emitidas');
+
+        tabelaPendentes.innerHTML = '';
+        tabelaEmitidas.innerHTML = '';
+
+        // Renderizar Tabela Pendentes
+        if (pendentes.length === 0) {
+            const row = tabelaPendentes.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 7;
+            cell.textContent = 'Nenhuma certidão pendente de emissão.';
+            cell.style.textAlign = 'center';
+        } else {
+            pendentes.forEach(cert => {
+                const row = tabelaPendentes.insertRow();
+                row.innerHTML = `
+                    <td>${cert.dataSolicitacao}</td> <td>${cert.cnpj}</td>
+                    <td>${cert.ente}</td>
+                    <td>${cert.solicitante || 'N/A'}</td>
+                    <td>${cert.email || 'N/A'}</td>
+                    <td><span class="status-badge status-pendente">${cert.status}</span></td>
+                    <td><button class="btn-action btn-success" onclick="abrirFormulario(${cert.id})">Emitir Certidão</button></td>
+                `;
+            });
+        }
+
+        // Renderizar Tabela Emitidas
+        if (emitidas.length === 0) {
+            const row = tabelaEmitidas.insertRow();
+            const cell = row.insertCell();
+            cell.colSpan = 6;
+            cell.textContent = 'Nenhuma certidão foi emitida ainda.';
+            cell.style.textAlign = 'center';
+        } else {
+            emitidas.forEach(cert => {
+                const row = tabelaEmitidas.insertRow();
+                row.innerHTML = `
+                    <td>${cert.dataSolicitacao}</td> <td>${cert.cnpj}</td>
+                    <td>${cert.ente}</td>
+                    <td>${cert.dataEmissao}</td>
+                    <td>${cert.validade}</td>
+                    <td><span class="status-badge status-emitida">${cert.status}</span></td>
+                `;
+            });
+        }
+    }
+
+    function abrirFormulario(id) {
+        const { pendentes } = carregarCertidoes();
+        // O find encontra o item com base no ID (número)
+        const certidao = pendentes.find(cert => cert.id === id); 
+        
+        if (certidao) {
+            // Preenche os campos do modal
+            document.getElementById('certidaoId').value = certidao.id;
+            document.getElementById('dataSolicitacaoOriginal').value = certidao.dataSolicitacao;
+            document.getElementById('entePublico').value = certidao.ente;
+            document.getElementById('cnpj').value = certidao.cnpj;
+            // ESSENCIAL: Armazena o e-mail do solicitante no campo oculto
+            document.getElementById('emailSolicitante').value = certidao.email; 
+            
+            // Sugestão de validade
+            const anoValidade = new Date().getFullYear() + 1;
+            document.getElementById('dataValidade').value = `31/12/${anoValidade}`;
+
+            document.getElementById('modalFormulario').style.display = 'block';
+        }
+    }
+
+    function fecharModal() {
+        document.getElementById('modalFormulario').style.display = 'none';
+        document.getElementById('formEmissao').reset();
+    }
+
+    function confirmarEmissao() {
+        // CORREÇÃO: Garante que o ID é tratado como um número (necessário para o findIndex funcionar com o ID de timestamp)
+        const id = Number(document.getElementById('certidaoId').value); 
+        
+        let { pendentes, emitidas } = carregarCertidoes();
+        const index = pendentes.findIndex(cert => cert.id === id);
+
+        if (index > -1) {
+            const certidaoOriginal = pendentes[index];
+            
+            // 1. Coleta dados e gera a data de emissão
+            const dataValidade = document.getElementById('dataValidade').value;
+            const anoPrecatosVencidos = document.getElementById('anoPrecatosVencidos').value;
+            const numPrecatosAVencer = document.getElementById('numPrecatosAVencer').value;
+            const valorPrecatosAVencer = document.getElementById('valorPrecatosAVencer').value;
+            const nomeSecretario = document.getElementById('nomeSecretario').value;
+            const emailSolicitante = document.getElementById('emailSolicitante').value;
+            
+            const dataAtual = new Date();
+            const dia = dataAtual.getDate().toString().padStart(2, '0');
+            const mesNome = dataAtual.toLocaleDateString('pt-BR', { month: 'long' });
+            const ano = dataAtual.getFullYear();
+            const dataEmissaoGerada = `${dia} de ${mesNome} de ${ano}`; 
+            const dataEmissaoTabela = `${dia}/${(dataAtual.getMonth() + 1).toString().padStart(2, '0')}/${ano}`;
+
+
+            // 2. Remove da lista de pendentes e atualiza o localStorage
+            pendentes.splice(index, 1);
+            localStorage.setItem('certidoesPendentes', JSON.stringify(pendentes)); 
+            
+            // 3. Cria e adiciona à lista de emitidas, atualiza o localStorage
+            const novoRegistroEmitido = {
+                id: certidaoOriginal.id,
+                cnpj: certidaoOriginal.cnpj,
+                ente: certidaoOriginal.ente,
+                dataSolicitacao: certidaoOriginal.dataSolicitacao, 
+                dataEmissao: dataEmissaoTabela,
+                validade: dataValidade,
+                status: 'EMITIDA'
+            };
+
+            emitidas.push(novoRegistroEmitido);
+            localStorage.setItem('certidoesEmitidas', JSON.stringify(emitidas));
+            
+            // 4. Re-renderiza as tabelas para refletir as mudanças
+            renderTabelas();
+            fecharModal();
+
+            // 5. Gera a Certidão e prepara o envio por e-mail
+            gerarDocumentoCertidao(certidaoOriginal, dataValidade, anoPrecatosVencidos, numPrecatosAVencer, valorPrecatosAVencer, nomeSecretario, dataEmissaoGerada, emailSolicitante);
+        } else {
+            alert("Erro: Certidão não encontrada na lista pendente.");
+        }
+    }
+
+
+    function gerarDocumentoCertidao(certidao, validade, anoVencidos, numAVencer, valorAVencer, secretario, dataEmissao, emailDestino) {
+        
+        // ... Estilos e conteúdo da Certidão (omitidos para brevidade) ...
+        const styleCertidao = `
+            body { font-family: 'Times New Roman', Times, serif; margin: 50px; line-height: 1.5; }
+            .header-doc { text-align: right; font-size: 10pt; }
+            .title { text-align: center; margin-top: 50px; font-weight: bold; font-size: 14pt; }
+            .content { margin-top: 30px; text-align: justify; }
+            .assinatura { margin-top: 50px; text-align: center; }
+            h1 { font-size: 18pt; }
+            strong { font-weight: bolder; }
+            @media print { .botoes-acao { display: none; } }
+            .botoes-acao { margin-top: 40px; text-align: center; padding: 20px; border-top: 1px solid #ccc; }
+            .btn-doc { padding: 10px 20px; font-size: 16px; margin: 0 10px; cursor: pointer; border: none; border-radius: 5px; transition: background-color 0.3s; }
+            .btn-imprimir { background-color: #007bff; color: white; }
+            .btn-email { background-color: #dc3545; color: white; }
+        `;
+        
+        const conteudoCertidao = `
+            <p>Requerente: **${certidao.ente}** - CNPJ **${certidao.cnpj}**</p>
+            <h1 class="title">CERTIDÃO NEGATIVA DE DÉBITO PRECATÓRIOS TRABALHISTAS</h1>
+            <p class="title" style="color: red;">Válida até **${validade}**</p>
+            <div class="content">
+                <p>*Certifico... vencidos até **31.12.${anoVencidos}**.</p>
+                <p>Certifico, contudo, que o referido ente público possui **${numAVencer}** precatórios a vencer... no valor de **${valorAVencer}**...</p>
+                <p>E, para constar, eu, **${secretario}**, Secretário de Precatórios do TRT 19ª Região, lavrei e assinei digitalmente a presente.</p>
+            </div>
+            <div class="assinatura">
+                <p>Maceió, **${dataEmissao}**.</p>
+                <p>___________________________<br>Secretário de Precatórios</p>
+            </div>
+        `;
+        
+        const htmlCertidao = `
+            <html><head><title>Certidão Negativa de Débito - ${certidao.ente}</title><style>${styleCertidao}</style></head>
+            <body>
+                <div class="logo-trt"><p class="header-doc">PODER JUDICIÁRIO...</p><hr></div>
+                ${conteudoCertidao}
+                <div class="botoes-acao">
+                    <button class="btn-doc btn-imprimir" onclick="window.print()">🖨️ Imprimir Certidão</button>
+                    <button class="btn-doc btn-email" onclick="enviarPorEmail('${certidao.ente}', '${emailDestino}', '${certidao.solicitante}')">📧 Enviar por E-mail</button>
+                </div>
+            </body></html>
+        `;
+
+        const novaJanela = window.open();
+        novaJanela.document.write(htmlCertidao);
+        novaJanela.document.close();
+        
+        // Função de envio de e-mail na nova janela (usando o emailDestino)
+        novaJanela.enviarPorEmail = function(ente, emailTo, solicitante) {
+            const assunto = encodeURIComponent(`Certidão Negativa de Débito Precatórios - ${ente}`);
+            const corpo = encodeURIComponent(`Prezado(a) ${solicitante},\n\nEm anexo, segue a Certidão Negativa de Débito Precatórios do Tribunal Regional do Trabalho da 19ª Região referente a(o) ${ente}.\n\nAtenciosamente,\nSecretaria de Precatórios.`);
+            window.location.href = `mailto:${emailTo}?subject=${assunto}&body=${corpo}`;
+        };
+        
+        alert(`Certidão para ${certidao.ente} emitida e pronta para envio a ${emailDestino}!`);
+    }
+
+    // Inicialização
+    window.onload = function() {
+        // Diagnóstico no carregamento da página
+        try {
+            localStorage.setItem('__test', 'test');
+            localStorage.removeItem('__test');
+        } catch (e) {
+            alert('Falha ao Carregar Dados!\n\nSeu navegador parece estar bloqueando o armazenamento de dados para arquivos locais (file://).\n\nPara que os dados sejam exibidos, por favor, utilize um servidor web local (como o "Live Server" no VSCode) para abrir os arquivos.');
+        }
+        renderTabelas();
+    };
+
+    window.onclick = function(event) {
+        const modal = document.getElementById('modalFormulario');
+        if (event.target == modal) {
+            fecharModal();
+        }
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regras de Atualização de Precatórios - Timeline e Resumo (Versão Padronizada e Expansível)</title>
+    <style>
+        /* BASE e TIPOGRAFIA */
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 95%; 
+            max-width: 1400px; 
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); 
+        }
+
+        /* TÍTULOS */
+        h1 {
+            text-align: center;
+            font-size: 2.6em;
+            color: #1a237e; 
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #607d8b;
+            font-size: 1.1em;
+        }
+        
+        h2 { 
+            color: #1a237e; 
+            border-bottom: 3px solid #e3f2fd; 
+            padding-bottom: 15px;
+            margin-top: 50px;
+            font-size: 2em;
+            font-weight: 700;
+        }
+        
+        /* H3 agora é usado dentro do SUMMARY, o estilo é definido lá */
+        h3 {
+             font-size: 1.6em; 
+             color: #d84315; 
+             padding-bottom: 10px;
+             margin-top: 30px;
+             font-weight: 600;
+        }
+
+        /* TABELA DE CORREÇÃO */
+        .correcao-table {
+            width: 100%;
+            border-collapse: separate; 
+            border-spacing: 0;
+            margin-top: 25px;
+            font-size: 0.95em;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden; 
+        }
+        
+        .correcao-table th, .correcao-table td {
+            border: none;
+            padding: 18px 15px;
+            text-align: left;
+        }
+        
+        .correcao-table th {
+            background-color: #1a237e;
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .correcao-table tbody tr {
+            border-bottom: 1px solid #e0e0e0;
+            transition: background-color 0.3s;
+        }
+        
+        .correcao-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        .correcao-table tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+        
+        .correcao-table td strong {
+            color: #d84315; 
+            font-size: 1.1em;
+            font-weight: 700;
+        }
+
+        /* TIMELINE ESTRUTURA */
+        .timeline-wrapper {
+            overflow-x: auto;
+            padding: 20px 0;
+            margin: 30px 0;
+            border: 1px solid #e0e0e0; 
+            border-radius: 12px;
+            background-color: #fcfcfc;
+        }
+        
+        /* Ajuste para o timeline-wrapper dentro do Fluxo Tardio */
+        .tardy-flow-section .timeline-wrapper {
+            border-top: 1px solid #ff9800; 
+            border-left: none;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 0 0 10px 10px;
+            margin: 0; 
+        }
+        
+        .timeline {
+            display: flex;
+            position: relative;
+            padding-top: 50px;
+            border-top: 2px solid #bbdefb;
+            min-width: 1200px; 
+        }
+        
+        .timeline.tardy-timeline {
+            border-top: 2px dashed #ff9800; 
+        }
+
+        .timeline-event {
+            position: relative;
+            flex: 1.5; 
+            min-width: 180px; 
+            text-align: center;
+            padding-top: 20px;
+            padding-left: 15px; 
+            padding-right: 15px;
+        }
+        
+        .timeline-event.transition {
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        /* LINHA VERTICAL (CONEXÃO) */
+        .timeline-event:not(.transition)::after {
+            content: '';
+            position: absolute;
+            top: 0; 
+            bottom: 0;
+            left: 50%;
+            width: 2px; 
+            background-color: #90caf9; 
+            z-index: 5;
+            transform: translateX(-50%);
+        }
+
+        /* RÓTULOS PRINCIPAIS - ACIMA DA LINHA */
+        .event-title {
+            position: absolute;
+            top: -15px; 
+            left: 50%;
+            transform: translateX(-50%);
+            color: #1a237e;
+            font-size: 1.05em; 
+            padding: 3px 10px; 
+            background: #ffffff;
+            border-radius: 6px;
+            border: 2px solid #1a237e; 
+            white-space: nowrap; 
+            z-index: 20;
+            font-weight: 700;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .period-label {
+            position: absolute;
+            top: 45px; 
+            left: 50%;
+            transform: translateX(-50%);
+            font-style: italic;
+            color: #00897b;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        
+        /* Rótulo de Transição (EC MUDANÇA) */
+        .timeline-event.transition .event-title {
+            color: #512da8; 
+            border-color: #512da8;
+        }
+
+        /* CONTEÚDO DO EVENTO (BOX) */
+        .timeline-event-content {
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08); 
+            margin-top: 15px;
+            min-height: 140px; 
+            text-align: left;
+            font-size: 0.9em;
+            word-wrap: break-word; 
+            overflow-wrap: break-word; 
+            border: 1px solid #e0e0e0;
+            transition: transform 0.3s ease;
+            display: flex; 
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        /* DATA DENTRO DA CAIXA */
+        .event-date-detail {
+            font-size: 0.9em;
+            color: #757575;
+            font-weight: 600;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #cfd8dc;
+            text-align: right;
+        }
+        
+        /* Ênfase no índice dentro da caixa */
+        .timeline-event-content strong {
+            font-size: 1.15em;
+            color: #1a237e; 
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+        
+        /* CORES ESPECÍFICAS DOS BOXES */
+        .timeline-event.start .timeline-event-content {
+            background: #e6f7ff; 
+            border-left: 5px solid #1a237e;
+        }
+        
+        .timeline-event.periodo-graca .timeline-event-content {
+            background-color: #e8f5e9; 
+            border-left: 5px solid #00897b;
+        }
+        
+        .timeline-event.periodo-graca .timeline-event-content strong {
+            color: #00897b; 
+        }
+        
+        .timeline-event.end .timeline-event-content {
+            background: #fffafa; 
+            border-left: 5px solid #c62828;
+            font-weight: bold;
+        }
+        
+        .timeline-event.transition .timeline-event-content {
+            background-color: #f4f4f4 !important;
+            border: 1px dashed #90a4ae;
+            box-shadow: none;
+            color: #512da8;
+            min-height: auto;
+            text-align: center;
+        }
+        
+        .timeline-event.tardy-presentation .timeline-event-content {
+             background: #fff8e1; 
+             border-left: 5px solid #ff9800;
+        }
+        
+        .timeline-event.tardy-presentation .timeline-event-content strong {
+            color: #ff9800; 
+        }
+        
+        /* SEÇÃO DE FLUXO TARDIO (AGORA COMO DETAILS) */
+        .tardy-flow-section {
+            margin-top: 50px;
+            padding: 0; 
+            background-color: #fffde7; 
+            border: 2px solid #ff9800; 
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(255, 152, 0, 0.2);
+        }
+
+        .tardy-flow-section summary {
+            padding: 20px 30px; 
+            cursor: pointer;
+            background-color: #fffae8; 
+            border-radius: 10px 10px 0 0;
+            list-style: none; 
+            outline: none;
+            transition: background-color 0.2s;
+        }
+        
+        .tardy-flow-section summary:hover {
+             background-color: #fff5c5;
+        }
+
+        .tardy-flow-section summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Custom arrow for expansion */
+        .tardy-flow-section summary::after {
+            content: '▼'; 
+            float: right;
+            font-size: 0.9em;
+            color: #d84315;
+            margin-left: 10px;
+            transition: transform 0.3s;
+            font-weight: bold;
+        }
+
+        .tardy-flow-section[open] summary::after {
+            content: '▲'; 
+        }
+        
+        /* Style for H3 inside summary - ensuring it looks like a title */
+        .tardy-flow-section summary h3 {
+            display: inline; 
+            margin: 0;
+            padding: 0;
+            border-bottom: none;
+            color: #d84315; 
+            font-size: 1.6em; 
+        }
+
+        /* Conteúdo dentro do Fluxo Tardio (Texto e Timeline) */
+        .tardy-flow-section > p {
+            padding: 0 30px 10px 30px;
+            margin: 0;
+            color: #555;
+        }
+
+        /* --- NOVO CSS PARA ELEVAR O BLOCO "OFÍCIO PRECATÓRIO" (CLASSE .office) --- */
+        
+        /* AJUSTES PARA O EVENTO DE "OFÍCIO PRECATÓRIO" */
+        .timeline-event.office {
+            padding-bottom: 50px; /* Adiciona espaço para o bloco de conteúdo */
+        }
+
+        .timeline-event.office .event-title {
+            top: -65px; /* Move o título mais para cima */
+            color: #d84315; /* Muda a cor para destacar */
+            border-color: #d84315;
+        }
+
+        .timeline-event.office::after {
+            background-color: #d84315; /* Altera a cor da linha vertical para destacar */
+            top: -30px; /* Faz a linha vertical começar mais acima */
+            height: calc(100% + 50px); /* Ajusta o tamanho da linha vertical */
+        }
+
+        .timeline-event.office .timeline-event-content {
+            margin-top: -10px; /* Reduz a margem superior padrão */
+            box-shadow: 0 8px 20px rgba(216, 67, 21, 0.15); /* Sombra mais forte */
+            border: 2px solid #d84315; /* Borda de destaque */
+            background: #fff3e0; /* Fundo de destaque */
+            transform: translateY(-50px); /* Move o bloco de conteúdo para cima */
+        }
+
+        /* --- FIM DO NOVO CSS --- */
+        
+        /* MEDIA QUERY PARA RESPONSIVIDADE (LAYOUT VERTICAL) */
+        @media (max-width: 992px) {
+            
+            .container {
+                padding: 20px;
+                margin: 20px auto;
+            }
+            
+            .timeline-wrapper {
+                overflow-x: hidden; 
+                padding: 0;
+            }
+            
+            /* Ajuste de padding na summary para telas pequenas */
+            .tardy-flow-section summary {
+                padding: 15px 20px;
+            }
+            
+            .tardy-flow-section > p {
+                padding: 0 20px 10px 20px;
+            }
+            
+            .tardy-flow-section summary h3 {
+                font-size: 1.3em; 
+            }
+            
+            .timeline {
+                flex-direction: column; 
+                border-top: none;
+                padding-top: 0;
+                border-left: 3px solid #bbdefb; 
+                min-width: auto;
+                padding-left: 20px;
+                padding-bottom: 20px;
+            }
+            
+            .timeline.tardy-timeline {
+                border-left: 3px dashed #ff9800;
+            }
+            
+            .timeline-event {
+                min-width: 100%;
+                padding: 20px 0;
+                text-align: left;
+                position: relative;
+                flex: none;
+                padding-left: 25px; 
+                border: none;
+            }
+            
+            /* Rótulos Principal no modo Vertical */
+            .event-title {
+                position: static;
+                transform: none;
+                margin-bottom: 5px;
+                display: block;
+                width: auto;
+                text-align: left;
+                font-weight: 600;
+                background: none;
+                border: none;
+                padding: 0;
+                box-shadow: none;
+                color: #1a237e;
+                font-size: 1.2em;
+            }
+            
+            .period-label {
+                position: static;
+                transform: none;
+                margin-top: 0;
+                font-size: 0.85em;
+                display: block;
+                text-align: left;
+            }
+            
+            /* Conector para eventos de Fluxo Tardio */
+             .timeline-event.tardy-presentation:not(.transition)::after {
+                background-color: #ff9800; 
+            }
+            
+            /* Linha de Conexão (Ponto) */
+            .timeline-event:not(.transition)::after {
+                content: '';
+                position: absolute;
+                top: 30px; 
+                left: -12px; 
+                width: 10px; 
+                height: 10px;
+                background-color: #1a237e; 
+                border-radius: 50%;
+                z-index: 10;
+                transform: none;
+            }
+            
+            .timeline-event.periodo-graca:not(.transition)::after {
+                background-color: #00897b; 
+            }
+
+            .timeline-event-content {
+                min-height: auto;
+                margin-top: 5px;
+                padding: 15px;
+            }
+            
+            .event-date-detail {
+                text-align: left;
+            }
+
+            /* --- NOVO CSS PARA ELEVAR O BLOCO "OFÍCIO PRECATÓRIO" (CLASSE .office) NO MOBILE --- */
+            .timeline-event.office {
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+            
+            .timeline-event.office .event-title {
+                position: static;
+                transform: none;
+                color: #d84315;
+                font-size: 1.2em;
+                margin-bottom: 5px;
+            }
+
+            .timeline-event.office .timeline-event-content {
+                transform: none; /* Remove o translateY no mobile */
+                margin-top: 5px;
+                background: #fff3e0;
+                border: 1px solid #d84315;
+            }
+            
+            .timeline-event.office:not(.transition)::after {
+                top: 30px; 
+                left: -12px; 
+                background-color: #d84315; 
+                width: 12px; 
+                height: 12px;
+                border: 2px solid #fff; /* Adiciona uma borda branca para destaque */
+            }
+            /* --- FIM DO NOVO CSS MOBILE --- */
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🗓️ TIMELINE DE REGRAS DE ATUALIZAÇÃO DE PRECATÓRIOS</h1>
+    <p class="subtitle"></p>
+
+    <h2>📊 Resumo das Regras por Período Constitucional</h2>
+    <table class="correcao-table">
+        <thead>
+            <tr>
+                <th>Emenda</th>
+                <th>Período de Vigência</th>
+                <th>Índice Fora do Período da Graça (Correção + Juros)</th>
+                <th>Índice No Período da Graça (Apenas Correção)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td data-label="Emenda">EC 62/2009 (e Outras)</td>
+                <td data-label="Período de Vigência">2009 a 08/12/2021</td>
+                <td data-label="Fora do Período da Graça">Juros de 0,5% a.a. + IPCA-E</td>
+                <td data-label="No Período da Graça">IPCA-E</td>
+            </tr>
+            <tr>
+                <td data-label="Emenda">EC 113/2021</td>
+                <td data-label="Período de Vigência">09/12/2021 a 31/07/2025</td>
+                <td data-label="Fora do Período da Graça">Taxa SELIC (Índice Único)</td>
+                <td data-label="No Período da Graça">IPCA-E (Decisão STF)</td>
+            </tr>
+            <tr>
+                <td data-label="Emenda">EC 136/2025</td>
+                <td data-label="Período de Vigência">A partir de 01/08/2025</td>
+                <td data-label="Fora do Período da Graça">IPCA + Juros de 2% a.a. (Teto: SELIC)</td>
+                <td data-label="No Período da Graça">IPCA (Puro)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    ---
+    
+    <h2>📜 Timeline 1: EC 62/2009 (2009 - 08/12/2021) - FLUXO PADRÃO</h2>
+    <p>Índice Fora da Graça: IPCA-E + Juros de 0,5% a.a. | Prazo de Inscrição: 30 de Junho.</p>
+    
+
+    <div class="timeline-wrapper">
+        <div class="timeline">
+            <div class="timeline-event start">
+                <span class="event-title">Trânsito em Julgado</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA-E + 0,5% a.a.</strong>
+                        <p style="font-size: 0.85em;">Atualização e juros de mora incidem sobre o valor da condenação.</p>
+                    </div>
+                    <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                </div>
+            </div>
+
+            <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                        <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                            <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                            <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                        </ul>
+                    </div>
+                    <span class="event-date-detail"></span>
+                </div>
+            </div>
+            
+            <div class="timeline-event">
+                <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA-E + 0,5% a.a.</strong>
+                        <p style="font-size: 0.85em;">Expedição e validação do valor. Continua correndo juros e correção até o prazo de 30/Jun.</p>
+                    </div>
+                    <span class="event-date-detail">Data da Apresentação (Antes de 01/Julho)</span>
+                </div>
+            </div>
+
+            <div class="timeline-event periodo-graca">
+                <span class="event-title">Período da Graça</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA-E</strong> (Juros SUSPENSOS)
+                        <p style="font-size: 0.85em;">Inscrição orçamentária para pagamento no ano seguinte.</p>
+                    </div>
+                    <span class="event-date-detail">A partir de: 1º de Julho</span>
+                </div>
+            </div>
+
+            <div class="timeline-event end">
+                <span class="event-title">Fim do Prazo Constitucional</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>PRAZO DE PAGAMENTO</strong>
+                        <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: Juros de 0,5% A.A. + IPCA-E retomam.</p>
+                    </div>
+                    <span class="event-date-detail">Até: 31 de Dezembro (Exercício seguinte)</span>
+                </div>
+            </div>
+            
+            <div class="timeline-event transition">
+                <span class="event-title">Transição de EC</span>
+                <div class="timeline-event-content">
+                    <p style="font-weight: bold; color: #512da8;">MUDANÇA DE REGRA (EC 113/2021)</p>
+                    <p style="font-size: 0.85em;">Correção fora do Período da Graça passa a ser Taxa SELIC.</p>
+                    <span class="event-date-detail">A partir de: 09/12/2021</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <details class="tardy-flow-section">
+        <summary>
+            <h3>➡️ Fluxo Tardio (EC 62/2009): Apresentação Pós 30/Jun</h3>
+        </summary>
+        <p>O precatório só será inscrito no orçamento do segundo ano seguinte. Juros e correção não são suspensos neste ano, pois o Período da Graça não se inicia.</p>
+
+        <div class="timeline-wrapper">
+            <div class="timeline tardy-timeline" style="min-width: 1400px;">
+                <div class="timeline-event start">
+                    <span class="event-title">Trânsito em Julgado</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA-E + 0,5% a.a.</strong>
+                        </div>
+                        <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                            <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                                <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                                <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                            </ul>
+                        </div>
+                        <span class="event-date-detail"></span>
+                    </div>
+                </div>
+                
+                <div class="timeline-event tardy-presentation">
+                    <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA-E + 0,5% a.a.</strong> (NÃO SUSPENSO)
+                            <p style="font-size: 0.85em;">Atraso na inscrição. Juros e correção CONTINUAM a incidir até o próximo prazo (30/Jun do ano seguinte).</p>
+                        </div>
+                        <span class="event-date-detail" style="color: #ff9800;">APRESENTAÇÃO TARDIA (Pós 30/Jun)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event periodo-graca">
+                    <span class="event-title">Período da Graça</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA-E</strong> (Juros SUSPENSOS)
+                            <p style="font-size: 0.85em;">Inscrição orçamentária para pagamento no segundo ano seguinte.</p>
+                        </div>
+                        <span class="event-date-detail">A partir de: 1º de Julho (Ano Seguinte)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event end">
+                    <span class="event-title">Fim do Prazo Constitucional</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>PRAZO DE PAGAMENTO</strong>
+                            <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: Juros de 0,5% A.A. + IPCA-E retomam.</p>
+                        </div>
+                        <span class="event-date-detail">Até: 31 de Dezembro (Segundo Ano Seguinte)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    ---
+    
+    <h2>🕰️ Timeline 2: EC 113/2021 (09/12/2021 - 31/07/2025) - FLUXO PADRÃO  </h2>
+    <p>Índice Fora da Graça: Taxa SELIC (Índice Único) | Prazo de Inscrição: 02 de Abril.</p>
+    
+
+    <div class="timeline-wrapper">
+        <div class="timeline">
+             <div class="timeline-event start">
+                <span class="event-title">Trânsito em Julgado</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: SELIC</strong>
+                        <p style="font-size: 0.85em;">Atualização e juros de mora incidem sobre o valor da condenação.</p>
+                    </div>
+                    <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                </div>
+            </div>
+
+            <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                        <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                            <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                            <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                        </ul>
+                    </div>
+                    <span class="event-date-detail"></span>
+                </div>
+            </div>
+
+            <div class="timeline-event">
+                <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: SELIC</strong>
+                        <p style="font-size: 0.85em;">Expedição e validação do valor. Continua correndo SELIC até o prazo de 02/Abr.</p>
+                    </div>
+                    <span class="event-date-detail">Data da Apresentação (Antes de 03/Abril)</span>
+                </div>
+            </div>
+
+            <div class="timeline-event periodo-graca">
+                <span class="event-title">Período da Graça</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA-E</strong> (Juros SUSPENSOS)
+                        <p style="font-size: 0.85em;">Inscrição orçamentária. Aplicação do IPCA-E (Decisão STF).</p>
+                    </div>
+                    <span class="event-date-detail">A partir de: Pós 02 de Abril</span>
+                </div>
+            </div>
+
+            <div class="timeline-event end">
+                <span class="event-title">Fim do Prazo Constitucional</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>PRAZO DE PAGAMENTO</strong>
+                        <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: SELIC retoma.</p>
+                    </div>
+                    <span class="event-date-detail">Até: 31 de Dezembro (Exercício seguinte)</span>
+                </div>
+            </div>
+            
+            <div class="timeline-event transition">
+                <span class="event-title">Transição de EC</span>
+                <div class="timeline-event-content">
+                    <p style="font-weight: bold; color: #512da8;">MUDANÇA DE REGRA (EC 136/2025)</p>
+                    <p style="font-size: 0.85em;">Correção fora da graça passa a ser IPCA + 2% a.a. (Teto SELIC).</p>
+                    <span class="event-date-detail">Até: 31/07/2025</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <details class="tardy-flow-section">
+        <summary>
+            <h3>➡️ Fluxo Tardio (EC 113/2021): Apresentação Pós 02/Abril</h3>
+        </summary>
+        <p>O precatório só será inscrito no orçamento do segundo ano seguinte. Juros e correção (SELIC) não são suspensos neste ano.</p>
+
+        <div class="timeline-wrapper">
+            <div class="timeline tardy-timeline" style="min-width: 1400px;">
+                <div class="timeline-event start">
+                    <span class="event-title">Trânsito em Julgado</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: SELIC</strong>
+                        </div>
+                        <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                            <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                                <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                                <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                            </ul>
+                        </div>
+                        <span class="event-date-detail"></span>
+                    </div>
+                </div>
+                
+                <div class="timeline-event tardy-presentation">
+                    <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: SELIC</strong> (NÃO SUSPENSO)
+                            <p style="font-size: 0.85em;">Atraso na inscrição. O índice SELIC CONTINUA a incidir (juros e correção) até o próximo prazo (02/Abr do ano seguinte).</p>
+                        </div>
+                        <span class="event-date-detail" style="color: #ff9800;">APRESENTAÇÃO TARDIA (Pós 02/Abril)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event periodo-graca">
+                    <span class="event-title">Período da Graça</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA-E</strong> (Juros SUSPENSOS)
+                            <p style="font-size: 0.85em;">Inscrição orçamentária para pagamento no segundo ano seguinte.</p>
+                        </div>
+                        <span class="event-date-detail">A partir de: Pós 02 de Abril (Ano Seguinte)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event end">
+                    <span class="event-title">Fim do Prazo Constitucional</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>PRAZO DE PAGAMENTO</strong>
+                            <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: SELIC retoma.</p>
+                        </div>
+                        <span class="event-date-detail">Até: 31 de Dezembro (Segundo Ano Seguinte)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+
+    ---
+
+    <h2>⚖️ Timeline 3: Pós EC 136/2025 (A partir de 01/08/2025) - FLUXO PADRÃO</h2>
+    <p>Índice Fora da Graça: IPCA + Juros de 2% a.a. (Teto: SELIC) | Prazo de Inscrição: 31 de Janeiro.</p>
+    
+
+    <div class="timeline-wrapper">
+        <div class="timeline">
+            <div class="timeline-event start">
+                <span class="event-title">Trânsito em Julgado</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA + 2% A.A. (Teto: SELIC)</strong>
+                        <p style="font-size: 0.85em;">Atualização e juros de mora incidem sobre o valor da condenação.</p>
+                    </div>
+                    <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                </div>
+            </div>
+            
+            <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                        <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                            <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                            <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                        </ul>
+                    </div>
+                    <span class="event-date-detail"></span>
+                </div>
+            </div>
+
+            <div class="timeline-event">
+                <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA + 2% A.A. (Teto: SELIC)</strong>
+                        <p style="font-size: 0.85em;">Expedição e validação do valor. Continua correndo até o prazo de 31/Jan.</p>
+                    </div>
+                    <span class="event-date-detail">Data da Apresentação (Antes de 01/Fevereiro)</span>
+                </div>
+            </div>
+            
+            <div class="timeline-event periodo-graca">
+                <span class="event-title">Período da Graça</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>Índice: IPCA</strong> (Juros SUSPENSOS)
+                        <p style="font-size: 0.85em;">Inscrição orçamentária para pagamento no ano seguinte.</p>
+                    </div>
+                    <span class="event-date-detail">A partir de: 01 de Fevereiro</span>
+                </div>
+            </div>
+
+            <div class="timeline-event end">
+                <span class="event-title">Fim do Prazo Constitucional</span>
+                <div class="timeline-event-content">
+                    <div>
+                        <strong>PRAZO DE PAGAMENTO</strong>
+                        <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: IPCA + 2% A.A. (Teto SELIC) retoma.</p>
+                    </div>
+                    <span class="event-date-detail">Até: 31 de Dezembro (Exercício seguinte)</span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <details class="tardy-flow-section">
+        <summary>
+            <h3>➡️ Fluxo Tardio (EC 136/2025): Apresentação Pós 31/Jan</h3>
+        </summary>
+        <p>O precatório só será inscrito no orçamento do segundo ano seguinte. Juros e correção não são suspensos neste ano.</p>
+
+        <div class="timeline-wrapper">
+            <div class="timeline tardy-timeline" style="min-width: 1400px;">
+                <div class="timeline-event start">
+                    <span class="event-title">Trânsito em Julgado</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA + 2% A.A. (Teto: SELIC)</strong>
+                        </div>
+                        <span class="event-date-detail">INÍCIO: Data do Trânsito em Julgado</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event office"> <span class="event-title">Ofício Precatório</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong style="color: #d84315;">Regras de Atualização pela SEPREC</strong>
+                            <ul style="font-size: 0.85em; margin: 5px 0 0; padding-left: 15px; list-style-type: '— ';">
+                                <li><b>Anterior à data da última atualização</b> - Mantém as regras de atualização constituídas.</li>
+                                <li><b>Posterior à data da última atualização</b> - Considerar as regras da Timeline (Constitucionais). Com exceção se no comanda da sentença especificar outras regras.</li>
+                            </ul>
+                        </div>
+                        <span class="event-date-detail"></span>
+                    </div>
+                </div>
+                
+                <div class="timeline-event tardy-presentation">
+                    <span class="event-title">Apresentação SEPREC (Autuação)</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA + 2% A.A. (Teto SELIC)</strong> (NÃO SUSPENSO)
+                            <p style="font-size: 0.85em;">Atraso na inscrição. Juros e correção CONTINUAM a incidir até o próximo prazo (31/Jan do ano seguinte).</p>
+                        </div>
+                        <span class="event-date-detail" style="color: #ff9800;">APRESENTAÇÃO TARDIA (Pós 31/Jan)</span>
+                    </div>
+                </div>
+                
+                <div class="timeline-event periodo-graca">
+                    <span class="event-title">Período da Graça</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>Índice: IPCA</strong> (Juros SUSPENSOS)
+                            <p style="font-size: 0.85em;">Inscrição orçamentária para pagamento no segundo ano seguinte.</p>
+                        </div>
+                        <span class="event-date-detail">A partir de: 01 de Fevereiro (Ano Seguinte)</span>
+                    </div>
+                </div>
+
+                <div class="timeline-event end">
+                    <span class="event-title">Fim do Prazo Constitucional</span>
+                    <div class="timeline-event-content">
+                        <div>
+                            <strong>PRAZO DE PAGAMENTO</strong>
+                            <p class="precatorio-vencido" style="font-size: 0.85em;">Se não pago: IPCA + 2% A.A. (Teto SELIC) retoma.</p>
+                        </div>
+                        <span class="event-date-detail">Até: 31 de Dezembro (Segundo Ano Seguinte)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </details>
+
+    
+    <p style="margin-top: 40px; font-size: 0.85em; text-align: center; color: #777; border-top: 1px dashed #ccc; padding-top: 15px;">Fim do Documento.</p>
+
+</div>
+
+</body>
+</html>

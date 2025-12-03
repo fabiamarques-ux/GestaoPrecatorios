@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Resolução TRT-19 Precatórios/RPV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+            color: #1f2937;
+        }
+
+        .container {
+            max-width: 1200px;
+        }
+
+        .header-box {
+            background: linear-gradient(135deg, #0f4c81 0%, #1a5e95 100%);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px rgba(15, 76, 129, 0.4);
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 50%;
+            /* Ajuste para manter as colunas alinhadas */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background-color: #2563eb;
+            color: white;
+            padding: 1rem;
+            border-radius: 0.75rem 0.75rem 0 0;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-content {
+            padding: 1rem;
+            flex-grow: 1;
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .flow-icon {
+            background-color: #fca5a5;
+            /* Cor de destaque para fluxos */
+            color: #b91c1c;
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-right: 1rem;
+            box-shadow: 0 2px 5px rgba(185, 28, 28, 0.3);
+        }
+
+        .flow-line {
+            height: 1.5rem;
+            width: 2px;
+            background-color: #f97316;
+            /* Cor de fluxo do T5 */
+            margin-left: 1.45rem;
+        }
+
+        .point-icon {
+            color: #10b981;
+            font-size: 1.25rem;
+            margin-right: 0.5rem;
+        }
+
+        /* Cores temáticas para as seções */
+        .color-blue {
+            background-color: #2563eb;
+        }
+
+        .color-teal {
+            background-color: #0d9488;
+        }
+
+        .color-orange {
+            background-color: #f97316;
+        }
+
+        .color-purple {
+            background-color: #7c3aed;
+        }
+
+        .color-red {
+            background-color: #dc2626;
+        }
+
+        .color-green-dark {
+            background-color: #16a34a;
+        }
+
+        .color-pink {
+            background-color: #db2777;
+        }
+
+        .text-blue {
+            color: #2563eb;
+        }
+
+        .text-teal {
+            color: #0d9488;
+        }
+
+        .text-orange {
+            color: #f97316;
+        }
+
+        .text-purple {
+            color: #7c3aed;
+        }
+
+        .text-red {
+            color: #dc2626;
+        }
+
+        .text-green-dark {
+            color: #16a34a;
+        }
+
+        .text-pink {
+            color: #db2777;
+        }
+
+        .table-rpv th,
+        .table-rpv td {
+            padding: 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .table-rpv th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+
+        .table-rpv tr:last-child td {
+            border-bottom: none;
+        }
+
+        @media (min-width: 1024px) {
+            .main-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto header-box mb-8">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-center">
+            Resumo das Resoluções nº. 303/2019, 314/2021 e 294/2023 CNJ / CSJT / TRT19
+        </h1>
+        <p class="text-center text-lg mt-2 font-light">
+            Regulamenta a Gestão de Precatórios e RPVs (Requisições de Pequeno Valor)
+        </p>
+    </div>
+
+    <div class="container mx-auto grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 main-grid">
+
+        <div class="xl:col-span-1 space-y-4">
+            <div class="card">
+                <div class="card-header color-blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path
+                            d="M4.5 3.75a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V6.75a3 3 0 0 0-3-3h-15ZM4.5 5.25h15a1.5 1.5 0 0 1 1.5 1.5v3h-18v-3a1.5 1.5 0 0 1 1.5-1.5ZM4.5 18.75V12h15v6.75a1.5 1.5 0 0 1-1.5 1.5h-15a1.5 1.5 0 0 1-1.5-1.5Z" />
+                    </svg>
+                    1. Competência e Tipos de Requisição
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-blue">Fluxo de Processamento</h3>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600 shadow-sm">
+                            <p class="font-bold text-blue-800 flex items-center mb-1 text-sm">CENTRALIZADO</p>
+                            <p class="text-xs text-blue-700 font-medium">Precatórios (Geral) e RPVs Federais</p>
+                            <p class="text-sm font-bold mt-1 text-blue-900">SECRETARIA DE PRECATÓRIOS</p>
+                        </div>
+
+                        <div class="bg-teal-50 p-4 rounded-lg border-l-4 border-teal-600 shadow-sm">
+                            <p class="font-bold text-teal-800 flex items-center mb-1 text-sm">DESCENTRALIZADO</p>
+                            <p class="text-xs text-teal-700 font-medium">RPVs Estaduais, Municipais e ECT</p>
+                            <p class="text-sm font-bold mt-1 text-teal-900">VARA DO TRABALHO</p>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold mt-4 mb-3 text-blue">Definições</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li class="flex items-start">
+                            <span class="point-icon text-teal">✔</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Crédito Preferencial:</span> Natureza alimentícia (Art. 100,
+                                §1º, CF).
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-teal">✔</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Crédito Superpreferencial:</span> Parcela adiantável (idosos,
+                                doentes graves, deficiência).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header color-teal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 9a.75.75 0 0 0-1.5 0v2.25H9a.75.75 0 0 0 0 1.5h2.25v2.25a.75.75 0 0 0 1.5 0v-2.25H15a.75.75 0 0 0 0-1.5h-2.25V9Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    2. Regras Essenciais de Expedição
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-teal">Normas de Expedição</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="point-icon text-red">❌</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Fracionamento:</span> Proibido fracionar o valor para enquadrar
+                                em RPV.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-red">❌</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Execução Provisória:</span> Não se requisita pagamento em
+                                execução provisória.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-blue">💡</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Individualização:</span> Ofícios devem ser elaborados
+                                individualmente por beneficiário.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-blue">💡</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Renúncia de Crédito:</span> O credor pode renunciar ao valor
+                                excedente ao limite de RPV a qualquer momento.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header color-purple">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v1.375c0 1.299 1.124 2.25 2.5 2.25H9.75v1.375c0 1.299 1.124 2.25 2.5 2.25h.375a.75.75 0 0 1 .75.75v.75h-.75a.75.75 0 0 0-.75.75c0 .414.336.75.75.75h.75v.75c0 1.299 1.124 2.25 2.5 2.25h1.375a5.25 5.25 0 0 0 5.25-5.25V6.75a5.25 5.25 0 0 0-5.25-5.25H12Zm3.75 3.75a.75.75 0 0 0 0 1.5h.75V5.25h-.75ZM9.75 5.25v1.5h.75a.75.75 0 0 0 0-1.5h-.75Z"
+                            clip-rule="evenodd" />
+                        <path
+                            d="M10.25 18.75a.75.75 0 0 0-.75.75v.75h-.75a.75.75 0 0 0 0 1.5h2.25v-.75c0-1.299-1.124-2.25-2.5-2.25H10.25Z" />
+                    </svg>
+                    3. Requisitos Essenciais do Ofício Precatório
+                </div>
+                <div class="card-content">
+                    <div class="grid grid-cols-1 gap-4 text-sm">
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <p class="font-bold text-purple mb-1">Identificação</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Nome e CPF/CNPJ do beneficiário.</li>
+                                <li>Nome do procurador.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <p class="font-bold text-purple mb-1">Valores e Cálculos</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Valor total devido e data-base do cálculo.</li>
+                                <li>Índice de juros/SELIC.</li>
+                                <li>Valor de Contribuições Previdenciárias/FGTS.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <p class="font-bold text-purple mb-1">Natureza e Prazos</p>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>Natureza do crédito (comum ou alimentícia).</li>
+                                <li>Data de nascimento (para crédito alimentício).</li>
+                                <li>Datas de trânsito em julgado (sentença e cálculos).</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="xl:col-span-1 space-y-4">
+            <div class="card">
+                <div class="card-header color-orange">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M7.875 1.5C6.839 1.5 6 2.34 6 3.375v2.25c0 1.036.84 1.875 1.875 1.875H17.25c1.035 0 1.875-.84 1.875-1.875V3.375c0-1.036-.84-1.875-1.875-1.875H7.875ZM3 8.25h18v7.5A3.75 3.75 0 0 1 17.25 19.5H7.875A3.75 3.75 0 0 1 4.125 15.75V8.25ZM12 11.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0v-3.75a.75.75 0 0 1 .75-.75Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    4. Honorários Advocatícios
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-orange">Regras Aplicáveis</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="point-icon text-purple">⚖️</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Sucumbenciais:</span> Expedição de RPV/Precatório autônomo
+                                (separado do principal).
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-purple">📄</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Contratuais:</span> Dedução do valor do credor principal.
+                                Incluídos para classificação da requisição (RPV/Precatório).
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header color-teal">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path
+                            d="M11.25 11.25l.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.852l.708-2.836a.75.75 0 0 1 1.063.852l-.708 2.836c.219.049.44.074.66.074h2.25a.75.75 0 0 0 0-1.5h-2.25v-11.25H12a.75.75 0 0 0 0 1.5h.75v6.75Zm9.75 0v3.75h-2.25a.75.75 0 0 0 0 1.5h2.25a.75.75 0 0 0 .75-.75v-4.5a.75.75 0 0 0-.75-.75h-2.25a.75.75 0 0 0-.75.75v1.5a.75.75 0 0 0 1.5 0v-.75h1.5Zm-9.75-9.75V3.75a.75.75 0 0 0-1.5 0v.75H4.5A.75.75 0 0 0 3.75 6v12A.75.75 0 0 0 4.5 18.75h6.75v1.5a.75.75 0 0 0 1.5 0v-1.5h.75V6a.75.75 0 0 0-.75-.75H12V3.75a.75.75 0 0 0-.75-.75Z" />
+                    </svg>
+                    5. Fluxo de Gestão e Pagamento
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-teal">Etapas do Processo</h3>
+                    <div class="flow-container">
+                        <div class="flow-step">
+                            <div class="flow-icon bg-orange-100 text-orange-700">1</div>
+                            <p class="text-sm font-medium">Juízo de Execução envia Ofício (GPrec).</p>
+                        </div>
+                        <div class="flow-line"></div>
+                        <div class="flow-step">
+                            <div class="flow-icon bg-orange-100 text-orange-700">2</div>
+                            <p class="text-sm font-medium">Presidente analisa regularidade formal e expede o
+                                requisitório.</p>
+                        </div>
+                        <div class="flow-line"></div>
+                        <div class="flow-step">
+                            <div class="flow-icon bg-orange-100 text-orange-700">3</div>
+                            <p class="text-sm font-medium">Entidade devedora deposita em conta bancária oficial
+                                individualizada.</p>
+                        </div>
+                        <div class="flow-line"></div>
+                        <div class="flow-step">
+                            <div class="flow-icon bg-orange-100 text-orange-700">4</div>
+                            <p class="text-sm font-medium">Pagamento por transferência bancária ao beneficiário.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header color-pink">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M3 6a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v12a3 3 0 0 1-3 3H6a3 3 0 0 1-3-3V6Zm4.5 7.5a.75.75 0 0 1 .75-.75h7.5a.75.75 0 0 1 0 1.5h-7.5a.75.75 0 0 1-.75-.75Zm-.75-3.75a.75.75 0 0 0 0 1.5h7.5a.75.75 0 0 0 0-1.5h-7.5ZM6 6a1.5 1.5 0 0 0-1.5 1.5v9a1.5 1.5 0 0 0 1.5 1.5h12a1.5 1.5 0 0 0 1.5-1.5v-9a1.5 1.5 0 0 0-1.5-1.5H6Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    6. Ordem Cronológica e Prazos Orçamentários
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-pink">Momento de Apresentação e Prazos</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="point-icon text-pink">📅</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Momento de Apresentação:</span> Considerado o recebimento do
+                                ofício precatório pelo Tribunal.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-pink">📊</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Organização da Lista:</span> O precatório toma lugar na ordem
+                                cronológica de pagamentos de acordo com o momento de sua apresentação no tribunal.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-pink">⏳</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Requisição Orçamentária:</span> A data limite para inclusão na
+                                proposta orçamentária do exercício subsequente é 2 de abril (para precatórios
+                                apresentados entre 3 de abril do ano anterior e 2 de abril do ano da proposta).
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-pink">💵</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Aporte e Pagamento:</span> Inclusão obrigatória de verba no
+                                orçamento e pagamento deve ser feito até o final do exercício seguinte ao da requisição.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-pink">🗓️</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Prazos:</span> Os prazos relativos ao cumprimento da Resolução
+                                são contados em dias corridos.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="xl:col-span-1 space-y-4">
+
+            <div class="card">
+                <div class="card-header color-green-dark">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M12 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-4.5 9a4.5 4.5 0 0 1 9 0H21a.75.75 0 0 0 .75-.75v-4.276a1.5 1.5 0 0 0-2.313-1.472l-.1.088.42 2.23.01.042.067.334.02.095.04.22.004.022c.11.29.24.584.4.872a.75.75 0 0 0 .84.343.75.75 0 0 0-.253-1.488 4.673 4.673 0 0 0-.411-.795c-.328-.567-.487-1.196-.441-1.838.03-.388.134-.766.295-1.127.185-.42.4-.814.646-1.185.345-.526.697-1.033 1.05-1.52.288-.394.577-.783.864-1.163.518-.684.865-1.442.99-2.226.04-.24.08-.48.118-.72.035-.224.068-.45.094-.675.035-.29.058-.578.075-.86.012-.2.025-.4.025-.6a.75.75 0 0 0-1.5 0c0 .262-.027.53-.062.802-.036.27-.082.535-.14.793-.066.297-.152.589-.253.874-.15.42-.365.81-.643 1.168-.344.526-.697 1.033-1.05 1.52-.287.394-.575.783-.863 1.163-.518.684-.864 1.442-.989 2.226-.04.24-.08.48-.118.72-.035.225-.068.45-.094.675-.035.29-.058.578-.075.86-.012.2-.025.4-.025.6a.75.75 0 0 0-1.5 0v-.375c0-1.299-1.124-2.25-2.5-2.25h-.375c-.201 0-.401.02-.598.056l-.004-.01-.067-.334-.02-.095-.04-.22-.004-.022a4.5 4.5 0 0 0-.411-.795.75.75 0 0 0-.253-1.488.75.75 0 0 0-.58.125l-.265.176c-.22.148-.44.298-.657.452l-.128.094c-.58.43-1.13 1.01-1.636 1.737-.36.52-.63.955-.806 1.346-.145.312-.249.63-.31.954-.047.243-.075.49-.095.736-.02.247-.02.498-.002.75l.004.043.1.51.107.562.01.053.064.332.02.094.04.22.004.022c.11.29.24.584.4.872.49.882 1.16 1.706 1.996 2.458.835.751 1.791 1.411 2.858 1.95a.75.75 0 0 0 .598.056l-.004-.01-.067-.334-.02-.095-.04-.22-.004-.022a4.5 4.5 0 0 0-.411-.795c-.328-.567-.487-1.196-.441-1.838.03-.388.134-.766.295-1.127.185-.42.4-.814.646-1.185.345-.526.697-1.033 1.05-1.52.287.394-.575.783-.863 1.163-.518.684-.864 1.442-.989 2.226-.04.24-.08.48-.118.72-.035.225-.068.45-.094.675-.035.29-.058.578-.075.86-.012.2-.025.4-.025.6a.75.75 0 0 0-1.5 0v-.375c0-1.299-1.124-2.25-2.5-2.25h-.375a.75.75 0 0 0-.75.75v.75h-.75a.75.75 0 0 0 0 1.5h.75v.75c0 1.299 1.124 2.25 2.5 2.25h1.375a5.25 5.25 0 0 0 5.25-5.25V6.75a5.25 5.25 0 0 0-5.25-5.25H12Zm3.75 3.75a.75.75 0 0 0 0 1.5h.75V5.25h-.75ZM9.75 5.25v1.5h.75a.75.75 0 0 0 0-1.5h-.75Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    7. Limites de Valor (RPV e Precatório)
+                </div>
+                <div class="card-content">
+                    <p class="text-sm mb-3 text-gray-700">O valor da Requisição de Pequeno Valor (RPV) varia conforme o
+                        Ente Devedor (União, Estado ou Município), sendo o Precatório o valor que o excede.</p>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full table-rpv text-sm rounded-lg overflow-hidden border border-gray-200">
+                            <thead>
+                                <tr>
+                                    <th class="bg-green-100 text-green-dark">Ente Devedor</th>
+                                    <th class="bg-green-100 text-green-dark">Limite RPV (Geral/AL)</th>
+                                    <th class="bg-green-100 text-green-dark">Tipo de Requisição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="font-bold">União Federal (INSS, ECT, etc.)</td>
+                                    <td>60 Salários Mínimos</td>
+                                    <td class="text-teal-700 font-medium">RPV</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">Estado de Alagoas (AL)</td>
+                                    <td>Maior benefício do RGPS (Teto INSS)</td>
+                                    <td class="text-teal-700 font-medium">RPV</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold">Municípios de Alagoas</td>
+                                    <td>Definido por Lei Municipal (Verificar)</td>
+                                    <td class="text-teal-700 font-medium">RPV</td>
+                                </tr>
+                                <tr>
+                                    <td class="font-bold bg-yellow-50">Qualquer Ente (valor excedente)</td>
+                                    <td class="bg-yellow-50">Acima dos limites acima</td>
+                                    <td class="text-red-700 font-medium bg-yellow-50">Precatório</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header color-red">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6.75a.75.75 0 0 0 1.5 0V6Zm0 10.5a.75.75 0 1 0-1.5 0 .75.75 0 0 0 1.5 0Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    8. Sanções, Fiscalização e Medidas Excepcionais
+                </div>
+                <div class="card-content">
+                    <h3 class="text-xl font-semibold mb-3 text-red">Medidas de Inadimplência e Exceções</h3>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <span class="point-icon text-red">🚨</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Sequestro (Art. 19):</span> Medida administrativa excepcional do
+                                Presidente do Tribunal. Cabível em caso de burla à ordem cronológica ou de não alocação
+                                orçamentária do valor requisitado.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-red">⚠️</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Inadimplência (Art. 60):</span> É obrigatória a inclusão dos
+                                entes e entidades devedores no BNDT e no SICONV.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-blue">🤝</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Conciliação/Acordo Direto:</span> Prevê o Acordo Direto com
+                                credores (Art. 79), além da criação do Juízo Auxiliar de Conciliação de Precatórios para
+                                acordos.
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="point-icon text-purple">🔍</span>
+                            <div class="flex flex-col">
+                                <span class="font-bold">Transparência:</span> Os tribunais devem publicar em seus sites
+                                informações detalhadas sobre aportes financeiros, listas de ordem cronológica e
+                                pagamentos realizados.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
