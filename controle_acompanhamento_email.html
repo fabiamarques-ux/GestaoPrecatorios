@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle Avançado de E-mails - Precatórios TRT19</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #004d99;
+            text-align: center;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .container {
+            max-width: 1400px;
+            margin: auto;
+        }
+        /* --- Estilos do Formulário e Filtros --- */
+        .controles, .filtros {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .controles label, .filtros label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .controles input[type="text"], 
+        .controles input[type="date"], 
+        .controles select, 
+        .filtros input[type="text"],
+        .filtros select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Inclui padding e border no width */
+        }
+        .controles button {
+            background-color: #0d904f;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .controles button:hover {
+            background-color: #0c7a40;
+        }
+
+        /* --- Estilos da Tabela --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        th {
+            background-color: #007acc;
+            color: white;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        
+        /* Estilos de Status/Tipo */
+        .recebido { color: #1a73e8; font-weight: bold; }
+        .enviado { color: #0d904f; font-weight: bold; }
+        .aguardando { background-color: #fff3cd; color: #856404; } /* Amarelo: a fazer */
+        .elaboracao { background-color: #d1ecf1; color: #0c5460; } /* Azul claro: em andamento */
+        .concluido { background-color: #d4edda; color: #155724; } /* Verde: feito */
+        
+        /* Estilos de Prazo */
+        .prazo-vencido { background-color: #f8d7da; color: #721c24; font-weight: bold; }
+        .prazo-curto { background-color: #fff3cd; color: #856404; font-weight: bold; }
+        .prazo-ok { background-color: #e2f0d9; color: #0c5460; }
+        
+        /* Layout dos Controles */
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .form-row > div {
+            flex: 1;
+        }
+        .form-row button {
+            flex: none;
+            width: auto;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>⚙️ Controle de E-mails - Secretaria de Precatórios TRT19</h1>
+        
+        <div class="controles">
+            <h3>➕ Novo Registro</h3>
+            <form id="registroForm">
+                <div class="form-row">
+                    <div>
+                        <label for="assunto">Assunto</label>
+                        <input type="text" id="assunto" required>
+                    </div>
+                    <div>
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" required>
+                            <option value="RECEBIDO">RECEBIDO</option>
+                            <option value="ENVIADO">ENVIADO</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="processo">Nº Processo (PJe)</label>
+                        <input type="text" id="processo">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="responsavel">Servidor Responsável</label>
+                        <select id="responsavel" required>
+                            <option value="">Selecione...</option>
+                            <option value="Ana Lúcia">Ana Lúcia</option>
+                            <option value="João Paulo">João Paulo</option>
+                            <option value="Maria Clara">Maria Clara</option>
+                            <option value="Servidor X">Servidor X</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="prazo">Prazo Final</label>
+                        <input type="date" id="prazo">
+                    </div>
+                    <div>
+                        <label for="status">Status da Resposta</label>
+                        <select id="status">
+                            <option value="AGUARDANDO" class="aguardando">AGUARDANDO PROVIDÊNCIA</option>
+                            <option value="ELABORACAO" class="elaboracao">EM ELABORAÇÃO</option>
+                            <option value="CONCLUIDO" class="concluido">ENVIADO/CONCLUÍDO</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                     <div>
+                        <label for="observacoes">Observações/Resposta Elaborada</label>
+                        <input type="text" id="observacoes">
+                    </div>
+                    <button type="submit">Cadastrar E-mail</button>
+                </div>
+            </form>
+        </div>
+        
+        <div class="filtros">
+            <h3>🔍 Filtros de Busca</h3>
+            <div class="form-row">
+                <div>
+                    <label for="filtroResponsavel">Filtrar por Servidor:</label>
+                    <select id="filtroResponsavel" onchange="filtrarTabela()">
+                        <option value="">Todos</option>
+                        <option value="Ana Lúcia">Ana Lúcia</option>
+                        <option value="João Paulo">João Paulo</option>
+                        <option value="Maria Clara">Maria Clara</option>
+                        <option value="Servidor X">Servidor X</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filtroStatus">Filtrar por Status:</label>
+                    <select id="filtroStatus" onchange="filtrarTabela()">
+                        <option value="">Todos</option>
+                        <option value="AGUARDANDO">AGUARDANDO PROVIDÊNCIA</option>
+                        <option value="ELABORACAO">EM ELABORAÇÃO</option>
+                        <option value="CONCLUIDO">ENVIADO/CONCLUÍDO</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="filtroTexto">Buscar em Assunto/Processo:</label>
+                    <input type="text" id="filtroTexto" onkeyup="filtrarTabela()" placeholder="Digite termo ou N° Processo">
+                </div>
+            </div>
+        </div>
+
+        <h3>📚 Registros de E-mails</h3>
+        <table id="tabelaRegistros">
+            <thead>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Tipo</th>
+                    <th>Assunto</th>
+                    <th>Nº Processo</th>
+                    <th>**Servidor Resp.**</th>
+                    <th>**Prazo Final**</th>
+                    <th>**Status da Resposta**</th>
+                    <th>Observações/Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+
+    <script>
+        const tabelaBody = document.querySelector('#tabelaRegistros tbody');
+        const form = document.getElementById('registroForm');
+        let registros = [];
+
+        // Função para calcular a classe de prazo
+        function getPrazoClass(prazoStr, status) {
+            if (status === 'CONCLUIDO') return 'prazo-ok';
+
+            if (!prazoStr) return '';
+            
+            const hoje = new Date();
+            hoje.setHours(0, 0, 0, 0);
+            const prazo = new Date(prazoStr);
+
+            // Se o prazo for anterior a hoje (vencido)
+            if (prazo < hoje) {
+                return 'prazo-vencido';
+            }
+            
+            // Calcula a diferença em dias
+            const diffTime = Math.abs(prazo - hoje);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            // Se faltam 3 dias ou menos (curto)
+            if (diffDays <= 3) {
+                return 'prazo-curto';
+            }
+
+            return 'prazo-ok'; // Se está ok (mais de 3 dias)
+        }
+
+        // Função para renderizar a tabela
+        function renderizarTabela(dados) {
+            tabelaBody.innerHTML = ''; // Limpa a tabela
+            
+            dados.forEach(registro => {
+                const prazoClass = getPrazoClass(registro.prazo, registro.status);
+                
+                const newRow = tabelaBody.insertRow();
+                newRow.innerHTML = `
+                    <td>${registro.dataHora}</td>
+                    <td class="${registro.tipo.toLowerCase()}">${registro.tipo}</td>
+                    <td>${registro.assunto}</td>
+                    <td>${registro.processo}</td>
+                    <td>**${registro.responsavel}**</td>
+                    <td class="${prazoClass}">**${registro.prazo ? new Date(registro.prazo).toLocaleDateString('pt-BR') : 'N/A'}**</td>
+                    <td class="${registro.status.toLowerCase()}">${registro.statusNome}</td>
+                    <td>${registro.observacoes}</td>
+                `;
+            });
+        }
+        
+        // Função para adicionar um novo registro
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const dataAtual = new Date();
+            const dataHoraFormatada = dataAtual.toLocaleDateString('pt-BR') + ' ' + dataAtual.toLocaleTimeString('pt-BR').substring(0, 5); // Formato DD/MM/AAAA HH:MM
+            
+            const statusSelect = document.getElementById('status');
+            const novoRegistro = {
+                dataHora: dataHoraFormatada,
+                assunto: document.getElementById('assunto').value,
+                tipo: document.getElementById('tipo').value,
+                processo: document.getElementById('processo').value,
+                responsavel: document.getElementById('responsavel').value,
+                prazo: document.getElementById('prazo').value, // 'YYYY-MM-DD'
+                status: statusSelect.value,
+                statusNome: statusSelect.options[statusSelect.selectedIndex].text,
+                observacoes: document.getElementById('observacoes').value
+            };
+            
+            registros.unshift(novoRegistro); // Adiciona no início da lista
+            form.reset(); // Limpa o formulário
+            renderizarTabela(registros);
+            alert('Registro cadastrado com sucesso!');
+        });
+
+        // Função para filtrar a tabela
+        function filtrarTabela() {
+            const respFiltro = document.getElementById('filtroResponsavel').value;
+            const statusFiltro = document.getElementById('filtroStatus').value;
+            const textoFiltro = document.getElementById('filtroTexto').value.toLowerCase();
+
+            const dadosFiltrados = registros.filter(reg => {
+                // Filtro por Responsável
+                const respMatch = !respFiltro || reg.responsavel === respFiltro;
+                
+                // Filtro por Status
+                const statusMatch = !statusFiltro || reg.status === statusFiltro;
+
+                // Filtro por Texto (busca em Assunto ou Processo)
+                const textMatch = !textoFiltro || 
+                                  reg.assunto.toLowerCase().includes(textoFiltro) || 
+                                  reg.processo.includes(textoFiltro);
+
+                return respMatch && statusMatch && textMatch;
+            });
+
+            renderizarTabela(dadosFiltrados);
+        }
+
+        // Adicionar alguns registros iniciais (opcional)
+        registros.push({
+            dataHora: '20/11/2025 10:30',
+            assunto: 'Solicitação de Informações - Precatório nº 12345',
+            tipo: 'RECEBIDO',
+            processo: '0001234-56.2024.5.19.0000',
+            responsavel: 'Ana Lúcia',
+            prazo: '2025-11-22', 
+            status: 'ELABORACAO',
+            statusNome: 'EM ELABORAÇÃO',
+            observacoes: 'Verificando a situação do cálculo. Parcialmente respondido.'
+        });
+        registros.push({
+            dataHora: '20/11/2025 09:00',
+            assunto: 'URGENTE: Ofício de Retificação de Valores',
+            tipo: 'RECEBIDO',
+            processo: '0006789-01.2023.5.19.0000',
+            responsavel: 'Maria Clara',
+            prazo: '2025-11-18', // Prazo Vencido
+            status: 'AGUARDANDO',
+            statusNome: 'AGUARDANDO PROVIDÊNCIA',
+            observacoes: 'Ainda pendente de análise do Gabinete.'
+        });
+        registros.push({
+            dataHora: '19/11/2025 14:00',
+            assunto: 'Envio de Certidão - Processo 987',
+            tipo: 'ENVIADO',
+            processo: '0009870-12.2024.5.19.0000',
+            responsavel: 'João Paulo',
+            prazo: '', 
+            status: 'CONCLUIDO',
+            statusNome: 'ENVIADO/CONCLUÍDO',
+            observacoes: 'Certidão enviada para a 1ª VT.'
+        });
+
+        renderizarTabela(registros); // Renderiza a tabela inicial
+    </script>
+</body>
+</html>

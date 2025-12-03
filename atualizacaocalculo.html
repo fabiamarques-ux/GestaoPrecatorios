@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Atualização de Precatórios</title>
+    <style>
+        /* BASE e TIPOGRAFIA */
+        body {
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+            font-size: 100%; /* Define 1rem = 16px (padrão) */
+        }
+
+        .container {
+            width: 98%;
+            max-width: 1900px; 
+            margin: 40px auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 16px; 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); 
+            overflow-x: auto; 
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.2rem; /* Padronizado (era 2.6em) */
+            color: #1a237e; 
+            margin-bottom: 10px;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #607d8b;
+            font-size: 1rem; /* Padronizado (era 1.1em) */
+        }
+
+        h2 {
+            color: #d84315;
+            border-bottom: 3px solid #ffccbc;
+            padding-bottom: 15px;
+            margin-top: 50px;
+            font-size: 1.8rem; /* Padronizado (era 2em) */
+            font-weight: 700;
+        }
+
+        /* ESTILO PARA FILTROS */
+        .filters-container {
+            background-color: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap; 
+            gap: 20px;
+            align-items: flex-end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #1a237e;
+            margin-bottom: 5px;
+            font-size: 0.9rem; /* Padronizado (era 0.9em) */
+        }
+
+        .filter-group input[type="text"], 
+        .filter-group input[type="date"], 
+        .filter-group select {
+            padding: 8px 12px;
+            border: 1px solid #90caf9;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 1rem; /* Padronizado */
+            width: 180px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        .filter-group input:focus, 
+        .filter-group select:focus {
+            border-color: #1a237e;
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.2);
+            outline: none;
+        }
+
+        /* ESTILO DO BOTÃO DE PESQUISA */
+        .filter-actions {
+            margin-top: 10px; 
+        }
+
+        .btn-search {
+            background-color: #1a237e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem; /* Padronizado */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .btn-search:hover {
+            background-color: #0d1a6b;
+        }
+
+        .btn-search:active {
+            transform: translateY(1px);
+        }
+        
+        /* ESTILO PARA TABELA DE DADOS */
+        .data-table {
+            width: 100%;
+            min-width: 1700px; 
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 25px;
+            font-size: 0.9rem; /* Padronizado (era 0.85em) */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Cabeçalho de Agrupamento */
+        .data-table th.group-header {
+            background-color: #3f51b5 !important;
+            color: white;
+            font-size: 1rem; /* Padronizado */
+            padding: 8px;
+            border: 1px solid #1a237e;
+        }
+
+        /* Cabeçalho de Detalhe */
+        .data-table th {
+            background-color: #1a237e;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 8px 5px;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: bottom;
+            font-size: 0.8rem; /* Padronizado (era 0.8em) */
+        }
+        
+        .data-table td {
+            padding: 8px 5px;
+            border-bottom: 1px solid #e0e0e0;
+            text-align: left;
+            white-space: nowrap;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .data-table tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #e3f2fd;
+        }
+        
+        /* Estilos para colunas */
+        .col-money {
+            text-align: right !important;
+            font-weight: 500;
+        }
+        
+        .col-calc {
+            text-align: right !important;
+            font-weight: bold;
+            background-color: #fffde7;
+        }
+        
+        .total-value {
+            color: #d84315;
+            background-color: #ffecb3 !important;
+        }
+
+        /* ESTILOS PARA O QUADRO RESUMO */
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 1rem; /* Padronizado (era 1.0em) */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 50px;
+        }
+        .summary-table th {
+            background-color: #1a237e;
+            color: white;
+            padding: 12px 15px;
+            text-align: center;
+            font-size: 1.1rem; /* Padronizado (era 1.1em) */
+        }
+        .summary-table td {
+            padding: 10px 15px;
+            border: 1px solid #e0e0e0;
+            text-align: right;
+        }
+        .summary-table tbody tr:nth-child(even) {
+            background-color: #f7f9fb;
+        }
+        .summary-table .total-row {
+            background-color: #ffecb3;
+            font-weight: bold;
+            color: #d84315;
+            font-size: 1.2rem; /* Padronizado (era 1.2em) */
+        }
+        .summary-table .group-col {
+            text-align: left;
+            font-weight: 600;
+            color: #1a237e;
+        }
+        /* FIM ESTILOS QUADRO RESUMO */
+
+        /* Estilo para o botão de impressão */
+        .btn-print {
+            background-color: #00796b;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem; /* Padronizado (era 0.8em) */
+            transition: background-color 0.3s;
+        }
+        .btn-print:hover {
+            background-color: #004d40;
+        }
+
+        /* Estilo para a modal/relatório de impressão */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            border-radius: 8px;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 1.75rem; /* Padronizado */
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Estilos para o Relatório */
+        #relatorio-conteudo h2 {
+            font-size: 1.5rem; /* Padronizado */
+        }
+        #relatorio-conteudo h3 {
+            font-size: 1.3rem; /* Padronizado */
+            margin-top: 25px;
+        }
+        #relatorio-conteudo h4 {
+            font-size: 1.1rem; /* Padronizado */
+        }
+
+        .relatorio-valor-linha {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px dotted #ccc;
+            font-size: 0.95rem; /* Padronizado */
+        }
+        
+        /* Estilos específicos para impressão */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .modal-content, .modal-content * {
+                visibility: visible;
+            }
+            .modal-content {
+                position: absolute;
+                left: 0;
+                top: 0;
+                margin: 0;
+                width: 100%;
+                border: none;
+            }
+            .close, .btn-print-modal {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sistema de Cálculo e Atualização de Precatórios</h1>
+    
+
+    <h2>Filtros de Pesquisa e Cálculo</h2>
+    <div class="filters-container">
+        
+        <div class="filter-group">
+            <label for="filter-tipo-requisicao">Tipo de Requisição</label>
+            <select id="filter-tipo-requisicao">
+                <option value="">Todos</option>
+                <option value="PRECATÓRIO">Precatório</option>
+                <option value="RPV">RPV</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filter-entepublico">Ente Público</label>
+            <select id="filter-entepublico">
+                <option value="">Todos</option>
+                <option value="ANADIA">ANADIA</option>
+                <option value="MUNICÍPIO X">MUNICÍPIO X</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filter-vencimento">Vencimento</label>
+            <select id="filter-vencimento">
+                <option value="">Todos</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024">2024</option>
+                <option value="2025">2025</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="filter-exequente">Buscar Exequente</label>
+            <input type="text" id="filter-exequente" placeholder="Ex: MARIA APARECIDA">
+        </div>
+        
+        <div class="filter-group date-group">
+            <label for="data-calculo">Data Base p/ Cálculo</label>
+            <input type="date" id="data-calculo" value="2025-12-02" onchange="updateAllCalculations()">
+        </div>
+        
+        <div class="filter-actions">
+             <button class="btn-search" onclick="filterTable()">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="white"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                Pesquisar
+            </button>
+        </div>
+    </div>
+    
+    <h2>Quadro Resumo dos Cálculos</h2>
+    <table class="summary-table" id="summary-table">
+        <thead>
+            <tr>
+                <th style="width: 30%; border-right: none;">Ente Público</th>
+                <th style="width: 20%; border-left: none;">Vencimento</th>
+                <th style="width: 25%;">Saldo a Pagar (Base)</th>
+                <th style="width: 25%; background-color: #d84315;">Total Atualizado</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+        <tfoot>
+            </tfoot>
+    </table>
+    
+    <h2>Lista de Precatórios e RPVs</h2>
+    <table class="data-table" id="precatorios-table">
+        <thead>
+            <tr>
+                <th colspan="4" class="group-header" style="background-color: #004d40;">Identificação e Partes</th>
+                <th colspan="3" class="group-header" style="background-color: #4a148c;">Dados da Requisição e Prazos</th>
+                <th colspan="4" class="group-header" style="background-color: #0d47a1;">Valores Base (Original/Líquido)</th>
+                <th colspan="3" class="group-header" style="background-color: #d84315;">Valores Atualizados (Cálculo)</th>
+                <th colspan="1" class="group-header" style="background-color: #3f51b5;">Ações</th>
+            </tr>
+            <tr>
+                <th>Tipo Req.</th>
+                <th>VARA</th>
+                <th>PROCESSO</th>
+                <th>EXEQUENTE</th>
+                <th>VENCIMENTO</th>
+                <th>Data Requisição</th>
+                <th>Data Base Valor</th>
+                <th>EXEQ. LÍQUIDO</th>
+                <th>SALDO A PAGAR</th>
+                <th>IR</th>
+                <th>INSS/OUTROS</th>
+                <th>CORREÇÃO</th>
+                <th>JUROS Cálc.</th>
+                <th>TOTAL ATUALIZADO</th>
+                <th>Detalhes</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+    
+    <div id="relatorioModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="fecharModal()">&times;</span>
+            <div id="relatorio-conteudo"></div>
+            <button class="btn-print btn-print-modal" onclick="window.print()">Imprimir Relatório</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // --- 1. ESTRUTURA PARA ÍNDICES ECONÔMICOS MENSAIS (2008 a 2025) ---
+    const INDICES_MENSAIS = [
+        { data: '2022-01-01', SELIC_MENSAL: 0.98, IPCA: 0.54, IPCA_E: 0.49 },
+        { data: '2022-02-01', SELIC_MENSAL: 1.04, IPCA: 1.01, IPCA_E: 1.10 },
+        { data: '2023-01-01', SELIC_MENSAL: 1.12, IPCA: 0.53, IPCA_E: 0.62 },
+        { data: '2024-01-01', SELIC_MENSAL: 0.98, IPCA: 0.42, IPCA_E: 0.31 },
+        { data: '2025-01-01', SELIC_MENSAL: 1.00, IPCA: 0.16, IPCA_E: 0.11 },
+        { data: '2025-05-01', SELIC_MENSAL: 1.20, IPCA: 0.36, IPCA_E: 0.36 },
+        { data: '2025-11-01', SELIC_MENSAL: 1.25, IPCA: 0.20, IPCA_E: 0.20 },
+    ];
+
+    // --- 2. DADOS DOS PRECATÓRIOS ---
+    const PRECATARIOS_DATA = [
+        // Adicionei os campos 'principal' e 'jurosOrig' para detalhamento no relatório
+        { tipo: 'PRECATÓRIO', entePublico: 'ANADIA', vara: '2ª VT', dataAutuacaoRP: '2019-09-30', dataRequisicao: '2021-07-01', vencimento: 2022, processo: '0000088-14.2019.5.19.0262', precatorio: '0000129-15.2024.5.19.0000', rp: '00991/2021', dataBase: '2019-09-30', exequente: 'MARIA APARECIDA DOS SANTOS - 647...', exeqLiquido: 9987.20, principal: 9987.20, jurosOrig: 0.00, fgts: 0.00, ir: 0.00, inssBenef: 0.00, inssExec: 0.00, saldoAPagar: 9987.20 },
+        { tipo: 'PRECATÓRIO', entePublico: 'ANADIA', vara: '2ª VT', dataAutuacaoRP: null, dataRequisicao: '2022-04-02', vencimento: 2023, processo: '0000498-72.2019.5.19.0262', precatorio: '0000968-74.2023.5.19.0000', rp: '00001/2022', dataBase: '2021-02-28', exequente: 'ANTONIO VANDERLEY DE CARVALHO - 787...', exeqLiquido: 19415.68, principal: 17000.00, jurosOrig: 2415.68, fgts: 0.00, ir: 100.00, inssBenef: 50.00, inssExec: 20.00, saldoAPagar: 19415.68 },
+        { tipo: 'RPV', entePublico: 'ANADIA', vara: 'VT 62', dataAutuacaoRP: null, dataRequisicao: '2022-04-02', vencimento: 2023, processo: '0000620-11.2019.5.19.0262', precatorio: null, rp: '00002/2022', dataBase: '2021-02-28', exequente: 'MARIA CLAUDIA DE LIMA SANTOS - 028...', exeqLiquido: 12514.69, principal: 10000.00, jurosOrig: 2514.69, fgts: 0.00, ir: 0.00, inssBenef: 0.00, inssExec: 0.00, saldoAPagar: 12514.69 },
+        { tipo: 'PRECATÓRIO', entePublico: 'MUNICÍPIO X', vara: 'VT 62', dataAutuacaoRP: null, dataRequisicao: '2023-04-02', vencimento: 2024, processo: '0000346-58.2018.5.19.0262', precatorio: '0000160-98.2025.5.19.0000', rp: '0022/2023', dataBase: '2022-03-25', exequente: 'LUIZ CLAUDIO GUIMARAES SILVA - 381...', exeqLiquido: 9638.35, principal: 9638.35, jurosOrig: 0.00, fgts: 0.00, ir: 0.00, inssBenef: 0.00, inssExec: 0.00, saldoAPagar: 9638.35 },
+        { tipo: 'PRECATÓRIO', entePublico: 'ANADIA', vara: '2ª VT', dataAutuacaoRP: null, dataRequisicao: '2024-04-02', vencimento: 2025, processo: '0000620-11.2019.5.19.0262', precatorio: '0001068-92.2024.5.19.0000', rp: '00730/2024', dataBase: '2022-06-30', exequente: 'LUCIANO ALVES DOS SANTOS - 815...', exeqLiquido: 21561.05, principal: 20000.00, jurosOrig: 1561.05, fgts: 1200.00, ir: 0.00, inssBenef: 0.00, inssExec: 0.00, saldoAPagar: 21561.05 },
+    ];
+
+    // --- 3. CONSTANTES E FUNÇÕES DE UTENSÍLIOS ---
+
+    /**
+     * Define as regras de atualização com base na cronologia do precatório.
+     */
+    function determinarIndice(dataBaseStr, dataRequisicaoStr, vencimentoAno, dataCalculoStr) {
+        const dataRequisicao = new Date(dataRequisicaoStr);
+        const dataBase = new Date(dataBaseStr);
+        const dataCalculo = new Date(dataCalculoStr);
+
+        const DEC_2021 = new Date('2021-12-09'); // Marco da EC 113/2021
+        const ANO_PAGAMENTO = vencimentoAno;
+        const FEV_ANO_PAGAMENTO = new Date(`${ANO_PAGAMENTO}-02-01`);
+        const DEZ_ANO_PAGAMENTO = new Date(`${ANO_PAGAMENTO}-12-31`);
+
+        // Caso 1: Período anterior a dezembro/2021 (Regra antiga: IPCA-E + 0,5% a.a.)
+        if (dataBase < DEC_2021 && dataCalculo < DEC_2021) {
+            return { indice: 'IPCA_MAIS_05', regra: 'IPCA-E + 0,5% a.a. (Lei 11.960/09 e fase anterior à EC 113/2021)' };
+        }
+
+        // Caso 2: Período entre a data base e dezembro/2021, continuando após
+        if (dataBase < DEC_2021 && dataCalculo >= DEC_2021) {
+             return { indice: 'IPCA_MAIS_05', regra: 'IPCA-E + 0,5% a.a. (até 08/12/2021), a ser desmembrado.' };
+        }
+        
+        // Caso 3: Após EC 113/2021 (SELIC)
+        if (dataBase >= DEC_2021) {
+            
+            // Sub-caso 3.1: Período da Graça (IPCA)
+            if (dataCalculo >= FEV_ANO_PAGAMENTO && dataCalculo <= DEZ_ANO_PAGAMENTO) {
+                return { indice: 'IPCA', regra: `IPCA (Juros Suspensos) - Período da Graça (${ANO_PAGAMENTO})` };
+            }
+            
+            // Sub-caso 3.2: Período normal pós-EC 113
+            return { indice: 'SELIC', regra: 'SELIC (A partir de 09/12/2021 - EC 113/2021), unifica correção e juros' };
+        }
+        
+        return { indice: 'SELIC', regra: 'SELIC (Padrão pós-2021)' }; // Default seguro
+    }
+
+    /**
+     * Calcula o fator acumulado (produtório de (1 + taxa_mensal/100)) para o período.
+     */
+    function getFatorAcumuladoMensal(dataInicialStr, dataFinalStr, indice) {
+        let fator = 1;
+        
+        const dataInicial = new Date(dataInicialStr.substring(0, 7) + '-01');
+        const dataFinal = new Date(dataFinalStr);
+
+        INDICES_MENSAIS.forEach(item => {
+            const dataItem = new Date(item.data);
+            
+            if (dataItem >= dataInicial && dataItem <= dataFinal) {
+                let indiceKey = '';
+                if (indice === 'SELIC') {
+                    indiceKey = 'SELIC_MENSAL';
+                } else if (indice === 'IPCA_MAIS_05') {
+                    indiceKey = 'IPCA_E'; 
+                } else if (indice === 'IPCA') {
+                    indiceKey = 'IPCA';
+                }
+
+                if (item[indiceKey] !== undefined) {
+                    let taxa = item[indiceKey];
+                    
+                    if (indice === 'IPCA_MAIS_05') {
+                        // Juros de mora de 0,5% a.a. inclusos na correção para esta regra
+                        taxa += (0.5 / 12); 
+                    }
+                    
+                    fator *= (1 + (taxa / 100));
+                }
+            }
+        });
+        
+        return fator;
+    }
+
+    /**
+     * Implementa a regra de atualização dos precatórios.
+     */
+    function calcularAtualizacao(item, dataCalculoStr) {
+        const dataBaseStr = item.dataBase;
+        const valorBase = item.saldoAPagar;
+        const valorPrincipal = item.principal;
+        const valorJurosOrig = item.jurosOrig;
+        const vencimentoAno = item.vencimento;
+
+        if (!valorBase || isNaN(valorBase) || !dataBaseStr || !dataCalculoStr) {
+            return { correcao: 0, juros: 0, total: valorBase, indice: 'N/A', regra: 'Dados inválidos', correcaoPrincipal: 0, correcaoJuros: 0 };
+        }
+        
+        // 1. Determina a regra de atualização
+        const { indice, regra } = determinarIndice(dataBaseStr, item.dataRequisicao, vencimentoAno, dataCalculoStr);
+        
+        // 2. Calcula o fator acumulado com base na regra determinada
+        const fatorAcumulado = getFatorAcumuladoMensal(dataBaseStr, dataCalculoStr, indice);
+        
+        if (fatorAcumulado < 1) return { correcao: 0, juros: 0, total: valorBase, indice, regra, correcaoPrincipal: 0, correcaoJuros: 0 };
+
+        const valorAtualizado = valorBase * fatorAcumulado;
+        const correcaoEJuros = valorAtualizado - valorBase;
+
+        let correcao = 0;
+        let juros = 0;
+        let correcaoPrincipal = 0;
+        let correcaoJuros = 0;
+        
+        // 3. Distribui a correção e os juros de acordo com a regra
+        if (indice === 'SELIC') {
+            // SELIC unifica Correção e Juros. Divisão arbitrária para demonstração
+            juros = correcaoEJuros * 0.35; 
+            correcao = correcaoEJuros - juros;
+
+            // Para detalhamento: Aplicamos o fator de correção/juros na proporção da base
+            const fatorCorJuros = fatorAcumulado - 1;
+            correcaoPrincipal = valorPrincipal * fatorCorJuros;
+            correcaoJuros = valorJurosOrig * fatorCorJuros;
+            
+        } else if (indice === 'IPCA_MAIS_05') {
+            // IPCA-E (Correção) + 0,5% a.a. (Juros)
+            const tempoEmAnos = (new Date(dataCalculoStr) - new Date(dataBaseStr)) / (1000 * 60 * 60 * 24 * 365.25);
+            juros = valorBase * (0.005 * tempoEmAnos);
+            correcao = correcaoEJuros - juros;
+
+            // Para detalhamento: Calculamos a correção do principal e dos juros originais separadamente
+            // Nota: Esta é uma simplificação. O fatorCor deveria excluir os 0.5% a.a. para ser o IPCA-E puro.
+            const fatorCor = fatorAcumulado; // Fator com correção (IPCA-E) + Juros (0.5% a.a.)
+            
+            correcaoPrincipal = valorPrincipal * (fatorCor - 1);
+            correcaoJuros = valorJurosOrig * (fatorCor - 1);
+
+        } else if (indice === 'IPCA') {
+            // IPCA (Correção) - Juros Suspensos durante o Período da Graça
+            correcao = correcaoEJuros;
+            juros = 0;
+            
+            // Para detalhamento: Aplicamos a correção integralmente (juros = 0)
+            const fatorCor = fatorAcumulado - 1;
+            correcaoPrincipal = valorPrincipal * fatorCor;
+            correcaoJuros = valorJurosOrig * fatorCor;
+        }
+        
+        const totalAtualizado = valorBase + correcao + juros;
+
+        return {
+            correcao: correcao,
+            juros: juros,
+            total: totalAtualizado,
+            indice: indice,
+            regra: regra,
+            fator: fatorAcumulado.toFixed(6),
+            correcaoPrincipal: correcaoPrincipal,
+            correcaoJuros: correcaoJuros
+        };
+    }
+
+    /**
+     * Soma todas as deduções.
+     */
+    function sumDeducoes(item) {
+        return (item.fgts || 0) + (item.inssBenef || 0) + (item.inssExec || 0);
+    }
+
+    /**
+     * Formata um número para o padrão monetário brasileiro (apenas o valor).
+     */
+    function formatCurrency(value) {
+        if (value === null || value === undefined) return '0,00';
+        return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    
+    /**
+     * Gera e exibe o quadro resumo dos valores por Ente Público e Vencimento, respeitando os filtros.
+     */
+    function renderSummaryTable() {
+        const tableBody = document.querySelector('#summary-table tbody');
+        const tableFoot = document.querySelector('#summary-table tfoot');
+        tableBody.innerHTML = '';
+        tableFoot.innerHTML = '';
+        const dataCalculo = document.getElementById('data-calculo').value;
+
+        // Recupera os valores dos filtros
+        const filterVencimento = document.getElementById('filter-vencimento').value;
+        const filterEntePublico = document.getElementById('filter-entepublico').value;
+        const filterTipoRequisicao = document.getElementById('filter-tipo-requisicao').value;
+        const filterExequente = document.getElementById('filter-exequente').value.toUpperCase();
+
+        const summary = {};
+        let grandTotalBase = 0;
+        let grandTotalAtualizado = 0;
+
+        // 1. Aplicar filtros, agrupar e somar os valores
+        PRECATARIOS_DATA.forEach(item => {
+            // Lógica de filtragem aplicada ao item de dados
+            const itemVencimento = String(item.vencimento);
+            const itemEntePublico = item.entePublico;
+            const itemTipo = item.tipo;
+            const itemExequente = item.exequente.toUpperCase();
+
+            const matchesVencimento = !filterVencimento || itemVencimento === filterVencimento;
+            const matchesEntePublico = !filterEntePublico || itemEntePublico === filterEntePublico;
+            const matchesTipoRequisicao = !filterTipoRequisicao || itemTipo === filterTipoRequisicao;
+            const matchesExequente = !filterExequente || itemExequente.includes(filterExequente);
+
+            if (matchesVencimento && matchesEntePublico && matchesTipoRequisicao && matchesExequente) {
+                
+                const calculo = calcularAtualizacao(item, dataCalculo);
+                const key = `${item.entePublico}|${item.vencimento}`;
+                
+                if (!summary[key]) {
+                    summary[key] = {
+                        ente: item.entePublico,
+                        vencimento: item.vencimento,
+                        base: 0,
+                        atualizado: 0
+                    };
+                }
+                
+                summary[key].base += item.saldoAPagar;
+                summary[key].atualizado += calculo.total;
+
+                grandTotalBase += item.saldoAPagar;
+                grandTotalAtualizado += calculo.total;
+            }
+        });
+
+        // 2. Renderizar o corpo da tabela
+        const sortedKeys = Object.keys(summary).sort();
+        
+        sortedKeys.forEach(key => {
+            const data = summary[key];
+            const row = tableBody.insertRow();
+            
+            row.insertCell().classList.add('group-col'); row.cells[0].textContent = data.ente;
+            row.insertCell().classList.add('group-col'); row.cells[1].textContent = data.vencimento;
+            row.insertCell().classList.add('col-money'); row.cells[2].textContent = `R$ ${formatCurrency(data.base)}`;
+            row.insertCell().classList.add('col-calc', 'total-value'); row.cells[3].textContent = `R$ ${formatCurrency(data.atualizado)}`;
+        });
+        
+        // 3. Renderizar o rodapé (Total Geral)
+        const totalRow = tableFoot.insertRow();
+        totalRow.classList.add('total-row');
+        totalRow.insertCell().setAttribute('colspan', '2'); totalRow.cells[0].textContent = 'TOTAL GERAL FILTRADO';
+        totalRow.insertCell().textContent = `R$ ${formatCurrency(grandTotalBase)}`;
+        totalRow.insertCell().textContent = `R$ ${formatCurrency(grandTotalAtualizado)}`;
+    }
+
+
+    /**
+     * Preenche o corpo da tabela de precatórios.
+     */
+    function renderTable() {
+        const tableBody = document.querySelector('#precatorios-table tbody');
+        tableBody.innerHTML = '';
+        const dataCalculo = document.getElementById('data-calculo').value;
+
+        PRECATARIOS_DATA.forEach((item, index) => {
+            
+            const calculo = calcularAtualizacao(item, dataCalculo);
+            const totalDeducoes = sumDeducoes(item);
+
+            const row = tableBody.insertRow();
+            // Data attributes para filtragem e referência do item
+            row.dataset.vencimento = item.vencimento;
+            row.dataset.entepublico = item.entePublico;
+            row.dataset.tipo = item.tipo;
+            row.dataset.exequente = item.exequente.toUpperCase();
+            row.dataset.index = index; // Adiciona o índice para referência no relatório
+
+            // Colunas da Tabela (16 Colunas de dados + 1 de Ações)
+            let cellIndex = 0;
+            
+            // Colunas Identificação e Partes (4)
+            row.insertCell(cellIndex++).textContent = item.tipo;
+            row.insertCell(cellIndex++).textContent = item.vara;
+            row.insertCell(cellIndex++).textContent = item.processo;
+            row.insertCell(cellIndex++).textContent = item.exequente.split('-')[0].trim();
+            
+            // Colunas Requisição e Prazos (3) - Reduzido
+            row.insertCell(cellIndex++).textContent = item.vencimento;
+            row.insertCell(cellIndex++).textContent = item.dataRequisicao;
+            row.insertCell(cellIndex++).textContent = item.dataBase;
+            
+            // Colunas Valores Base (4)
+            row.insertCell(cellIndex++).classList.add('col-money'); row.cells[cellIndex-1].textContent = formatCurrency(item.exeqLiquido);
+            row.insertCell(cellIndex++).classList.add('col-money'); row.cells[cellIndex-1].textContent = formatCurrency(item.saldoAPagar);
+            row.insertCell(cellIndex++).classList.add('col-money'); row.cells[cellIndex-1].textContent = formatCurrency(item.ir);
+            row.insertCell(cellIndex++).classList.add('col-money'); row.cells[cellIndex-1].textContent = formatCurrency(totalDeducoes);
+
+            // Colunas de Cálculo (3)
+            row.insertCell(cellIndex++).classList.add('col-calc'); row.cells[cellIndex-1].innerHTML = `<span>${formatCurrency(calculo.correcao)}</span>`;
+            row.insertCell(cellIndex++).classList.add('col-calc'); row.cells[cellIndex-1].innerHTML = `<span>${formatCurrency(calculo.juros)}</span>`;
+            row.insertCell(cellIndex++).classList.add('col-calc', 'total-value'); row.cells[cellIndex-1].innerHTML = `<span>${formatCurrency(calculo.total)}</span>`;
+            
+            // Coluna Ações (1)
+            row.insertCell(cellIndex++).innerHTML = `<button class="btn-print" onclick="gerarRelatorioAtualizacao(${index})">Gerar Relatório</button>`;
+        });
+        
+        // Chamamos filterTable para aplicar os filtros atuais e o resumo
+        filterTable(); 
+    }
+    
+    /**
+     * Gera o conteúdo detalhado do relatório de cálculo para impressão.
+     */
+    function gerarRelatorioAtualizacao(index) {
+        const item = PRECATARIOS_DATA[index];
+        const dataCalculo = document.getElementById('data-calculo').value;
+        const calculo = calcularAtualizacao(item, dataCalculo);
+        
+        // Determina qual valor usar para detalhamento de correção (Principal vs Saldo a Pagar)
+        const totalBaseCorrigida = item.principal + calculo.correcaoPrincipal + item.jurosOrig + calculo.correcaoJuros;
+
+        const conteudo = `
+            <h2 style="color: #1a237e;">Relatório Detalhado de Cálculo</h2>
+            <p style="font-size: 1.0rem; color: #333;"><strong>Processo:</strong> ${item.processo}</p>
+            <p style="font-size: 1.0rem; color: #333;"><strong>Exequente:</strong> ${item.exequente.split('-')[0].trim()}</p>
+            <hr>
+            
+            <h3 style="color: #004d40;">Dados Base e Período</h3>
+            <div style="margin-bottom: 20px;">
+                <div class="relatorio-valor-linha"><span class="label">Tipo de Requisição:</span><span class="value">${item.tipo}</span></div>
+                <div class="relatorio-valor-linha"><span class="label">Data Base do Valor (Início da Atualização):</span><span class="value">${item.dataBase}</span></div>
+                <div class="relatorio-valor-linha"><span class="label">Data para o Cálculo (Final da Atualização):</span><span class="value">${dataCalculo}</span></div>
+                <div class="relatorio-valor-linha" style="background-color: #e3f2fd;"><span class="label"><strong>Saldo a Pagar (Valor Base):</strong></span><span class="value" style="color: #0d47a1;">R$ ${formatCurrency(item.saldoAPagar)}</span></div>
+            </div>
+            
+            <h3 style="color: #004d40;">Regras e Correção Monetária</h3>
+            <p style="background-color: #e8f5e9; padding: 10px; border-radius: 5px; border-left: 5px solid #00796b; font-size: 0.9rem;">
+                <strong>Regra Aplicada Automaticamente:</strong> ${calculo.regra}<br>
+                <strong>Índice Utilizado:</strong> ${calculo.indice} | <strong>Fator Acumulado (Demonstração):</strong> ${calculo.fator}
+            </p>
+
+            <h4 style="color: #0d47a1; margin-top: 15px;">Detalhamento da Correção Monetária (Total: R$ ${formatCurrency(calculo.correcao)})</h4>
+            <div style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; border-radius: 5px;">
+                <h5 style="margin-top: 0; font-size: 1rem; color: #1a237e;">Composição do Principal</h5>
+                <div class="relatorio-valor-linha"><span class="label">Principal Base:</span><span class="value">R$ ${formatCurrency(item.principal)}</span></div>
+                <div class="relatorio-valor-linha"><span class="label">Correção Monetária do Principal:</span><span class="value">R$ ${formatCurrency(calculo.correcaoPrincipal)}</span></div>
+                <div class="relatorio-valor-linha" style="background-color: #f7f9fb;"><span class="label">Subtotal Principal Corrigido:</span><span class="value" style="color: #1a237e;">R$ ${formatCurrency(item.principal + calculo.correcaoPrincipal)}</span></div>
+                <hr style="border-top: 1px dashed #eee;">
+                <h5 style="margin-top: 10px; font-size: 1rem; color: #1a237e;">Composição dos Juros Originais</h5>
+                <div class="relatorio-valor-linha"><span class="label">Juros Originais Base:</span><span class="value">R$ ${formatCurrency(item.jurosOrig)}</span></div>
+                <div class="relatorio-valor-linha"><span class="label">Correção Monetária dos Juros Originais:</span><span class="value">R$ ${formatCurrency(calculo.correcaoJuros)}</span></div>
+                <div class="relatorio-valor-linha" style="background-color: #f7f9fb;"><span class="label">Subtotal Juros Originais Corrigidos:</span><span class="value" style="color: #1a237e;">R$ ${formatCurrency(item.jurosOrig + calculo.correcaoJuros)}</span></div>
+            </div>
+
+            <h3 style="color: #d84315;">Resultado da Atualização</h3>
+            <table style="width: 100%; border-collapse: collapse;">
+                <tr><td style="padding: 8px; border: 1px solid #ccc; background-color: #fce4ec; font-size: 1.0rem;"><strong>Valor Base Corrigido (Subtotal da Correção):</strong></td><td style="padding: 8px; border: 1px solid #ccc; font-weight: bold; text-align: right; color: #1a237e; font-size: 1.0rem;">R$ ${formatCurrency(totalBaseCorrigida)}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ccc; background-color: #fff8e1; font-size: 1.0rem;">Juros de Mora Calculados (R$ ${formatCurrency(item.saldoAPagar)} * 0.5% a.a. ou incluído na SELIC):</td><td style="padding: 8px; border: 1px solid #ccc; font-weight: bold; text-align: right; font-size: 1.0rem;">R$ ${formatCurrency(calculo.juros)}</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #ccc; background-color: #ffecb3; font-size: 1.1rem;"><strong>TOTAL ATUALIZADO (Base + Correção + Juros):</strong></td><td style="padding: 8px; border: 1px solid #ccc; font-weight: bold; text-align: right; color: #d84315; font-size: 1.1rem;"><strong>R$ ${formatCurrency(calculo.total)}</strong></td></tr>
+            </table>
+            
+            <p style="font-size: 0.7rem; color: #777; margin-top: 20px;">*Esta atualização é uma demonstração baseada nos dados e regras implementadas no sistema e pode não refletir o cálculo final oficial, que depende da série histórica oficial de índices e legislação vigente. Note que, na regra SELIC (pós 09/12/2021), Correção e Juros já estão unificados no fator de atualização, sendo a separação acima didática para demonstrar a atualização do valor principal e dos juros originais.</p>
+        `;
+
+        document.getElementById('relatorio-conteudo').innerHTML = conteudo;
+        document.getElementById('relatorioModal').style.display = 'block';
+    }
+
+    /**
+     * Fecha a modal de relatório.
+     */
+    function fecharModal() {
+        document.getElementById('relatorioModal').style.display = 'none';
+    }
+
+    /**
+     * Aplica os filtros selecionados na tabela principal E ATUALIZA O QUADRO RESUMO.
+     */
+    function filterTable() {
+        const filterVencimento = document.getElementById('filter-vencimento').value;
+        const filterEntePublico = document.getElementById('filter-entepublico').value;
+        const filterTipoRequisicao = document.getElementById('filter-tipo-requisicao').value;
+        const filterExequente = document.getElementById('filter-exequente').value.toUpperCase();
+        
+        const rows = document.querySelectorAll('#precatorios-table tbody tr');
+
+        rows.forEach(row => {
+            const vencimento = row.dataset.vencimento;
+            const entePublico = row.dataset.entepublico;
+            const tipo = row.dataset.tipo;
+            const exequente = row.dataset.exequente;
+
+            const matchesVencimento = !filterVencimento || vencimento === filterVencimento;
+            const matchesEntePublico = !filterEntePublico || entePublico === filterEntePublico;
+            const matchesTipoRequisicao = !filterTipoRequisicao || tipo === filterTipoRequisicao;
+            const matchesExequente = !filterExequente || exequente.includes(filterExequente);
+
+            if (matchesVencimento && matchesEntePublico && matchesTipoRequisicao && matchesExequente) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Chama o Quadro Resumo para ser atualizado com os mesmos filtros
+        renderSummaryTable();
+    }
+
+    /**
+     * Atualiza todos os cálculos (renderiza a tabela e aplica filtros) ao mudar a data de cálculo.
+     */
+    function updateAllCalculations() {
+        renderTable();
+        // renderTable chama filterTable, que chama renderSummaryTable.
+    }
+
+    // --- INICIALIZAÇÃO ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderTable(); 
+    });
+</script>
+
+</body>
+</html>

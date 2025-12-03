@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Momento da Atualização dos Precatórios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Configuração de Fonte Padrão e Estilos Globais */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc; /* Fundo claro */
+        }
+        /* Estilo para a linha do tempo (timeline) */
+        .timeline-container {
+            position: relative;
+        }
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 12px;
+            width: 4px;
+            height: 100%;
+            background: #cbd5e1; /* Cor da linha */
+            z-index: 0;
+        }
+        /* Ajuste para telas maiores (md: é o breakpoint do Tailwind) */
+        @media (min-width: 768px) {
+            .timeline-container::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            /* Cores alternadas para melhor visualização na linha do tempo horizontal */
+            .timeline-item:nth-child(odd) .card-header {
+                border-left: 4px solid #3b82f6; /* Azul */
+            }
+            .timeline-item:nth-child(even) .card-header {
+                border-right: 4px solid #10b981; /* Verde */
+            }
+        }
+
+        /* Classes para alinhar os cards na timeline (mobile) */
+        .timeline-item-mobile-line {
+            border-left: 4px solid #cbd5e1;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6">
+
+    <div class="max-w-6xl mx-auto bg-white shadow-2xl rounded-2xl p-5 md:p-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-blue-800 mb-2">
+                Momentos de Atualização de Precatórios 
+            </h1>
+            <p class="text-lg text-gray-600">
+                Definidos na Resolução 294/2023 - TRT19
+            </p>
+        </header>
+
+        <div class="timeline-container">
+            
+            <div class="mb-6 border-b-2 border-blue-300 pb-3">
+                <h2 class="text-2xl md:text-3xl font-bold text-blue-700 mb-4 text-center bg-blue-50 py-2 rounded-lg shadow-inner">
+                    1. Fase de Expedição (Inicial)
+                </h2>
+
+                <div class="timeline-item mb-4 relative md:flex md:items-start md:justify-end md:text-right">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-blue-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">1</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-blue-600 md:border-t-0 md:border-r-4 card-header">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">
+                            📅 Ofício Precatório: Antes da Expedição do Ofício Requisitório
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm font-semibold">
+                            Atualização para a expedição do Precatório ou RPV.
+                        </p>
+
+                        <ul class="list-disc list-inside text-sm text-gray-600 space-y-1 mt-3 p-3 bg-blue-50 rounded-lg">
+                            <li><span class="font-bold text-blue-700">Onde:</span> Na Vara do Trabalho (Juízo da Execução).</li>
+                            <li><span class="font-bold text-blue-700">Ferramenta:</span> Utilizando o sistema <span class="font-extrabold">PJe-CALC</span>.</li>
+                            <li><span class="font-bold text-blue-700">Quando:</span> Data da última atualização não pode ser superior a <span class="font-extrabold">60 dias</span> (Art. 14, VIII).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pt-3">
+                <h2 class="text-2xl md:text-3xl font-bold text-purple-700 mb-4 text-center bg-purple-50 py-2 rounded-lg shadow-inner">
+                    2. Fase Administrativa (Pós-Expedição e Gestão)
+                </h2>
+
+                <div class="md:flex md:justify-center mb-6">
+                    <div class="md:w-3/4 p-3 text-center text-sm italic text-gray-600 bg-purple-50 rounded-xl shadow-md border-b-2 border-purple-500">
+                        A Presidência do Tribunal, por meio da Secretaria de Precatórios, é responsável pela <span class="font-semibold text-purple-700">gestão, controle e aplicação dos índices de correção monetária e juros</span> após a apresentação do ofício requisitório, incluindo a inclusão orçamentária e a gestão de cronogramas.
+                    </div>
+                </div>
+                
+                <div class="timeline-item mb-6 relative md:flex md:items-start md:justify-start md:text-left">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-yellow-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">2</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pl-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-yellow-600 md:border-t-0 md:border-l-4 card-header">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-2">
+                            📝 Ofício Requisitório: Revisão de Cálculos (Pós-Expedição do Ofício Precatório)
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            Os critérios de atualização monetária e juros aplicados após a apresentação do ofício precatório ao Tribunal.
+                        </p>
+                        <p class="text-xs font-semibold text-yellow-500 bg-yellow-50/50 p-2 rounded-lg inline-block">
+                            Deve ser objeto de revisão de cálculos <span class="font-extrabold">perante a Presidência do Tribunal</span> (Art. 25).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item mb-6 relative md:flex md:items-start md:justify-end md:text-right">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-green-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">3</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-green-600 md:border-t-0 md:border-r-4 card-header">
+                        <h3 class="text-xl font-bold text-green-800 mb-2">
+                            💰 Inclusão Orçamentária (Regime Geral)
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            Comunicação à entidade devedora para proposta orçamentária do exercício subsequente.
+                        </p>
+                        <p class="text-xs font-semibold text-green-500 bg-green-50/50 p-2 rounded-lg inline-block">
+                            Até <span class="font-extrabold">31 de janeiro</span>, com valor atualizado e acréscimo de juros até essa data.
+                        </p>
+                        <p class="mt-3 text-sm italic font-medium text-gray-500">
+                            Fundamento Legal: <span class="text-green-600">Art. 18, I</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item mb-6 relative md:flex md:items-start md:justify-start md:text-left">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-blue-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">4</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pl-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-blue-600 md:border-t-0 md:border-l-4 card-header">
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">
+                            🏛️ Inclusão Orçamentária (União/CSJT)
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            O Tribunal encaminhará ao CSJT a relação de débitos da União para inclusão na proposta orçamentária do exercício seguinte.
+                        </p>
+                        <p class="text-xs font-semibold text-blue-500 bg-blue-50/50 p-2 rounded-lg inline-block">
+                            Até <span class="font-extrabold">31 de janeiro</span>, com valor atualizado e acréscimo de juros até essa data.
+                        </p>
+                        <p class="mt-3 text-sm italic font-medium text-gray-500">
+                            Fundamento Legal: <span class="text-blue-600">Art. 18, Parágrafo único</span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="timeline-item mb-6 relative md:flex md:items-start md:justify-end md:text-right">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-orange-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">5</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-orange-600 md:border-t-0 md:border-r-4 card-header">
+                        <h3 class="text-xl font-bold text-orange-800 mb-2">
+                            🗺️ Divulgação do Mapa dos Precatórios
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            Publicação do mapa com o controle de precatórios do exercício anterior.
+                        </p>
+                        <p class="text-xs font-semibold text-orange-500 bg-orange-50/50 p-2 rounded-lg inline-block">
+                            Até <span class="font-extrabold">28 de fevereiro</span>, com os <span class="font-extrabold">saldos atualizados</span>.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item mb-6 relative md:flex md:items-start md:justify-start md:text-left">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-red-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">6</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pl-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-red-600 md:border-t-0 md:border-l-4 card-header">
+                        <h3 class="text-xl font-bold text-red-800 mb-2">
+                            🚨 Em Caso de Inadimplência
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            Se os recursos não forem disponibilizados para o pagamento integral da dívida.
+                        </p>
+                        <p class="text-xs font-semibold text-red-500 bg-red-50/50 p-2 rounded-lg inline-block">
+                            O Presidente do Tribunal, <span class="font-extrabold">após atualização do valor</span>, deve certificar a inadimplência.
+                        </p>
+                        <p class="mt-3 text-sm italic font-medium text-gray-500">
+                            Fundamento Legal: <span class="text-red-600">Art. 20, §2º</span>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item mb-0 relative md:flex md:items-start md:justify-end md:text-right">
+                    <div class="absolute -left-1 md:left-1/2 md:-translate-x-1/2 top-0 w-6 h-6 bg-purple-600 rounded-full shadow-lg flex items-center justify-center z-10">
+                        <span class="text-white font-bold text-sm">7</span>
+                    </div>
+                    
+                    <div class="ml-8 md:ml-0 md:w-1/2 md:pr-16 p-3 bg-white rounded-xl shadow-xl border-t-4 border-purple-600 md:border-t-0 md:border-r-4 card-header">
+                        <h3 class="text-xl font-bold text-purple-800 mb-2">
+                            🗓️ Pagamento em Cronograma
+                        </h3>
+                        <p class="text-gray-700 mb-2 text-sm">
+                            Se um cronograma de pagamento for formalizado.
+                        </p>
+                        <p class="text-xs font-semibold text-purple-500 bg-purple-50/50 p-2 rounded-lg inline-block">
+                            Deve prever obrigatoriamente a <span class="font-extrabold">atualização do crédito até a data do pagamento</span>, com exclusão dos juros do período da graça constitucional.
+                        </p>
+                        <p class="mt-3 text-sm italic font-medium text-gray-500">
+                            Fundamento Legal: <span class="text-purple-600">Art. 46, §1º, II</span>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <footer class="text-center mt-6 pt-3 border-t border-gray-200">
+            <p class="text-sm text-gray-500">
+                Baseado na Resolução Nº 294, de 05 de Julho de 2023, do Tribunal Regional do Trabalho da 19ª Região (TRT-19).
+            </p>
+        </footer>
+    </div>
+
+</body>
+</html>
