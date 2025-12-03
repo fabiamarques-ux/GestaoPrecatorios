@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links de Blocos Clicáveis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px; /* Espaçamento entre os blocos */
+        }
+
+        .bloco {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 250px; /* Largura fixa do bloco */
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            text-decoration: none; /* Remove sublinhado do link */
+            color: #007bff; /* Cor do texto do link */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .bloco:hover {
+            transform: translateY(-5px); /* Efeito de elevação ao passar o mouse */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background-color: #e9f7ff; /* Cor de fundo mais clara no hover */
+        }
+
+        .bloco h2 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #007bff; /* Cor principal do título */
+        }
+
+        .bloco p {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Acesse Nossos Recursos</h1>
+
+    <div class="container">
+        <a href="https://pje.csjt.jus.br/manual/index.php/GPREC-DIPRE" target="_blank" class="bloco">
+            <h2>Manual GPREC-DIPRE</h2>
+            <p>Clique para acessar o manual de procedimentos.</p>
+        </a>
+
+        <a href="https://pje.csjt.jus.br/manual/index.php/GPREC-DIPRE" target="_blank" class="bloco">
+            <h2>Outro Link Útil</h2>
+            <p>Informações e orientações adicionais.</p>
+        </a>
+
+        <a href="https://pje.csjt.jus.br/manual/index.php/GPREC-DIPRE" target="_blank" class="bloco">
+            <h2>Recurso 3</h2>
+            <p>Documentação complementar para referência.</p>
+        </a>
+    </div>
+
+</body>
+</html>

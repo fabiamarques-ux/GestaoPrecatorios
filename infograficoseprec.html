@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infográfico Interativo: SEPREC TRT-19</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #f0f9ff; color: #0f172a; }
+        /* Chart container styling is maintained but now unused in this file, kept for consistency if charts were to be re-added */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; 
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .step-connector::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 2px;
+            height: 2rem;
+            background-color: #cbd5e1;
+            transform: translateX(-50%);
+            z-index: 0;
+        }
+        .last-step::after { display: none; }
+        .tech-table th, .tech-table td {
+            padding: 0.75rem;
+            text-align: left;
+        }
+        .tech-table th {
+            background-color: #e0f2fe; /* Light blue background for headers */
+            font-weight: 700;
+            color: #0c4a6e; /* Darker blue text */
+        }
+        .tech-table tr:nth-child(even) {
+            background-color: #f8fafc; /* Lighter background for even rows */
+        }
+    </style>
+</head>
+<body class="bg-sky-50 text-slate-900">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-blue-900 to-sky-700 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 tracking-tight">SEPREC TRT-19</h1>
+            <p class="text-xl md:text-2xl font-light text-sky-100">Gestão de Precatórios e Requisições de Pequeno Valor</p>
+            <p class="mt-4 max-w-3xl mx-auto text-sky-50 text-sm md:text-base leading-relaxed">
+                Conforme a Resolução nº 314/2023, este infográfico detalha a estrutura, as competências e o fluxo operacional da unidade responsável pela execução das dívidas judiciais no Tribunal Regional do Trabalho da 19ª Região.
+            </p>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+
+        <!-- Section 1: General Competencies (Art. 93-A) - Detailed -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-blue-900">Visão Estratégica da SEPREC</h2>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></div>
+            </div>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-md border-l-4 border-blue-600">
+                <p class="text-lg text-slate-700 mb-6 font-semibold">
+                    A Secretaria de Precatórios (SEPREC) atua como o núcleo central de processamento. Segundo o <strong>Art. 93-A</strong>, suas atribuições gerais de escopo abrangem todo o ciclo, desde a autuação inicial até a efetivação do pagamento, com foco no controle financeiro e transparência.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">1</span>
+                            <span class="text-slate-600">
+                                <strong>Gestão Financeira e Repasses:</strong> Requisitar formalmente as verbas necessárias aos entes devedores e gerir o acompanhamento minucioso dos repasses de recursos, tanto para o Regime Comum quanto para o Regime Especial.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">2</span>
+                            <span class="text-slate-600">
+                                <strong>Processamento e Autuação:</strong> Analisar os ofícios recebidos, realizar o processamento inicial e autuar o precatório/RPV, registrando-o obrigatoriamente no sistema **GPREC** e no PJe de 2º Grau (Classes 1265/1266).
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">3</span>
+                            <span class="text-slate-600">
+                                <strong>Cálculos e Consolidação:</strong> Executar a conferência e a atualização dos valores devidos, utilizando o **PJE-Calc** para apurar o montante exato da dívida e consolidar os dados no GPREC.
+                            </span>
+                        </li>
+                    </ul>
+                    <ul class="space-y-4">
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">4</span>
+                            <span class="text-slate-600">
+                                <strong>Pagamento e Liquidação:</strong> Confeccionar os alvarás eletrônicos e as ordens de pagamento (OP) através dos sistemas **SIF e SISCONDJ**, especificando todas as exações legais e retenções fiscais cabíveis.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">5</span>
+                            <span class="text-slate-600">
+                                <strong>Regime Disciplinar e Penalidades:</strong> Promover a inclusão de entes públicos inadimplentes nos cadastros disciplinares, notadamente no **BNDT** (Banco Nacional de Devedores Trabalhistas) e no **SICONV**.
+                            </span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold text-xs mr-3 mt-1 shrink-0">6</span>
+                            <span class="text-slate-600">
+                                <strong>Transparência e Relatórios:</strong> Elaborar relatórios estatísticos da execução (para o e-Gestão e CNJ) e garantir a atualização contínua e acessível da página de transparência do Tribunal.
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Operational Pillars (The 3 Subunits) - Detailed -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-blue-900">Os Três Pilares da Execução</h2>
+                <p class="mt-2 text-slate-600">Estrutura organizacional definida no Art. 93-B com detalhamento das competências.</p>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- ATGP Card - Detailed -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover transition-all duration-300 border-t-4 border-purple-600">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-800">ATGP</h3>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full">Art. 93-C</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Assessoria Técnica de Gestão</h4>
+                        <p class="text-slate-600 text-sm mb-4 font-medium">O cérebro jurídico. Foca no suporte à decisão presidencial, análise de incidentes e controle gerencial do fluxo processual.</p>
+                        <hr class="border-slate-100 my-4">
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li>⚖️ **Minutas Decisórias:** Elaborar minutas de despacho/decisão em incidentes (ex: sucessão, cessão de crédito, preferências).</li>
+                            <li>✅ **Ratificação:** Realizar a ratificação formal dos pagamentos autorizados, conferindo a legalidade e conformidade dos valores lançados no **GPREC**.</li>
+                            <li>🔒 **Bloqueios:** Cumprir ordens judiciais de indisponibilidade de ativos e sequestros de verbas através do sistema **SISBAJUD**.</li>
+                            <li>🗣️ **Atendimento:** Prestar atendimento especializado a partes e advogados sobre a fase de precatório.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SEPP Card - Detailed -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover transition-all duration-300 border-t-4 border-amber-500">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-800">SEPP</h3>
+                            <span class="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-bold rounded-full">Art. 93-D</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Setor de Expedição e Processamento</h4>
+                        <p class="text-slate-600 text-sm mb-4 font-medium">O motor processual. Garante a correta autuação, formalização dos ofícios requisitórios e comunicação processual.</p>
+                        <hr class="border-slate-100 my-4">
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li>📥 **Autuação:** Validar pré-cadastro e autuar no **PJE (2º Grau)** (classes 1265/1266) e no **GPREC**, garantindo o correto cadastro das partes e o número de ordem cronológica.</li>
+                            <li>📝 **Ofícios:** Confeccionar os Ofícios Requisitórios (formalização da cobrança) a serem encaminhados aos entes devedores.</li>
+                            <li>⏱️ **Prazos:** Controlar os prazos e expedir todas as comunicações e notificações necessárias às partes e órgãos (ex: Procuradoria).</li>
+                            <li>📢 **Publicações:** Realizar as publicações oficiais no **DEJT** relativas às decisões e movimentações processuais.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- SECP Card - Detailed -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover transition-all duration-300 border-t-4 border-emerald-600">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-bold text-slate-800">SECP</h3>
+                            <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-bold rounded-full">Art. 93-E</span>
+                        </div>
+                        <h4 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Setor de Cálculos e Pagamentos</h4>
+                        <p class="text-slate-600 text-sm mb-4 font-medium">O núcleo financeiro. Transforma sentenças em valores líquidos, audita e efetiva as transferências.</p>
+                        <hr class="border-slate-100 my-4">
+                        <ul class="text-sm space-y-2 text-slate-600">
+                            <li>🧮 **Cálculos:** Elaborar planilhas de atualização da dívida, utilizando o **PJE-Calc** e inserindo o valor liquidado no **GPREC**.</li>
+                            <li>🔍 **Auditoria:** Emitir informações técnicas sobre cálculos para subsidiar decisões em caso de impugnações.</li>
+                            <li>💸 **Alvarás:** Confeccionar e emitir alvarás eletrônicos e ordens de pagamento, detalhando as exações legais, via **SIF/SISCONDJ**.</li>
+                            <li>🌐 **Mapa Anual:** Providenciar a consolidação dos dados para o **Mapa Anual de Precatórios** (CNJ) e registrar a baixa dos pagamentos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Section 3: Process Flow Visualization (Maintained) -->
+        <section>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- Workflow Text -->
+                <div class="lg:col-span-4 bg-blue-900 text-white p-8 rounded-2xl shadow-xl flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold mb-4">O Fluxo do Precatório</h3>
+                    <p class="text-blue-100 mb-6 leading-relaxed">
+                        A interação entre os setores cria um fluxo contínuo. Visualize ao lado como um processo se move desde a chegada da Vara até o pagamento final, passando pelas competências específicas de cada unidade da SEPREC.
+                    </p>
+                    <div class="bg-blue-800 p-4 rounded-lg border border-blue-700">
+                        <strong class="block text-orange-400 mb-2">Destaque:</strong>
+                        <p class="text-sm text-blue-200">
+                            O sistema <strong>GPREC</strong> atua como a espinha dorsal, presente em quase todas as etapas do ciclo de vida do precatório.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Vertical Timeline -->
+                <div class="lg:col-span-8 bg-white p-8 rounded-2xl shadow-md">
+                    <div class="relative flex flex-col items-center md:items-start max-w-2xl mx-auto">
+                        
+                        <!-- Step 1: SEPP -->
+                        <div class="relative z-10 w-full mb-8 flex flex-col md:flex-row items-center step-connector">
+                            <div class="w-16 h-16 bg-amber-500 rounded-full flex items-center justify-center shadow-lg shrink-0 mb-4 md:mb-0 md:mr-6 text-white text-2xl font-bold">1</div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg border border-slate-200 w-full text-center md:text-left hover:bg-amber-50 transition-colors">
+                                <span class="text-xs font-bold text-amber-600 uppercase">SEPP - Início</span>
+                                <h4 class="text-lg font-bold text-slate-800">Autuação e Formalização</h4>
+                                <p class="text-sm text-slate-600 mt-1">Validação de pré-cadastro no GPREC e autuação no PJE de 2º Grau.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: ATGP -->
+                        <div class="relative z-10 w-full mb-8 flex flex-col md:flex-row items-center step-connector">
+                            <div class="w-16 h-16 bg-purple-600 rounded-full flex items-center justify-center shadow-lg shrink-0 mb-4 md:mb-0 md:mr-6 text-white text-2xl font-bold">2</div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg border border-slate-200 w-full text-center md:text-left hover:bg-purple-50 transition-colors">
+                                <span class="text-xs font-bold text-purple-600 uppercase">ATGP - Decisão</span>
+                                <h4 class="text-lg font-bold text-slate-800">Análise e Despacho</h4>
+                                <p class="text-sm text-slate-600 mt-1">Elaboração de minutas para decisão da Presidência e ordens de sequestro (se necessário).</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 3: SECP -->
+                        <div class="relative z-10 w-full mb-8 flex flex-col md:flex-row items-center step-connector">
+                            <div class="w-16 h-16 bg-emerald-600 rounded-full flex items-center justify-center shadow-lg shrink-0 mb-4 md:mb-0 md:mr-6 text-white text-2xl font-bold">3</div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg border border-slate-200 w-full text-center md:text-left hover:bg-emerald-50 transition-colors">
+                                <span class="text-xs font-bold text-emerald-600 uppercase">SECP - Finanças</span>
+                                <h4 class="text-lg font-bold text-slate-800">Cálculo e Atualização</h4>
+                                <p class="text-sm text-slate-600 mt-1">Uso do PJE-Calc para definir valores atualizados e consolidação da dívida.</p>
+                            </div>
+                        </div>
+
+                        <!-- Step 4: Finalization -->
+                        <div class="relative z-10 w-full flex flex-col md:flex-row items-center last-step">
+                            <div class="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center shadow-lg shrink-0 mb-4 md:mb-0 md:mr-6 text-white text-2xl font-bold">4</div>
+                            <div class="flex-1 bg-slate-50 p-4 rounded-lg border border-slate-200 w-full text-center md:text-left hover:bg-blue-50 transition-colors">
+                                <span class="text-xs font-bold text-blue-600 uppercase">Conjunto - Final</span>
+                                <h4 class="text-lg font-bold text-slate-800">Pagamento e Baixa</h4>
+                                <p class="text-sm text-slate-600 mt-1">Emissão de alvarás (SECP), ratificação (ATGP) e publicidade/baixa (SEPP).</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Technology Ecosystem (NEW) -->
+        <section>
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-blue-900">Ecossistema Tecnológico</h2>
+                <p class="mt-2 text-slate-600">Sistemas essenciais para a execução e controle dos precatórios.</p>
+                <div class="w-24 h-1 bg-orange-500 mx-auto mt-2 rounded-full"></div>
+            </div>
+
+            <div class="bg-white p-6 rounded-2xl shadow-md border-l-4 border-sky-600 overflow-x-auto">
+                <table class="w-full border-collapse tech-table text-sm">
+                    <thead>
+                        <tr>
+                            <th class="border-b-2 border-sky-300">Sistema</th>
+                            <th class="border-b-2 border-sky-300">Função Central na SEPREC</th>
+                            <th class="border-b-2 border-sky-300">Setores Usuários Chave</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">GPREC</td>
+                            <td class="border-b border-slate-100">Sistema nuclear para registro, controle da ordem cronológica, monitoramento de repasses e lançamento de autorizações de pagamento.</td>
+                            <td class="border-b border-slate-100">SEPP, ATGP, SECP</td>
+                        </tr>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">PJE (2º Grau)</td>
+                            <td class="border-b border-slate-100">Utilizado para autuação processual (classes 1265/1266), controle de prazos, expedição de comunicações e registro da baixa processual.</td>
+                            <td class="border-b border-slate-100">SEPP, ATGP</td>
+                        </tr>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">PJE-Calc</td>
+                            <td class="border-b border-slate-100">Ferramenta oficial para a realização e conferência de atualização monetária e apuração de juros, crucial para a liquidação da dívida.</td>
+                            <td class="border-b border-slate-100">SECP</td>
+                        </tr>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">SIF / SISCONDJ</td>
+                            <td class="border-b border-slate-100">Sistemas Financeiros (Caixa/BB) utilizados para a confecção e emissão dos alvarás eletrônicos e ordens de pagamento, efetivando a transferência de valores.</td>
+                            <td class="border-b border-slate-100">SECP, ATGP</td>
+                        </tr>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">SISBAJUD</td>
+                            <td class="border-b border-slate-100">Sistema de Busca de Ativos utilizado para realizar o bloqueio e/ou sequestro de valores das contas dos entes devedores, por ordem judicial.</td>
+                            <td class="border-b border-slate-100">ATGP</td>
+                        </tr>
+                        <tr>
+                            <td class="border-b border-slate-100 font-semibold text-blue-800">BNDT / SICONV</td>
+                            <td class="border-b border-slate-100">Cadastros disciplinares utilizados para a inclusão e acompanhamento de entes públicos em regime de inadimplência de precatórios.</td>
+                            <td class="border-b border-slate-100">SEPREC (Geral)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
+        <p class="text-sm">Fonte: Regulamento Geral da Secretaria - TRT19 - Precatórios (Resolução nº 314/2023)</p>
+        <p class="text-xs mt-2">© Tribunal Regional do Trabalho da 19ª Região</p>
+    </footer>
+
+    <script>
+        // Funções helper de gráfico removidas pois o gráfico foi excluído.
+    </script>
+</body>
+</html>

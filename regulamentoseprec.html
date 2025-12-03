@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regulamento e Informações da SEPREC</title>
+    <style>
+        /* Estilos CSS básicos (adaptados do arquivo original) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 40px;
+            background-color: #f0f2f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #06274a;
+            border-bottom: 3px solid #06274a;
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            background-color: #f8f9fa;
+            border-left: 5px solid #06274a;
+            border-radius: 10px;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            /* Alterado para indicar que é clicável */
+        }
+
+        li:hover {
+            background-color: #f0f0f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .norma-titulo {
+            font-weight: 600;
+            font-size: 18px;
+            color: #06274a;
+            text-decoration: none;
+            display: block;
+        }
+
+        .norma-descricao {
+            font-size: 14px;
+            color: #555;
+            margin-top: 8px;
+            margin-bottom: 0;
+        }
+
+        /* Estilo específico para este layout de botões/links principais */
+        .link-group a {
+            color: #0056b3;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .link-group a:hover {
+            text-decoration: underline;
+            color: #004085;
+        }
+
+        /* Estilos para centralizar o infográfico se for uma imagem na mesma página */
+        .infografico-container {
+            text-align: center;
+            margin-top: 20px;
+            display: none;
+            /* Inicialmente oculto */
+        }
+
+        .infografico-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>⚙️ Regulamento e Informações da SEPREC (Secretaria de Precatórios)</h1>
+
+        <p>Abaixo estão os documentos e informações essenciais da Secretaria de Precatórios (SEPREC).</p>
+
+        <ul>
+            <a href="regulamentoseprec.pdf" target="_blank"
+                style="text-decoration: none; color: inherit;">
+                <li>
+                    <span class="norma-titulo">Regulamento Geral da Secretaria - TRT19 - Precatórios</span>
+                    <p class="norma-descricao">
+                        Clique para visualizar o documento oficial que regulamenta a organização e os procedimentos da Secretaria de
+                        Precatórios (SEPREC) no âmbito do TRT19.
+                    </p>
+                </li>
+            </a>
+            <a href="infograficoseprec.html" target="_blank"
+                style="text-decoration: none; color: inherit;">
+                <li>
+                    <span class="norma-titulo">Infográfico da SEPREC - Fluxo e Estrutura</span>
+                    <p class="norma-descricao">
+                      Clique para visualizar o infográfico contendo o fluxo de trabalho e a estrutura da Secretaria de
+                    Precatórios.
+                    </p>
+                </li>
+            </a>
+            
+        </ul>
+
+
+    </div>
+
+    <script>
+        // Função JavaScript para mostrar/esconder o Infográfico ao clicar
+        function toggleInfografico() {
+            var infografico = document.getElementById('infografico-area');
+            if (infografico.style.display === 'block') {
+                infografico.style.display = 'none';
+            } else {
+                infografico.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+
+</html>
