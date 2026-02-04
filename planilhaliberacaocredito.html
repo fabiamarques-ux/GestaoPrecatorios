@@ -639,6 +639,149 @@
 
 
         /* ======================================================= */
+        /* ESTILOS RESPONSIVOS (MOBILE) */
+        /* ======================================================= */
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+                width: auto;
+                margin: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .header-titles {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+            }
+
+            .info-block.process-block {
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .process-input-group {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .info-item {
+                flex-direction: column;
+                align-items: stretch;
+                min-width: 0;
+            }
+
+            .info-item label {
+                margin-bottom: 5px;
+            }
+
+            .info-item input[type="text"],
+            .info-item .valor-input,
+            .info-item .valor-display-style {
+                width: 100% !important;
+            }
+
+            /* Ajustes específicos para blocos flexíveis inline (ex: Reclamante/CPF) */
+            .grid-col-span-2 > div[style*="display: flex"],
+            .parte-adicional-block > div[style*="display: flex"] {
+                flex-direction: column !important;
+                gap: 15px !important;
+                align-items: stretch !important;
+            }
+
+            .grid-col-span-2 > div > div,
+            .parte-adicional-block > div > div {
+                flex-basis: auto !important;
+                width: 100% !important;
+            }
+
+            /* Honorários */
+            .honorarios-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .honorarios-fields {
+                grid-template-columns: 1fr;
+            }
+            
+            .honorarios-fields .field-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .honorarios-fields input[type="text"],
+            .honorarios-fields .result,
+            .honorarios-fields .base-calculo {
+                width: 100%;
+            }
+
+            /* Tabela */
+            .creditos-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Botões */
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+            
+            /* Modal */
+            .modal-content {
+                width: 90%;
+                padding: 15px;
+                margin: 10% auto;
+            }
+            
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .report-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .report-logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .report-date {
+                text-align: center;
+                margin-top: 5px;
+            }
+        }
+
+        /* ======================================================= */
         /* ESTILOS DE IMPRESSÃO */
         /* (Manter estilos print do original para consistência) */
         /* ======================================================= */
