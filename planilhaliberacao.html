@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilha de Liberação de Crédito</title>
+    <style>
+        /* DEFINIÇÃO DE CORES (AJUSTADAS PARA TURQUESA ESCURO) */
+        :root {
+            --primary-color: #008080;
+            /* Verde Turquesa Principal (TRT - Mais Escuro) */
+            --dark-accent: #006464;
+            /* Turquesa Escuro para Hover/Destaque */
+            --light-bg: #E0F0F0;
+            /* Fundo Claro Turquesa */
+            --very-light-bg: #F7FCFC;
+            /* Fundo Muito Claro/Off-White */
+            --info-border: #B0D0D0;
+            /* Borda Clara */
+            --success-bg: #CCEDED;
+            /* Fundo para Resultados (Líquido) */
+            --text-dark: #333;
+            /* Cor do Texto Geral */
+            --text-primary: #004040;
+            /* Cor do Texto de Destaque */
+        }
+
+        /* Estilos Gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f4;
+            color: var(--text-dark);
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .header img {
+            max-height: 60px;
+            max-height: 45px;
+            width: auto;
+            margin-right: 25px;
+        }
+
+        .header-titles {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-info-line {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            margin: 0;
+            color: var(--primary-color);
+            line-height: 1.2;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .info-block.process-block {
+            display: block;
+            padding: 10px 20px;
+            text-align: left;
+            min-width: 420px;
+        }
+
+        .info-block {
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            background-color: var(--very-light-bg);
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .process-input-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .separator {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 1em;
+            margin: 0 1px;
+            white-space: nowrap;
+        }
+
+        .fixed-part {
+            padding: 5px 4px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            background-color: #e9ecef;
+            font-weight: bold;
+            color: #555;
+            font-size: 1em;
+            white-space: nowrap;
+        }
+
+        .header-item {
+            text-align: center;
+            min-width: 220px;
+        }
+
+        .header-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .header-input {
+            border: 1px solid var(--info-border);
+            padding: 5px 8px;
+            border-radius: 4px;
+            width: 150px;
+            text-align: center;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .header-input-large {
+            width: 280px;
+        }
+
+        .header-input.process-part,
+        .header-input.process-subpart,
+        .header-input.process-year,
+        .header-input.process-unit {
+            text-align: center;
+            width: 70px;
+            padding: 5px 2px;
+        }
+
+        .header-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* Estilo específico para o campo de display de Valor Bruto no Header */
+        .header-bruto-display {
+            width: 280px;
+            text-align: right;
+            background-color: #e9ecef;
+            color: var(--text-primary);
+            padding: 5px 8px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            font-weight: bold;
+            display: block;
+            min-height: 20px;
+            /* Garante altura mínima */
+            box-sizing: border-box;
+        }
+
+
+        /* Estilo para as gavetas expansíveis */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+            transition: box-shadow 0.2s;
+        }
+
+        details:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            font-size: 1.3em;
+            font-weight: bold;
+            padding: 15px;
+            color: var(--primary-color);
+            background-color: var(--light-bg);
+            cursor: pointer;
+            outline: none;
+            border-bottom: 1px solid var(--info-border);
+            border-radius: 8px 8px 0 0;
+            display: list-item;
+            list-style: none;
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: var(--info-border);
+        }
+
+        details:not([open])>summary {
+            border-bottom: none;
+            border-radius: 8px;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: '▶';
+            margin-right: 10px;
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+
+        details[open]>summary::before {
+            content: '▼';
+        }
+
+        .section-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+        }
+
+
+        .process-input-row .process-block {
+            min-width: 100%;
+            padding: 10px;
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+        }
+
+        .process-input-row .process-input-group {
+            justify-content: center;
+            margin-top: 5px;
+        }
+
+        /* Layout de Formulário */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 30px;
+            width: 100%;
+        }
+
+        .grid-col-span-2 {
+            grid-column: 1 / -1;
+        }
+
+
+        /* Estilos de inputs */
+        .info-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .info-item input[type="text"],
+        .info-item input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            text-align: right;
+            background-color: #f0f0f0;
+            color: var(--text-primary);
+            font-weight: bold;
+            display: block;
+        }
+
+        .info-item .valor-display-style {
+            width: 220px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            text-align: right;
+            background-color: #f0f0f0;
+            color: var(--text-primary);
+            font-weight: bold;
+            display: block;
+        }
+
+        .info-item .valor-input {
+            width: 220px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: right;
+            box-sizing: border-box;
+            background-color: white;
+            font-weight: bold;
+        }
+
+        /* --- Overrides for full-width text fields --- */
+        .info-item-block {
+            display: block;
+        }
+
+        .info-item-block label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item-block input {
+            width: 100% !important;
+            /* Use important to override the 220px */
+        }
+
+
+        .info-item input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 128, 0.3);
+        }
+
+        /* Estilos para o bloco de Herdeiros/Advogados Adicionais */
+        .parte-adicional-block {
+            border: 1px dashed var(--info-border);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            background-color: var(--very-light-bg);
+        }
+
+        .parte-adicional-block h4 {
+            margin-top: 0;
+            color: var(--dark-accent);
+            font-size: 1.1em;
+            border-bottom: 1px solid var(--info-border);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .info-row.herdeiro-row .info-item:last-child {
+            min-width: 150px;
+            flex-grow: 0.5;
+        }
+
+        .add-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .add-button:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .remove-button {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+
+        /* Seção de Honorários */
+        .honorarios-section {
+            border: 1px solid var(--info-border);
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            background-color: var(--light-bg);
+        }
+
+        .honorarios-options {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .honorarios-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .honorarios-option label {
+            font-weight: normal;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .honorarios-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .honorarios-fields .field-group label {
+            font-weight: 600;
+        }
+
+        .honorarios-fields .field-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .honorarios-fields input[type="text"],
+        .honorarios-fields input[type="number"] {
+            width: 180px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            text-align: right;
+            box-sizing: border-box;
+        }
+
+        .honorarios-fields .result {
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid var(--info-border);
+            border-radius: 6px;
+            background-color: var(--success-bg);
+            text-align: right;
+            color: var(--text-primary);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        .honorarios-fields .base-calculo {
+            font-weight: bold;
+            padding: 10px;
+            border: 1px solid var(--info-border);
+            border-radius: 6px;
+            background-color: #e9ecef;
+            text-align: right;
+            color: var(--text-primary);
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            width: 180px;
+            flex-shrink: 0;
+        }
+
+        /* Tabela de Créditos */
+        .creditos-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 30px;
+        }
+
+        .creditos-table th,
+        .creditos-table td {
+            border: none;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .creditos-table thead th {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: bold;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .creditos-table tbody tr {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .creditos-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .creditos-table tbody tr:last-child {
+            border-top: 2px solid var(--primary-color);
+            background-color: var(--success-bg);
+            font-weight: bold;
+        }
+
+        .creditos-table tbody tr:last-child:hover {
+            background-color: var(--success-bg);
+        }
+
+        .creditos-table .value-col {
+            text-align: left;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .creditos-table th.value-col {
+            color: white;
+        }
+
+
+        .creditos-table .valor-liquido-resultado {
+            background-color: transparent;
+            color: var(--text-primary);
+        }
+
+        .creditos-table .row-title {
+            color: var(--text-primary);
+        }
+
+        .creditos-table .linha-retencao td {
+            background-color: #fff3cd;
+            /* Amarelo Claro para Retenções */
+        }
+
+        .creditos-table .linha-retencao td:first-child {
+            color: #856404;
+            /* Cor escura para o texto */
+        }
+
+        .creditos-table .linha-retencao td:last-child {
+            font-weight: bold;
+        }
+
+        /* Novo estilo para Credores Adicionais */
+        .creditos-table .credor-adicional-linha td {
+            background-color: #f7f9fa;
+            /* Fundo mais claro para credores */
+            font-weight: 500;
+        }
+
+        .creditos-table .credor-adicional-linha td:last-child {
+            font-weight: bold;
+        }
+
+        /* Destaque para linhas de INSS (Cinza) */
+        .creditos-table .linha-inss td {
+            background-color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        /* Destaque para linha de FGTS (Amarelo Claro) */
+        .creditos-table .linha-fgts td {
+            background-color: #fff9c4;
+        }
+
+        /* Estilos para o novo alerta dinâmico */
+        .alerta-bruto-tabela {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            font-weight: bold;
+            color: var(--text-primary);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        /* Rodapé */
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .button-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .button-group .primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .button-group .primary:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .button-group .secondary {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .button-group .secondary:hover {
+            background-color: #e2e6ea;
+        }
+
+
+        /* ======================================================= */
+        /* ESTILOS DE IMPRESSÃO */
+        /* (Manter estilos print do original para consistência) */
+        /* ======================================================= */
+        @media print {
+            @page {
+                margin: 1.5cm;
+                size: A4;
+            }
+
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: white !important;
+                font-size: 11pt;
+                font-size: 10pt;
+                /* Fonte menor para impressão */
+            }
+
+            .container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 10px;
+                max-width: none;
+                width: 100%;
+            }
+
+            /* Ocultar elementos interativos */
+            .button-group,
+            .honorarios-options,
+            .add-button,
+            .remove-button {
+                display: none !important;
+            }
+
+            /* FORÇAR ABERTURA E ESTILIZAÇÃO DAS SEÇÕES DE DETALHES */
+            details {
+                border: none !important;
+                margin-bottom: 20px;
+                break-inside: avoid;
+                /* Evita quebras de página dentro da seção */
+            }
+
+            details summary {
+                background-color: transparent !important;
+                color: var(--primary-color) !important;
+                border-bottom: 2px solid var(--primary-color) !important;
+                border-bottom: 1px solid #ccc !important;
+                list-style: none !important;
+                font-size: 1.4em;
+                padding: 5px 0;
+                margin-bottom: 10px;
+            }
+
+            details summary::before {
+                display: none !important;
+            }
+
+            .section-content {
+                background-color: transparent !important;
+                padding: 0;
+                border: none;
+            }
+
+            /* Estilização da tabela de créditos para impressão */
+            .creditos-table {
+                border-spacing: 0;
+                margin-top: 15px;
+                border: 1px solid var(--info-border);
+                border: 1px solid #000;
+            }
+
+            .creditos-table thead th {
+                background-color: #f0f4f4 !important;
+                color: var(--text-primary) !important;
+                border-bottom: 1px solid var(--info-border) !important;
+                background-color: #eee !important;
+                color: #000 !important;
+                border-bottom: 1px solid #000 !important;
+                border-radius: 0 !important;
+                border: 1px solid #000;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .creditos-table th,
+            .creditos-table td {
+                padding: 8px 10px;
+                border-right: 1px dotted #ccc;
+                border: 1px solid #000;
+            }
+
+            .creditos-table tbody tr {
+                background-color: white !important;
+                border-bottom: 1px solid #eee;
+            }
+
+            .creditos-table tbody tr:last-child {
+                background-color: #e0f0f0 !important;
+                font-weight: bold;
+                border-top: 2px solid #000;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .creditos-table .valor-resultado,
+            .creditos-table .valor-liquido-resultado, .creditos-table .value-col {
+                text-align: right;
+            }
+
+            /* FORÇAR EXIBIÇÃO DE INPUTS COMO TEXTO NA IMPRESSÃO */
+            input[type="text"],
+            input[type="number"],
+            .valor-input,
+            .header-input {
+                /* Indentação para o valor */
+                font-weight: bold !important;
+                text-align: left !important;
+                width: auto !important;
+                box-shadow: none !important;
+                display: inline !important;
+                /* Para ficar na mesma linha da label */
+                color: var(--text-dark) !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 5px !important;
+                background: none !important;
+            }
+
+            .info-item label {
+                display: inline !important;
+                /* Para ficar na mesma linha do input */
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            .info-row {
+                gap: 10px;
+                margin-bottom: 5px;
+            }
+
+            /* ESTILIZAÇÃO PARA HONORÁRIOS */
+            .honorarios-section {
+                border: 1px dashed var(--info-border) !important;
+                background-color: white !important;
+                padding: 10px;
+                margin-bottom: 15px;
+                break-inside: avoid;
+            }
+
+            .honorarios-fields {
+                display: flex !important;
+                /* Usar flex para uma linha horizontal */
+                gap: 20px;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            .honorarios-fields .field-group {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .honorarios-fields .field-group label {
+                font-weight: 600 !important;
+                display: inline !important;
+            }
+
+            /* Ocultar inputs e mostrar somente o resultado com destaque */
+            .honorarios-fields input {
+                display: none !important;
+            }
+
+            /* Garantir que o resultado do honorário seja visível e formatado */
+            .honorarios-fields .result {
+                background-color: #e0f0f0 !important;
+                color: var(--text-primary) !important;
+                border: 1px solid var(--info-border) !important;
+                padding: 5px 10px !important;
+                min-height: auto;
+                line-height: normal;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            /* Estilização para Relatório Final */
+            .relatorio-final {
+                display: block !important;
+                /* Força a exibição na impressão */
+                margin-top: 25px !important;
+                padding: 15px !important;
+                border: 1px solid var(--info-border) !important;
+                border: none !important;
+                background-color: #ffffff !important;
+                box-shadow: none !important;
+                break-before: auto;
+                /* Evita quebra de página desnecessária */
+                break-inside: avoid;
+            }
+
+            .relatorio-final h2 {
+                font-size: 1.3em !important;
+                border-bottom: 1px solid var(--dark-accent) !important;
+                border-bottom: 2px solid #000 !important;
+            }
+
+            .relatorio-final h3 {
+                font-size: 1em !important;
+            }
+
+            .relatorio-final .final-value.liquido {
+                background-color: var(--success-bg) !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            /* Estilização das Mensagens Adicionais */
+            .print-messages {
+                display: block !important;
+                margin-top: 30px;
+                padding: 15px 0;
+                border-top: 2px solid var(--primary-color);
+                font-size: 1em;
+                line-height: 1.6;
+            }
+
+            .print-messages p {
+                margin: 8px 0;
+                color: var(--text-dark);
+                font-weight: 500;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            /* Ajuste para o campo de observações na impressão */
+            #observacoes-gerais {
+                display: none !important;
+            }
+
+            #observacoes-print {
+                display: block !important;
+                white-space: pre-wrap;
+                border: 1px solid var(--info-border);
+                border: 1px solid #000;
+                padding: 10px;
+                border-radius: 6px;
+                min-height: 50px;
+            }
+        }
+
+        /* ESTILOS DO MODAL DE RELATÓRIO */
+        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
+        .modal-content { background-color: #fefefe; margin: 3% auto; padding: 40px; border: 1px solid #888; width: 85%; max-width: 900px; border-radius: 8px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
+        .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; right: 20px; top: 10px; }
+        .close-modal:hover { color: #000; }
+
+        /* LAYOUT DO RELATÓRIO */
+        .report-header { display: flex; align-items: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 15px; }
+        .report-logo { height: 45px; margin-right: 15px; }
+        .report-title { flex-grow: 1; text-align: center; color: var(--text-primary); margin: 0; font-size: 1.4em; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
+        .report-date { font-size: 0.85em; font-weight: bold; color: #555; text-align: right; min-width: 150px; }
+
+        .report-section { margin-bottom: 15px; }
+        .report-section-title { background-color: var(--light-bg); color: var(--dark-accent); padding: 5px 10px; font-weight: bold; border-left: 4px solid var(--primary-color); margin-bottom: 10px; font-size: 1em; text-transform: uppercase; text-align: center; }
+
+        .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; background-color: #fff; padding: 0; }
+        .report-field { margin-bottom: 2px; border-bottom: 1px dotted #eee; padding-bottom: 2px; }
+        .report-label { font-weight: 700; color: #555; font-size: 0.85em; margin-right: 5px; }
+        .report-value { font-weight: 600; color: #222; font-size: 0.9em; }
+
+        .report-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 0.85em; }
+        .report-table th { background-color: var(--primary-color); color: white; padding: 5px; text-align: left; font-weight: bold; text-transform: uppercase; font-size: 0.9em; }
+        .report-table td { border-bottom: 1px solid #ddd; padding: 4px; color: #333; }
+        .report-table tr:nth-child(even) { background-color: #f9f9f9; }
+        .report-table tfoot tr { background-color: var(--success-bg); font-weight: bold; border-top: 2px solid var(--primary-color); }
+        .report-table tfoot td { padding: 6px 5px; font-size: 1em; }
+        .text-left-value { text-align: left; }
+
+        @media print {
+            @page { margin: 0; }
+            body > *:not(.modal) { display: none !important; }
+            .modal { display: block !important; position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: auto !important; background: none !important; z-index: 9999 !important; }
+            .modal-content { border: none !important; box-shadow: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 1cm !important; box-sizing: border-box !important; }
+            .close-modal, .button-group, .btn-print-report { display: none !important; }
+            .report-section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .report-table th, .report-table tfoot tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png" alt="Logo TRT19">
+            <div class="header-titles">
+                <h1>PLANILHA DE LIBERAÇÃO DE CRÉDITO</h1>
+                <div class="header-item">
+                    <span class="header-label">DATA DA LIBERAÇÃO:</span>
+                    <input type="text" id="data-liberacao-header" class="header-input">
+                </div>
+            </div>
+        </div>
+
+        <details>
+            <summary>Dados do Processo e Valores</summary>
+            <div class="section-content">
+                <div class="form-grid">
+
+                    <div class="grid-col-span-2">
+                        <div class="process-block" style="text-align: left;">
+                            <span class="header-label">Nº PROCESSO PRECATÓRIO:</span>
+                            <div class="process-input-group" style="justify-content: flex-start;">
+                                <input type="text" id="proc-num" class="header-input process-part" maxlength="7"
+                                    placeholder="" oninput="formatarNumero(this, 7)">
+                                <span class="separator">-</span>
+                                <input type="text" id="proc-digito" class="header-input process-subpart" maxlength="2"
+                                    placeholder="" oninput="formatarNumero(this, 2)">
+                                <span class="separator">.</span>
+                                <input type="text" id="proc-ano" class="header-input process-year" maxlength="4"
+                                    placeholder="" oninput="formatarNumero(this, 4)">
+                                <span class="separator">.</span>
+                                <span class="fixed-part">5</span>
+                                <span class="separator">.</span>
+                                <span class="fixed-part">19</span>
+                                <span class="separator">.</span>
+                                <span class="fixed-part">0000</span>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-col-span-2">
+                        <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                            <div style="flex-basis: 75%;">
+                                <label for="reclamante" class="required-field-label"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Reclamante:</label>
+                                <input type="text" id="reclamante" name="reclamante" class="valor-input"
+                                    style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                            <div style="flex-basis: 25%;">
+                                <label for="cpf" class="required-field-label"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                                <input type="text" id="cpf" name="cpf" maxlength="18"
+                                    oninput="formatarDocumento(this, 'AMBOS')" class="valor-input"
+                                    style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <label for="valor-deposito" class="required-field-label">Valor do Depósito Bancário:</label>
+                        <input type="text" id="valor-deposito" name="valor-deposito" class="valor-input"
+                            placeholder="0,00" oninput="formatarMoeda(this)">
+                    </div>
+
+                    <div class="info-item">
+                        <label for="id-deposito" class="required-field-label">ID do Depósito Bancário:</label>
+                        <input type="text" id="id-deposito" name="id-deposito" class="valor-input">
+                    </div>
+
+                    <div class="grid-col-span-2"
+                        style="padding-top: 15px; margin-top: 15px; border-top: 1px dashed var(--info-border); background-color: var(--light-bg); padding: 15px; border-radius: 8px;">
+
+                        <label for="valor-bruto-reclamante"
+                            style="font-weight: bold; font-size: 1.2em; color: var(--text-primary);">TOTAL DEVIDO PELO
+                            RECLAMADA:</label>
+
+                        <span id="valor-bruto-reclamante" class="valor-display-style"
+                            style="background-color: var(--success-bg); border: 1px solid var(--dark-accent); padding: 12px; font-size: 1.2em;">0,00</span>
+
+                    </div>
+
+                    <div class="info-item">
+                        <label for="valor-deposito-judicial">Líquido Exequente:</label>
+                        <input type="text" id="valor-deposito-judicial" class="valor-input" placeholder="0,00">
+                    </div>
+
+                    <div class="info-item">
+                        <label for="ir-valor">IRRF (Reclamante):</label>
+                        <input type="text" id="ir-valor" class="valor-input" placeholder="0,00">
+                    </div>
+
+                    <div class="info-item">
+                        <label for="inss-reclamante">INSS (Reclamante):</label>
+                        <input type="text" id="inss-reclamante" class="valor-input" placeholder="0,00">
+                    </div>
+
+                    <div class="info-item">
+                        <label for="fgts-viculada">FGTS a Depositar:</label>
+                        <input type="text" id="fgts-viculada" class="valor-input" placeholder="0,00">
+                    </div>
+
+                    <div class="info-item">
+                        <label for="inss-reclamada">INSS (Reclamada):</label>
+                        <input type="text" id="inss-reclamada" class="valor-input" placeholder="0,00">
+                    </div>
+
+                </div>
+            </div>
+        </details>
+
+        <details class="no-print">
+            <summary>Advogados (as) (Honorários Contratuais)</summary>
+            <div class="section-content">
+                <div class="honorarios-section">
+                    <div class="honorarios-options">
+                        <div class="honorarios-option">
+                            <input type="radio" id="adv-percentual-opt" name="adv-calculo-tipo" value="percentual"
+                                checked onchange="toggleAdvHonorariosFields()">
+                            <label for="adv-percentual-opt">Percentual</label>
+                        </div>
+                        <div class="honorarios-option">
+                            <input type="radio" id="adv-valor-fixado-opt" name="adv-calculo-tipo" value="fixado"
+                                onchange="toggleAdvHonorariosFields()">
+                            <label for="adv-valor-fixado-opt">Valor Fixado</label>
+                        </div>
+                    </div>
+                    <div id="adv-percentual-fields" class="honorarios-fields">
+                        <div class="field-group">
+                            <label for="adv-percentual">Percentual (%):</label>
+                            <input type="text" id="adv-percentual" placeholder="0,00%">
+                        </div>
+                        <div class="field-group">
+                            <label for="adv-base-calculo">Base de Cálculo:</label>
+                            <span id="adv-base-calculo" class="base-calculo">0,00</span>
+                        </div>
+                        <div class="field-group">
+                            <label>Resultado:</label>
+                            <span id="adv-resultado" class="result">0,00</span>
+                        </div>
+                    </div>
+                    <div id="adv-fixado-fields" class="honorarios-fields" style="display: none;">
+                        <div class="field-group">
+                            <label for="adv-valor-fixado">Valor Fixado:</label>
+                            <input type="text" id="adv-valor-fixado" placeholder="0,00" oninput="formatarMoeda(this)">
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="margin: 30px 0; border: 0; border-top: 2px solid var(--primary-color);">
+
+                <div id="adv-principal-block" class="parte-adicional-block">
+                    <h4 style="color: var(--dark-accent);">Advogado (a)</h4>
+                    <div style="display: flex; gap: 20px; align-items: flex-end;">
+                        <div style="flex-basis: 75%;">
+                            <label for="adv-nome-principal"
+                                style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome
+                                do Advogado (a):</label>
+                            <input type="text" id="adv-nome-principal" oninput="atualizarQuadroResumo()"
+                                class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="adv-cpf-principal"
+                                style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                            <input type="text" id="adv-cpf-principal" maxlength="18"
+                                oninput="formatarDocumento(this, 'AMBOS')" class="valor-input"
+                                style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-top: 15px;">
+                        <div class="info-item">
+                            <label for="adv-principal-percentual">Participação (%):</label>
+                            <input type="text" id="adv-principal-percentual" class="valor-input" placeholder="0,00%"
+                                oninput="formatarPercentual(this)" style="width: 150px;">
+                        </div>
+                        <div class="info-item">
+                            <label>Honorários (Bruto):</label>
+                            <span id="adv-principal-resultado" class="valor-display-style"
+                                style="background-color: #f7fcda; width: 180px;">0,00</span>
+                        </div>
+                        <div class="info-item">
+                            <label for="adv-principal-ir">IRRF (R$):</label>
+                            <input type="text" id="adv-principal-ir" class="valor-input" placeholder="0,00"
+                                oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()" style="width: 150px;">
+                        </div>
+                        <div class="info-item">
+                            <label>Resultado Líquido:</label>
+                            <span id="adv-principal-liquido" class="valor-display-style"
+                                style="background-color: #e0f7fa; width: 180px; border-color: #008080;">0,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="adv-adicionais-list">
+                </div>
+                <button type="button" class="add-button" onclick="adicionarAdvogadoAdicional()">+ Adicionar
+                    Advogado (a)</button>
+            </div>
+        </details>
+
+        <details class="no-print">
+            <summary>Herdeiros (as)</summary>
+            <div class="section-content">
+                <!-- Claimant info moved to Process Data section -->
+                <div id="herdeiros-list">
+                </div>
+                <button type="button" class="add-button" onclick="adicionarHerdeiro()">+ Adicionar Herdeiro (a)</button>
+            </div>
+        </details>
+
+        <details class="no-print">
+            <summary>Cessionários (as)</summary>
+            <div class="section-content">
+                <div id="cessionarios-list">
+                </div>
+                <button type="button" class="add-button" onclick="adicionarCessionario()">+ Adicionar
+                    Cessionário (a)</button>
+            </div>
+        </details>
+
+        <!-- QUADRO RESUMO DA LIBERAÇÃO -->
+        <div class="relatorio-final"
+            style="margin-top: 25px; padding: 20px; border: 1px solid var(--info-border); border-radius: 8px; background-color: var(--very-light-bg);">
+            <h3
+                style="margin-top: 0; font-size: 1.3em; color: var(--primary-color); border-bottom: 1px solid var(--info-border); padding-bottom: 10px; margin-bottom: 15px; text-align: center !important;">
+                Quadro Resumo da Liberação por Credor</h3>
+            <table class="creditos-table" style="margin-top: 0;">
+                <thead>
+                    <tr>
+                        <th>Credor / Natureza</th>
+                        <th>CPF / CNPJ</th>
+                        <th class="value-col">Valor</th>
+                    </tr>
+                </thead>
+                <tbody id="quadro-resumo-tbody">
+                    <!-- Dynamic rows here -->
+                </tbody>
+                <tfoot id="quadro-resumo-tfoot"
+                    style="font-weight: bold; border-top: 2px solid var(--primary-color); background-color: var(--light-bg);">
+                    <!-- Total row here -->
+                </tfoot>
+            </table>
+            <div style="margin-top: 20px; border-top: 1px dashed var(--info-border); padding-top: 15px;">
+                <label for="observacoes-gerais"
+                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Observações:</label>
+                <textarea id="observacoes-gerais" rows="5"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; font-family: inherit; resize: vertical; box-sizing: border-box;"
+                    oninput="document.getElementById('observacoes-print').innerText = this.value"></textarea>
+                <div id="observacoes-print" style="display: none;"></div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label for="nome-servidor" class="required-field-label"
+                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Servidor(a) Responsável:</label>
+                <input type="text" id="nome-servidor" class="valor-input" style="width: 100%; text-align: left; background-color: white;" placeholder="Digite seu nome completo">
+            </div>
+        </div>
+
+
+        <div class="button-group">
+            <button type="button" class="primary" onclick="gerarRelatorio()">Gerar Relatório</button>
+            <button type="button" class="secondary" onclick="limparCampos()">Limpar Tudo</button>
+        </div>
+    </div>
+
+    <!-- MODAL DE RELATÓRIO -->
+    <div id="relatorio-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharRelatorio()">&times;</span>
+            <div id="report-body">
+                <!-- Conteúdo gerado via JS -->
+            </div>
+            <div class="button-group" style="margin-top: 30px; justify-content: center;">
+                <button type="button" class="primary btn-print-report" onclick="window.print()">Imprimir Relatório</button>
+                <button type="button" class="secondary btn-print-report" onclick="fecharRelatorio()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =======================================================================
+        // DECLARAÇÃO DE VARIÁVEIS GLOBAIS
+        // =======================================================================
+        let advogadoAdicionalCount = 0;
+        let herdeiroCount = 0;
+        let cessionarioCount = 0;
+
+        // =======================================================================
+        // FUNÇÕES DE UTILIDADE E FORMATAÇÃO
+        // =======================================================================
+        function getNumericValue(id) {
+            const input = document.getElementById(id);
+            if (!input) return 0;
+            const valorString = (input.tagName === 'INPUT' || input.tagName === 'SPAN' || input.tagName === 'TD') ? (input.value || input.textContent) : '0';
+            const valorNumericoString = valorString.replace(/\./g, '').replace(',', '.').replace('R$', '').replace('%', '').trim();
+            return parseFloat(valorNumericoString) || 0;
+        }
+        
+        function getNumericValueFromInput(input) {
+             if (!input) return 0;
+             return getNumericValue(input.id);
+        }
+
+        function formatarMoedaParaExibicao(valor) {
+            const num = parseFloat(valor);
+            if (isNaN(num)) return "0,00";
+            return num.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+
+        function formatarNumero(input, maxLength) {
+            let valor = input.value.replace(/\D/g, '');
+            input.value = valor.substring(0, maxLength);
+        }
+
+        function formatarDocumento(input, tipo) {
+            let valor = input.value.replace(/\D/g, '');
+            let formato = '';
+            if (tipo === 'CPF' || (tipo === 'AMBOS' && valor.length <= 11)) {
+                if (valor.length > 0) formato = valor.substring(0, 3);
+                if (valor.length > 3) formato += '.' + valor.substring(3, 6);
+                if (valor.length > 6) formato += '.' + valor.substring(6, 9);
+                if (valor.length > 9) formato += '-' + valor.substring(9, 11);
+            } else if (tipo === 'CNPJ' || (tipo === 'AMBOS' && valor.length > 11)) {
+                if (valor.length > 0) formato = valor.substring(0, 2);
+                if (valor.length > 2) formato += '.' + valor.substring(2, 5);
+                if (valor.length > 5) formato += '.' + valor.substring(5, 8);
+                if (valor.length > 8) formato += '/' + valor.substring(8, 12);
+                if (valor.length > 12) formato += '-' + valor.substring(12, 14);
+            } else {
+                formato = valor;
+            }
+            input.value = formato;
+        }
+
+        function formatarMoeda(input) {
+            let valor = input.value.replace(/\D/g, '');
+            if (valor.length === 0) {
+                input.value = '0,00';
+                return;
+            }
+            valor = valor.padStart(3, '0');
+            let parteInteira = valor.slice(0, -2);
+            let parteDecimal = valor.slice(-2);
+            parteInteira = parteInteira.replace(/^0+/, '') || '0';
+            let resultado = parteInteira.replace(/\B(?=(\d{3})+(?!\d))/g, ".") + ',' + parteDecimal;
+            input.value = resultado;
+        }
+
+        function formatarPercentual(input) {
+            let valor = input.value.replace(/\D/g, '');
+            if (valor === '') {
+                input.value = '';
+                return;
+            }
+            valor = (parseInt(valor, 10) || 0).toString();
+            valor = valor.padStart(3, '0');
+            let parteInteira = valor.slice(0, -2);
+            let parteDecimal = valor.slice(-2);
+            parteInteira = parteInteira.replace(/^0+/, '') || '0';
+            
+            if (parseFloat(parteInteira + '.' + parteDecimal) > 100) {
+                parteInteira = '100';
+                parteDecimal = '00';
+            }
+            input.value = parteInteira + ',' + parteDecimal + '%';
+
+            if (input.id.startsWith('adv-percentual')) {
+                calcularHonorarios('adv');
+            } else if (input.id.includes('adv-ad-percentual')) {
+                validarRateioHonorarios(input);
+                atualizarCredoresAdicionais();
+            } else if (input.id.startsWith('her-percentual')) {
+                validarRateioHerdeiros(input);
+                atualizarCredoresAdicionais();
+            } else if (input.id.startsWith('ces-percentual')) {
+                validarRateioCessionarios(input);
+                atualizarCredoresAdicionais();
+            } else if (input.id === 'adv-principal-percentual') {
+                validarRateioHonorarios(input);
+                atualizarCredoresAdicionais();
+            }
+        }
+
+        // =======================================================================
+        // FUNÇÕES DE ATUALIZAÇÃO DE VALORES E DISPLAYS
+        // =======================================================================
+        function atualizarTotalDevidoReclamada() {
+            const liquido = getNumericValue('valor-deposito-judicial');
+            const inssReclamante = getNumericValue('inss-reclamante');
+            const inssReclamada = getNumericValue('inss-reclamada');
+            const fgts = getNumericValue('fgts-viculada');
+            const ir = getNumericValue('ir-valor');
+            const totalGeral = liquido + inssReclamante + inssReclamada + fgts + ir;
+            const campoTotal = document.getElementById('valor-bruto-reclamante');
+            if (campoTotal) {
+                campoTotal.textContent = formatarMoedaParaExibicao(totalGeral);
+            }
+            atualizarBasesDeCalculo();
+            calcularHonorarios('adv');
+        }
+
+        function atualizarBasesDeCalculo() {
+            const valorBruto = getNumericValue('valor-bruto-reclamante');
+            const inssReclamada = getNumericValue('inss-reclamada');
+            const baseAdv = Math.max(0, valorBruto - inssReclamada);
+            const valorBrutoFormatado = formatarMoedaParaExibicao(baseAdv);
+            document.getElementById('adv-base-calculo').textContent = valorBrutoFormatado;
+        }
+
+        // =======================================================================
+        // FUNÇÕES DE CÁLCULO DE HONORÁRIOS
+        // =======================================================================
+        function toggleAdvHonorariosFields() {
+            const isPercentual = document.getElementById('adv-percentual-opt').checked;
+            document.getElementById('adv-percentual-fields').style.display = isPercentual ? 'grid' : 'none';
+            document.getElementById('adv-fixado-fields').style.display = isPercentual ? 'none' : 'grid';
+            calcularHonorarios('adv');
+        }
+
+        function calcularHonorarios(prefix) {
+            let resultado = 0;
+            const isPercentual = document.getElementById(`${prefix}-percentual-opt`).checked;
+            if (isPercentual) {
+                const percentual = getNumericValue(`${prefix}-percentual`) / 100;
+                const baseCalculo = getNumericValue('valor-bruto-reclamante');
+                resultado = baseCalculo * percentual;
+            } else {
+                resultado = getNumericValue(`${prefix}-valor-fixado`);
+            }
+            document.getElementById(`${prefix}-resultado`).textContent = formatarMoedaParaExibicao(resultado);
+            if (prefix === 'adv') {
+                atualizarCredoresAdicionais();
+            }
+        }
+
+        // =======================================================================
+        // FUNÇÕES DE PARTES ADICIONAIS (ADVOGADOS, HERDEIROS)
+        // =======================================================================
+        function validarRateioHonorarios(changedInput) {
+            let totalPercentualRateio = getNumericValue('adv-principal-percentual');
+            for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                const percentualInput = document.getElementById(`adv-ad-percentual-${i}`);
+                if (percentualInput) {
+                    totalPercentualRateio += getNumericValue(`adv-ad-percentual-${i}`);
+                }
+            }
+
+            if (totalPercentualRateio > 100.01) {
+                alert('A soma dos percentuais de rateio dos advogados (Principal + Adicionais) não pode exceder 100%. O valor será ajustado.');
+                const valorExcedido = totalPercentualRateio - 100;
+                const valorAtualInput = getNumericValue(changedInput.id);
+                let novoValor = valorAtualInput - valorExcedido;
+                if (novoValor < 0) novoValor = 0;
+                changedInput.value = novoValor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        function validarRateioHerdeiros(changedInput) {
+            let total = 0;
+            for (let i = 1; i <= herdeiroCount; i++) {
+                const el = document.getElementById(`her-percentual-${i}`);
+                if (el) total += getNumericValue(`her-percentual-${i}`);
+            }
+            if (total > 100.01) {
+                alert('A soma dos percentuais dos Herdeiros não pode exceder 100%.');
+                const excedente = total - 100;
+                const currentVal = getNumericValue(changedInput.id);
+                let newVal = Math.max(0, currentVal - excedente);
+                changedInput.value = newVal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        function validarRateioCessionarios(changedInput) {
+            let total = 0;
+            for (let i = 1; i <= cessionarioCount; i++) {
+                const el = document.getElementById(`ces-percentual-${i}`);
+                if (el) total += getNumericValue(`ces-percentual-${i}`);
+            }
+            if (total > 100.01) {
+                alert('A soma dos percentuais dos Cessionários não pode exceder 100%.');
+                const excedente = total - 100;
+                const currentVal = getNumericValue(changedInput.id);
+                let newVal = Math.max(0, currentVal - excedente);
+                changedInput.value = newVal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
+        }
+
+        function adicionarAdvogadoAdicional() {
+            advogadoAdicionalCount++;
+            const listDiv = document.getElementById('adv-adicionais-list');
+            const newAdvHTML = `
+                <div id="adv-adicional-${advogadoAdicionalCount}" class="parte-adicional-block">
+                    <h4>Advogado Adicional #${advogadoAdicionalCount}</h4>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                        <div style="flex-basis: 75%;">
+                             <label for="adv-ad-nome-${advogadoAdicionalCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Advogado:</label>
+                             <input type="text" id="adv-ad-nome-${advogadoAdicionalCount}" oninput="atualizarCredoresAdicionais()" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="adv-ad-cpf-${advogadoAdicionalCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                            <input type="text" id="adv-ad-cpf-${advogadoAdicionalCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS')" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+                    <div class="form-grid" style="margin-top: 15px;">
+                        <div class="info-item">
+                            <label for="adv-ad-percentual-${advogadoAdicionalCount}">Participação (%):</label>
+                            <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 150px;">
+                        </div>
+                        <div class="info-item">
+                            <label>Honorários (Bruto):</label>
+                            <span id="adv-ad-resultado-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #f7fcda; width: 180px;">0,00</span>
+                        </div>
+                        <div class="info-item">
+                            <label for="adv-ad-ir-${advogadoAdicionalCount}">IRRF (R$):</label>
+                            <input type="text" id="adv-ad-ir-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 150px;">
+                        </div>
+                        <div class="info-item">
+                            <label>Resultado Líquido:</label>
+                            <span id="adv-ad-liquido-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080;">0,00</span>
+                        </div>
+                    </div>
+                    <button type="button" class="remove-button" onclick="removerParte('adv-adicional-${advogadoAdicionalCount}')">Remover</button>
+                </div>`;
+            listDiv.insertAdjacentHTML('beforeend', newAdvHTML);
+            atualizarCredoresAdicionais();
+        }
+
+        function adicionarHerdeiro() {
+            herdeiroCount++;
+            const listDiv = document.getElementById('herdeiros-list');
+            const baseCalculoHerdeiro = document.getElementById('valor-deposito-judicial').value;
+
+            const newHerHTML = `
+                <div id="herdeiro-${herdeiroCount}" class="parte-adicional-block">
+                    <h4>Herdeiro/Sucessor #${herdeiroCount}</h4>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                        <div style="flex-basis: 75%;">
+                            <label for="her-nome-${herdeiroCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Herdeiro (a):</label>
+                            <input type="text" id="her-nome-${herdeiroCount}" oninput="atualizarCredoresAdicionais()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="her-cpf-${herdeiroCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF:</label>
+                            <input type="text" id="her-cpf-${herdeiroCount}" maxlength="14" oninput="formatarDocumento(this, 'CPF')" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+
+                    <div id="her-percentual-fields-${herdeiroCount}" class="honorarios-fields">
+                        <div class="field-group">
+                            <label for="her-percentual-${herdeiroCount}">Percentual (%):</label>
+                            <input type="text" id="her-percentual-${herdeiroCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="required-dynamic">
+                        </div>
+                        <div class="field-group">
+                            <label>Base de Cálculo:</label>
+                            <span class="base-calculo base-calculo-herdeiro">${baseCalculoHerdeiro}</span>
+                        </div>
+                        <div class="field-group">
+                            <label>Resultado:</label>
+                            <span id="her-resultado-${herdeiroCount}" class="result" style="background-color: #f7fcda;">0,00</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="remove-button" onclick="removerParte('herdeiro-${herdeiroCount}')" style="margin-top: 10px;">Remover</button>
+                </div>`;
+            listDiv.insertAdjacentHTML('beforeend', newHerHTML);
+            atualizarCredoresAdicionais();
+        }
+
+        function adicionarCessionario() {
+            cessionarioCount++;
+            const listDiv = document.getElementById('cessionarios-list');
+            const honAdvTotal = getNumericValue('adv-resultado');
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
+
+            const newCesHTML = `
+                <div id="cessionario-${cessionarioCount}" class="parte-adicional-block">
+                    <h4>Cessionário #${cessionarioCount}</h4>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                        <div style="flex-basis: 75%;">
+                            <label for="ces-nome-${cessionarioCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Cessionário:</label>
+                            <input type="text" id="ces-nome-${cessionarioCount}" oninput="atualizarCredoresAdicionais()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="ces-cpf-${cessionarioCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                            <input type="text" id="ces-cpf-${cessionarioCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS')" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+
+                    <div id="ces-percentual-fields-${cessionarioCount}" class="honorarios-fields">
+                        <div class="field-group">
+                            <label for="ces-percentual-${cessionarioCount}">Percentual (%):</label>
+                            <input type="text" id="ces-percentual-${cessionarioCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="required-dynamic">
+                        </div>
+                        <div class="field-group">
+                            <label>Base de Cálculo:</label>
+                            <span class="base-calculo base-calculo-cessionario">${formatarMoedaParaExibicao(baseCalculoCessionario)}</span>
+                        </div>
+                        <div class="field-group">
+                            <label>Resultado:</label>
+                            <span id="ces-resultado-${cessionarioCount}" class="result" style="background-color: #f7fcda;">0,00</span>
+                        </div>
+                    </div>
+
+                    <button type="button" class="remove-button" onclick="removerParte('cessionario-${cessionarioCount}')" style="margin-top: 10px;">Remover</button>
+                </div>`;
+            listDiv.insertAdjacentHTML('beforeend', newCesHTML);
+            atualizarCredoresAdicionais();
+        }
+
+        function removerParte(id) {
+            const elemento = document.getElementById(id);
+            if (elemento) {
+                elemento.remove();
+                atualizarCredoresAdicionais();
+            }
+        }
+
+        function atualizarLiquidoAdvogado(suffix) {
+            let grossId, irId, netId;
+            if (suffix === 'principal') {
+                grossId = 'adv-principal-resultado';
+                irId = 'adv-principal-ir';
+                netId = 'adv-principal-liquido';
+            } else {
+                grossId = `adv-ad-resultado-${suffix}`;
+                irId = `adv-ad-ir-${suffix}`;
+                netId = `adv-ad-liquido-${suffix}`;
+            }
+            
+            const grossVal = getNumericValue(grossId);
+            const irVal = getNumericValue(irId);
+            const netVal = Math.max(0, grossVal - irVal);
+            
+            const netEl = document.getElementById(netId);
+            if (netEl) {
+                netEl.textContent = formatarMoedaParaExibicao(netVal);
+            }
+        }
+
+        function atualizarCredoresAdicionais() {
+            // --- Lógica de Rateio dos Advogados ---
+            const honAdvPrincipalNumeric = getNumericValue('adv-resultado');
+
+            // Atualiza Advogado Principal
+            const percentualPrincipal = getNumericValue('adv-principal-percentual');
+            const valorPrincipal = (percentualPrincipal / 100) * honAdvPrincipalNumeric;
+            const resultadoPrincipal = document.getElementById('adv-principal-resultado');
+            if (resultadoPrincipal) resultadoPrincipal.textContent = formatarMoedaParaExibicao(valorPrincipal);
+            atualizarLiquidoAdvogado('principal');
+
+            for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                const nomeInput = document.getElementById(`adv-ad-nome-${i}`);
+                if (!nomeInput) continue;
+                const percentualRateio = getNumericValue(`adv-ad-percentual-${i}`);
+                const valorCalculado = (percentualRateio / 100) * honAdvPrincipalNumeric;
+                const resultadoSpan = document.getElementById(`adv-ad-resultado-${i}`);
+                if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
+                atualizarLiquidoAdvogado(i);
+            }
+
+            // --- Lógica dos Cessionários ---
+            const honAdvTotal = getNumericValue('adv-resultado');
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
+            document.querySelectorAll('.base-calculo-cessionario').forEach(span => {
+                span.textContent = formatarMoedaParaExibicao(baseCalculoCessionario);
+            });
+
+            let totalCessionarios = 0;
+            for (let i = 1; i <= cessionarioCount; i++) {
+                const nomeInput = document.getElementById(`ces-nome-${i}`);
+                if (!nomeInput) continue;
+                const percentual = getNumericValue(`ces-percentual-${i}`);
+                const valorCalculado = (percentual / 100) * baseCalculoCessionario;
+                const resultadoSpan = document.getElementById(`ces-resultado-${i}`);
+                if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
+                totalCessionarios += valorCalculado;
+            }
+
+            // --- Lógica dos Herdeiros ---
+            const baseCalculoHerdeiro = Math.max(0, baseCalculoCessionario - totalCessionarios);
+            document.querySelectorAll('.base-calculo-herdeiro').forEach(span => {
+                span.textContent = formatarMoedaParaExibicao(baseCalculoHerdeiro);
+            });
+            for (let i = 1; i <= herdeiroCount; i++) {
+                const nomeInput = document.getElementById(`her-nome-${i}`);
+                if (!nomeInput) continue;
+                const percentual = getNumericValue(`her-percentual-${i}`);
+                const valorCalculado = (percentual / 100) * baseCalculoHerdeiro;
+                const resultadoSpan = document.getElementById(`her-resultado-${i}`);
+                if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
+            }
+
+            // Chama a atualização do quadro resumo principal
+            atualizarQuadroResumo();
+        }
+
+        // =======================================================================
+        // CÁLCULO FINAL E RELATÓRIO
+        // =======================================================================
+        function atualizarQuadroResumo() {
+            const tbody = document.getElementById('quadro-resumo-tbody');
+            const tfoot = document.getElementById('quadro-resumo-tfoot');
+            tbody.innerHTML = '';
+            tfoot.innerHTML = '';
+            let html = '';
+            let totalLiberado = 0;
+
+            // Helper to add rows
+            const addRow = (nome, cpf, valor, cssClass = '') => {
+                const valorNumerico = parseFloat(valor) || 0;
+                if (valorNumerico === 0) return; // Don't show empty values
+
+                // Se for linha de recolhimento de IR de advogado, usa estilo de retenção
+                if (nome.includes('IRRF retido')) {
+                    cssClass = 'linha-inss';
+                }
+
+                // Se não tiver classe (beneficiários), aplica negrito. Garante alinhamento a direita no relatório.
+                const style = cssClass === '' ? 'font-weight: bold; text-align: left;' : 'text-align: left;';
+
+                html += `
+                            <tr class="${cssClass}">
+                                <td>${nome}</td>
+                                <td>${cpf === 'Recolhimento' ? cpf : `<strong>${cpf || ''}</strong>`}</td>
+                                <td class="value-col" style="${style}">${formatarMoedaParaExibicao(valorNumerico)}</td>
+                            </tr>`;
+                totalLiberado += valorNumerico;
+            };
+
+            const honAdvTotal = getNumericValue('adv-resultado');
+            const inssReclamada = getNumericValue('inss-reclamada');
+            let irrfAdvogadosRows = [];
+
+            // 1. Cessionários
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
+            let totalCessionariosValor = 0;
+            for (let i = 1; i <= cessionarioCount; i++) {
+                const nomeInput = document.getElementById(`ces-nome-${i}`);
+                if (nomeInput) {
+                    const percentual = getNumericValue(`ces-percentual-${i}`);
+                    const valorCessionario = (percentual / 100) * baseCalculoCessionario;
+                    if (valorCessionario > 0) {
+                        addRow(
+                            `Cessionário: <strong>${nomeInput.value || `Cessionário #${i}`}</strong>`,
+                            document.getElementById(`ces-cpf-${i}`).value,
+                            valorCessionario
+                        );
+                        totalCessionariosValor += valorCessionario;
+                    }
+                }
+            }
+
+            // 2. Reclamante / Herdeiros
+            const baseCalculoReclamante = Math.max(0, baseCalculoCessionario - totalCessionariosValor);
+            let totalHerdeirosValor = 0;
+            let herdeirosExistem = false;
+            for (let i = 1; i <= herdeiroCount; i++) {
+                const nomeInput = document.getElementById(`her-nome-${i}`);
+                if (nomeInput) {
+                    herdeirosExistem = true;
+                    const percentual = getNumericValue(`her-percentual-${i}`);
+                    const valorHerdeiro = (percentual / 100) * baseCalculoReclamante;
+                    if (valorHerdeiro > 0) {
+                        addRow(
+                            `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${i}`}</strong>`,
+                            document.getElementById(`her-cpf-${i}`).value,
+                            valorHerdeiro
+                        );
+                        totalHerdeirosValor += valorHerdeiro;
+                    }
+                }
+            }
+
+            if (herdeirosExistem) {
+                const valorRestanteReclamante = baseCalculoReclamante - totalHerdeirosValor;
+                if (valorRestanteReclamante > 0.005) { // Check for residual values
+                    addRow(
+                        `Reclamante (saldo): <strong>${document.getElementById('reclamante').value}</strong>`,
+                        document.getElementById('cpf').value,
+                        valorRestanteReclamante
+                    );
+                }
+            } else {
+                if (baseCalculoReclamante > 0) {
+                    addRow(
+                        `Reclamante: <strong>${document.getElementById('reclamante').value}</strong>`,
+                        document.getElementById('cpf').value,
+                        baseCalculoReclamante
+                    );
+                }
+            }
+
+            // 3. Advogados
+            if (honAdvTotal > 0) {
+                // Advogado Principal (Baseado no Input)
+                const percentualPrincipal = getNumericValue('adv-principal-percentual');
+
+                if (percentualPrincipal > 0) {
+                    const valorPrincipal = (percentualPrincipal / 100) * honAdvTotal;
+                    const irPrincipal = getNumericValue('adv-principal-ir');
+                    const liquidoPrincipal = Math.max(0, valorPrincipal - irPrincipal);
+
+                    addRow(
+                        `Advogado: <strong>${document.getElementById('adv-nome-principal').value || 'Adv. Principal'}</strong>`,
+                        document.getElementById('adv-cpf-principal').value,
+                        liquidoPrincipal
+                    );
+                    
+                    if (irPrincipal > 0) {
+                        irrfAdvogadosRows.push({
+                            nome: `IRRF (Adv. Principal)`,
+                            cpf: 'Recolhimento',
+                            valor: irPrincipal,
+                            cssClass: 'linha-inss'
+                        });
+                    }
+                }
+
+                // Rateio dos Advogados Adicionais
+                for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                    const nomeInput = document.getElementById(`adv-ad-nome-${i}`);
+                    if (!nomeInput) continue;
+                    const percentualRateio = getNumericValue(`adv-ad-percentual-${i}`);
+                    const irAdicional = getNumericValue(`adv-ad-ir-${i}`);
+                    const valorCalculado = (percentualRateio / 100) * honAdvTotal;
+                    const liquidoCalculado = Math.max(0, valorCalculado - irAdicional);
+
+                    if (valorCalculado > 0) {
+                        addRow(
+                            `Advogado: <strong>${nomeInput.value || `Adv. Adicional #${i}`}</strong>`,
+                            document.getElementById(`adv-ad-cpf-${i}`).value,
+                            liquidoCalculado
+                        );
+                        if (irAdicional > 0) {
+                             irrfAdvogadosRows.push({
+                                nome: `IRRF (Adv. Adicional #${i})`,
+                                cpf: 'Recolhimento',
+                                valor: irAdicional,
+                                cssClass: 'linha-inss'
+                            });
+                        }
+                    }
+                }
+            }
+
+            // 4. Recolhimentos
+            addRow('INSS (Reclamante)', 'Recolhimento', getNumericValue('inss-reclamante'), 'linha-inss');
+            addRow('INSS (Reclamada)', 'Recolhimento', getNumericValue('inss-reclamada'), 'linha-inss');
+            addRow('IRRF (Reclamante)', 'Recolhimento', getNumericValue('ir-valor'), 'linha-inss');
+            irrfAdvogadosRows.forEach(item => addRow(item.nome, item.cpf, item.valor, 'linha-inss'));
+            addRow('FGTS a Depositar', 'Recolhimento', getNumericValue('fgts-viculada'), 'linha-fgts');
+
+            tbody.innerHTML = html;
+
+            // Total footer
+            const valorBrutoTotal = getNumericValue('valor-bruto-reclamante');
+            const valorDeposito = getNumericValue('valor-deposito');
+            const diferenca = valorDeposito - totalLiberado;
+
+            tfoot.innerHTML = `
+                        <tr>
+                            <td colspan="2">TOTAL DEVIDO</td>
+                            <td class="value-col">${formatarMoedaParaExibicao(valorBrutoTotal)}</td>
+                        </tr>
+                         <tr>
+                            <td colspan="2">TOTAL DEPOSITADO</td>
+                            <td class="value-col">${formatarMoedaParaExibicao(valorDeposito)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">TOTAL LIBERADO</td>
+                            <td class="value-col">${formatarMoedaParaExibicao(totalLiberado)}</td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                            <td colspan="2" style="color: black;">DIFERENÇA (DEPOSITADO - LIBERADO)</td>
+                            <td id="diferenca-valor" class="value-col" style="color: ${Math.abs(diferenca) > 0.005 ? 'red' : 'black'};">${formatarMoedaParaExibicao(diferenca)}</td>
+                        </tr>
+                    `;
+        }
+        function imprimirPlanilha() {
+            // Validação de soma de percentuais de advogados
+            const honAdvTotal = getNumericValue('adv-resultado');
+            if (honAdvTotal > 0) {
+                let totalPercentualRateio = getNumericValue('adv-principal-percentual');
+                for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                    const percentualInput = document.getElementById(`adv-ad-percentual-${i}`);
+                    if (percentualInput) {
+                        totalPercentualRateio += getNumericValue(`adv-ad-percentual-${i}`);
+                    }
+                }
+
+                if (Math.abs(totalPercentualRateio - 100) > 0.01) {
+                    if (!confirm(`ATENÇÃO: A soma dos percentuais de rateio dos advogados é ${totalPercentualRateio.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}% (diferente de 100,00%).\n\nDeseja continuar com a impressão mesmo assim?`)) {
+                        return;
+                    }
+                }
+            }
+
+            document.querySelectorAll('details').forEach(d => d.open = true);
+            atualizarQuadroResumo();
+            window.print();
+        }
+
+        function limparCampos() {
+            document.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+            document.getElementById('adv-adicionais-list').innerHTML = '';
+            document.getElementById('herdeiros-list').innerHTML = '';
+            document.getElementById('cessionarios-list').innerHTML = '';
+            document.getElementById('adv-principal-ir').value = ''; // Limpar IR Principal
+            const obs = document.getElementById('observacoes-gerais');
+            if (obs) obs.value = '';
+            const obsPrint = document.getElementById('observacoes-print');
+            if (obsPrint) obsPrint.innerText = '';
+            advogadoAdicionalCount = 0;
+            herdeiroCount = 0;
+            cessionarioCount = 0;
+            document.getElementById('adv-percentual-opt').checked = true;
+            toggleAdvHonorariosFields();
+            preencherDataAtual();
+            atualizarTotalDevidoReclamada(); // Dispara a cadeia de atualização
+        }
+
+        function preencherDataAtual() {
+            document.getElementById('data-liberacao-header').value = new Date().toLocaleDateString('pt-BR');
+        }
+
+        function getFieldName(input) {
+            const id = input.id;
+            if (id.startsWith('her-nome-')) return `Nome do Herdeiro #${id.split('-')[2]}`;
+            if (id.startsWith('her-cpf-')) return `CPF do Herdeiro #${id.split('-')[2]}`;
+            if (id.startsWith('her-percentual-')) return `Percentual do Herdeiro #${id.split('-')[2]}`;
+            
+            if (id.startsWith('ces-nome-')) return `Nome do Cessionário #${id.split('-')[2]}`;
+            if (id.startsWith('ces-cpf-')) return `CPF/CNPJ do Cessionário #${id.split('-')[2]}`;
+            if (id.startsWith('ces-percentual-')) return `Percentual do Cessionário #${id.split('-')[2]}`;
+            
+            if (id.startsWith('adv-ad-nome-')) return `Nome do Advogado Adicional #${id.split('-')[3]}`;
+            if (id.startsWith('adv-ad-cpf-')) return `CPF/CNPJ do Advogado Adicional #${id.split('-')[3]}`;
+            if (id.startsWith('adv-ad-percentual-')) return `Percentual do Advogado Adicional #${id.split('-')[3]}`;
+            
+            return null;
+        }
+
+        function validarFormulario() {
+            atualizarQuadroResumo(); // Garante que os totais e a diferença estão atualizados
+
+            let camposFaltantes = [];
+            let mensagensEspecificas = [];
+
+            // 1. Validação de Campos Obrigatórios Principais
+            const camposPrincipais = [
+                { id: 'proc-num', nome: 'Número do Processo' },
+                { id: 'reclamante', nome: 'Reclamante' },
+                { id: 'cpf', nome: 'CPF/CNPJ do Reclamante' },
+                { id: 'valor-deposito', nome: 'Valor do Depósito Bancário' },
+                { id: 'id-deposito', nome: 'ID do Depósito Bancário' },
+                { id: 'nome-servidor', nome: 'Servidor Responsável' }
+            ];
+            camposPrincipais.forEach(campo => {
+                const el = document.getElementById(campo.id);
+                if (!el || el.value.trim() === '') {
+                    camposFaltantes.push(campo.nome);
+                }
+            });
+
+            // 2. Validação Condicional de Advogados (se houver valor de honorários)
+            const honAdvTotal = getNumericValue('adv-resultado');
+            if (honAdvTotal > 0) {
+                const advCamposPrincipais = [
+                    { id: 'adv-nome-principal', nome: 'Nome do Advogado' },
+                    { id: 'adv-cpf-principal', nome: 'CPF/CNPJ do Advogado' },
+                    { id: 'adv-principal-percentual', nome: 'Participação (%) do Advogado' }
+                ];
+                advCamposPrincipais.forEach(campo => {
+                    const el = document.getElementById(campo.id);
+                    if (!el || el.value.trim() === '') {
+                        camposFaltantes.push(campo.nome);
+                    }
+                });
+
+                for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                    if (document.getElementById(`adv-adicional-${i}`)) {
+                        const advCamposAdicionais = [
+                            { id: `adv-ad-nome-${i}`, nome: `Nome do Advogado Adicional #${i}` },
+                            { id: `adv-ad-cpf-${i}`, nome: `CPF/CNPJ do Advogado Adicional #${i}` },
+                            { id: `adv-ad-percentual-${i}`, nome: `Participação (%) do Advogado Adicional #${i}` }
+                        ];
+                        advCamposAdicionais.forEach(campo => {
+                            const el = document.getElementById(campo.id);
+                            if (!el || el.value.trim() === '') {
+                                camposFaltantes.push(campo.nome);
+                            }
+                        });
+                    }
+                }
+            }
+
+            // 3. Validação Condicional de Herdeiros e Cessionários (campos dinâmicos)
+            const dinamicos = document.querySelectorAll('.required-dynamic');
+            dinamicos.forEach(input => {
+                if (input.offsetParent !== null && input.value.trim() === '') {
+                    let label = getFieldName(input);
+                    if (!label) {
+                        const labelElement = input.closest('.field-group')?.querySelector('label') || input.closest('div[style*="flex-basis"]')?.querySelector('label');
+                        label = labelElement ? labelElement.innerText.replace(':', '') : `Campo Obrigatório`;
+                    }
+                    camposFaltantes.push(label);
+                }
+            });
+
+            // 4. Validação de Soma de Percentuais (100%)
+            // Advogados
+            if (honAdvTotal > 0) {
+                let totalAdv = getNumericValue('adv-principal-percentual');
+                for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                    if (document.getElementById(`adv-ad-percentual-${i}`)) totalAdv += getNumericValue(`adv-ad-percentual-${i}`);
+                }
+                if (Math.abs(totalAdv - 100) > 0.01) mensagensEspecificas.push(`A soma dos percentuais dos Advogados deve ser 100%. Atual: ${totalAdv.toFixed(2)}%`);
+            }
+
+            // Herdeiros
+            if (herdeiroCount > 0) {
+                let totalHer = 0;
+                let hasHerdeiros = false;
+                for (let i = 1; i <= herdeiroCount; i++) {
+                    if (document.getElementById(`her-percentual-${i}`)) { totalHer += getNumericValue(`her-percentual-${i}`); hasHerdeiros = true; }
+                }
+                if (hasHerdeiros && Math.abs(totalHer - 100) > 0.01) mensagensEspecificas.push(`A soma dos percentuais dos Herdeiros deve ser 100%. Atual: ${totalHer.toFixed(2)}%`);
+            }
+
+            // Cessionários
+            if (cessionarioCount > 0) {
+                let totalCes = 0;
+                let hasCes = false;
+                for (let i = 1; i <= cessionarioCount; i++) {
+                    if (document.getElementById(`ces-percentual-${i}`)) { totalCes += getNumericValue(`ces-percentual-${i}`); hasCes = true; }
+                }
+                if (hasCes && Math.abs(totalCes - 100) > 0.01) mensagensEspecificas.push(`A soma dos percentuais dos Cessionários deve ser 100%. Atual: ${totalCes.toFixed(2)}%`);
+            }
+
+            // 5. Validação de Observações se houver diferença positiva
+            const diferenca = getNumericValue('diferenca-valor');
+            const observacoes = document.getElementById('observacoes-gerais').value;
+            if (diferenca > 0.005 && observacoes.trim() === '') {
+                mensagensEspecificas.push('O campo "Observações" é obrigatório, pois existe uma diferença a maior entre o valor depositado e o liberado. Por favor, informe o motivo.');
+            }
+
+            // Montagem e exibição da mensagem de erro
+            if (camposFaltantes.length > 0 || mensagensEspecificas.length > 0) {
+                let mensagemFinal = "";
+                if (camposFaltantes.length > 0) {
+                    const camposUnicos = [...new Set(camposFaltantes)];
+                    mensagemFinal += "Por favor, preencha os seguintes campos obrigatórios:\n\n- " + camposUnicos.join("\n- ");
+                }
+                if (mensagensEspecificas.length > 0) {
+                    if (mensagemFinal !== "") mensagemFinal += "\n\n";
+                    mensagemFinal += mensagensEspecificas.join("\n");
+                }
+                alert(mensagemFinal);
+                return false;
+            }
+            return true;
+        }
+
+        // =======================================================================
+        // FUNÇÕES DO RELATÓRIO (MODAL)
+        // =======================================================================
+        function gerarRelatorio() {
+            // Validação antes de gerar
+            if (!validarFormulario()) {
+                return;
+            }
+
+            // Coletar Dados
+            const dataLiberacao = document.getElementById('data-liberacao-header').value;
+            const procNum = document.getElementById('proc-num').value.padStart(7, '0');
+            const procDigito = document.getElementById('proc-digito').value.padStart(2, '0');
+            const procAno = document.getElementById('proc-ano').value;
+            const processoCompleto = `${procNum}-${procDigito}.${procAno}.5.19.0000`;
+            
+            const reclamante = document.getElementById('reclamante').value;
+            const cpf = document.getElementById('cpf').value;
+            
+            const valorDeposito = document.getElementById('valor-deposito').value;
+            const idDeposito = document.getElementById('id-deposito').value;
+            
+            const totalDevido = document.getElementById('valor-bruto-reclamante').textContent;
+
+            const liquidoExequente = document.getElementById('valor-deposito-judicial').value;
+            const irValor = document.getElementById('ir-valor').value;
+            const inssReclamante = document.getElementById('inss-reclamante').value;
+            const fgts = document.getElementById('fgts-viculada').value;
+            const inssReclamada = document.getElementById('inss-reclamada').value;
+            
+            const observacoes = document.getElementById('observacoes-gerais').value;
+            const nomeServidor = document.getElementById('nome-servidor').value;
+            
+            // Clonar Tabela de Resumo
+            const tbodyResumo = document.getElementById('quadro-resumo-tbody').innerHTML;
+            const tfootResumo = document.getElementById('quadro-resumo-tfoot').innerHTML;
+
+            // Construir HTML
+            const html = `
+                <div class="report-header">
+                    <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png" class="report-logo" alt="TRT19">
+                    <h2 class="report-title">Planilha de Liberação de Crédito</h2>
+                    <div class="report-date">Data: ${dataLiberacao}</div>
+                </div>
+
+                <div class="report-section">
+                    <div class="report-section-title">Dados do Processo e Valores</div>
+                    <div class="form-grid" style="margin-bottom: 10px;">
+                        <div class="grid-col-span-2">
+                            <div class="process-block" style="text-align: left; padding: 5px 10px; border: 1px solid #B0D0D0; background-color: #F7FCFC; border-radius: 8px;">
+                                <span class="header-label" style="font-weight: 600; color: #004040; margin-right: 10px;">Nº PROCESSO PRECATÓRIO:</span>
+                                <span style="font-weight: bold; font-size: 1.2em; color: #333;">${processoCompleto}</span>
+                            </div>
+                        </div>
+
+                        <div class="grid-col-span-2">
+                            <div style="display: flex; gap: 20px; align-items: flex-end;">
+                                <div style="flex-basis: 75%;">
+                                    <label style="font-weight: 600; color: #333; display: block; margin-bottom: 5px;">Reclamante:</label>
+                                    <div style="padding: 5px 8px; border: 1px solid #ddd; border-radius: 6px; background-color: #f9f9f9; font-weight: bold;">${reclamante}</div>
+                                </div>
+                                <div style="flex-basis: 25%;">
+                                    <label style="font-weight: 600; color: #333; display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                                    <div style="padding: 5px 8px; border: 1px solid #ddd; border-radius: 6px; background-color: #f9f9f9; font-weight: bold;">${cpf}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="info-item" style="justify-content: flex-start; gap: 10px; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">Valor do Depósito Bancário:</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${valorDeposito}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: flex-start; gap: 10px; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">ID do Depósito Bancário:</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${idDeposito}</span>
+                        </div>
+
+                        <div class="grid-col-span-2" style="padding: 10px; border-top: 1px dashed #B0D0D0; background-color: #E0F0F0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <label style="font-weight: bold; font-size: 1.1em; color: #004040;">TOTAL DEVIDO PELO RECLAMADA:</label>
+                            <span style="background-color: #CCEDED; border: 1px solid #006464; padding: 5px 10px; font-size: 1.2em; font-weight: bold; border-radius: 6px;">${totalDevido}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">Líquido Exequente:</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${liquidoExequente}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">IRRF (Reclamante):</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${irValor}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">INSS (Reclamante):</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${inssReclamante}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">FGTS a Depositar:</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${fgts}</span>
+                        </div>
+
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                            <label style="font-weight: 600; color: #333;">INSS (Reclamada):</label>
+                            <span style="font-weight: bold; font-size: 1.05em;">${inssReclamada}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="report-section" style="margin-top: 25px;">
+                    <div class="report-section-title">Quadro Resumo da Liberação por Credor</div>
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Credor / Natureza</th>
+                                <th>CPF / CNPJ</th>
+                                <th class="text-left-value">Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tbodyResumo}
+                        </tbody>
+                        <tfoot>
+                            ${tfootResumo}
+                        </tfoot>
+                    </table>
+                </div>
+                
+                ${observacoes ? `
+                <div class="report-section">
+                    <div class="report-section-title">Observações</div>
+                    <p style="white-space: pre-wrap; font-size: 0.95em; color: #333;">${observacoes}</p>
+                </div>` : ''}
+
+                <div class="report-section" style="margin-top: 80px; text-align: center; break-inside: avoid;">
+                    <div style="border-top: 1px solid #333; width: 60%; margin: 0 auto 10px auto;"></div>
+                    <p style="margin: 0; font-weight: bold; font-size: 1.1em; text-transform: uppercase;">${nomeServidor}</p>
+                    <p style="margin: 5px 0 0 0;">Secretaria de Precatórios</p>
+                    <p style="margin: 0;">Tribunal Regional do Trabalho da 19ª Região</p>
+                </div>
+            `;
+
+            document.getElementById('report-body').innerHTML = html;
+            document.getElementById('relatorio-modal').style.display = 'block';
+        }
+
+        function fecharRelatorio() {
+            document.getElementById('relatorio-modal').style.display = 'none';
+        }
+
+        // =======================================================================
+        // INICIALIZAÇÃO
+        // =======================================================================
+        document.addEventListener('DOMContentLoaded', function () {
+            const inputsParaObservar = ['valor-deposito-judicial', 'ir-valor', 'inss-reclamante', 'inss-reclamada', 'fgts-viculada', 'valor-deposito'];
+            inputsParaObservar.forEach(id => {
+                document.getElementById(id).addEventListener('input', (e) => {
+                    formatarMoeda(e.target);
+                    atualizarTotalDevidoReclamada();
+                });
+            });
+
+            // Listener para os campos de nome também, para atualizar o resumo
+            ['reclamante', 'adv-nome-principal'].forEach(id => {
+                document.getElementById(id).addEventListener('input', atualizarQuadroResumo);
+            });
+
+            document.getElementById('adv-percentual-opt').addEventListener('change', toggleAdvHonorariosFields);
+            document.getElementById('adv-valor-fixado-opt').addEventListener('change', toggleAdvHonorariosFields);
+            document.getElementById('adv-percentual').addEventListener('input', (e) => formatarPercentual(e.target));
+            document.getElementById('adv-valor-fixado').addEventListener('input', (e) => {
+                formatarMoeda(e.target);
+                calcularHonorarios('adv');
+            });
+
+            limparCampos();
+        });
+    </script>
+</body>
+
+</html>
