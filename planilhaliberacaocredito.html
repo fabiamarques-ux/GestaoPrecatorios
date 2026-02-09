@@ -1892,6 +1892,8 @@
                 const el = document.getElementById(campo.id);
                 if (!el || el.value.trim() === '') {
                     camposFaltantes.push(campo.nome);
+                } else if (campo.id === 'valor-deposito' && getNumericValue(campo.id) === 0) {
+                    camposFaltantes.push(campo.nome);
                 }
             });
 
@@ -1973,8 +1975,8 @@
             // 5. Validação de Observações se houver diferença positiva
             const diferenca = getNumericValue('diferenca-valor');
             const observacoes = document.getElementById('observacoes-gerais').value;
-            if (diferenca > 0.005 && observacoes.trim() === '') {
-                mensagensEspecificas.push('O campo "Observações" é obrigatório, pois existe uma diferença a maior entre o valor depositado e o liberado. Por favor, informe o motivo.');
+            if (Math.abs(diferenca) > 0.005 && observacoes.trim() === '') {
+                mensagensEspecificas.push('O campo "Observações" é obrigatório, pois existe uma diferença entre o valor depositado e o liberado. Por favor, informe o motivo.');
             }
 
             // Montagem e exibição da mensagem de erro
