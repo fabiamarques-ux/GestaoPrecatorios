@@ -927,6 +927,85 @@
             .report-section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
             .report-table th, .report-table tfoot tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
         }
+
+        /* ======================================================= */
+        /* RESPONSIVIDADE (MOBILE) */
+        /* ======================================================= */
+        @media screen and (max-width: 768px) {
+            body { padding: 10px; }
+            .container { padding: 15px 10px; }
+            
+            /* Header */
+            .header { flex-direction: column; text-align: center; }
+            .header img { margin-right: 0; margin-bottom: 15px; }
+            .header-titles { flex-direction: column; width: 100%; gap: 15px; }
+            .header-item { width: 100%; }
+            .header-input { width: 100%; box-sizing: border-box; }
+            
+            /* Process Block */
+            .info-block.process-block { min-width: 0; width: 100%; box-sizing: border-box; padding: 10px; }
+            .process-input-group { flex-wrap: wrap; justify-content: center !important; gap: 5px; }
+            .header-input.process-part, 
+            .header-input.process-subpart, 
+            .header-input.process-year, 
+            .header-input.process-unit {
+                width: 60px; /* Slightly smaller */
+                margin-bottom: 5px;
+            }
+            
+            /* Form Grid & Layout */
+            .form-grid { grid-template-columns: 1fr; gap: 15px; }
+            
+            /* Flex Rows (Reclamante/CPF, Advogado/CPF) - Targeting inline styles */
+            .grid-col-span-2 > div[style*="display: flex"], 
+            .parte-adicional-block > div[style*="display: flex"] {
+                flex-direction: column;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+            .grid-col-span-2 > div > div[style*="flex-basis"],
+            .parte-adicional-block > div > div[style*="flex-basis"] {
+                flex-basis: auto !important;
+                width: 100%;
+            }
+
+            /* Info Items */
+            .info-item { flex-direction: column; align-items: stretch; min-width: 0; }
+            .info-item label { margin-bottom: 5px; }
+            .info-item input[type="text"], 
+            .info-item input[type="number"], 
+            .info-item .valor-display-style, 
+            .info-item .valor-input {
+                width: 100% !important;
+                max-width: none;
+            }
+            .header-bruto-display { width: 100%; }
+            
+            /* Honorarios */
+            .honorarios-options { flex-direction: column; gap: 10px; }
+            .honorarios-fields { grid-template-columns: 1fr; }
+            .honorarios-fields .field-group { flex-direction: column; align-items: stretch; }
+            .honorarios-fields input[type="text"],
+            .honorarios-fields input[type="number"],
+            .honorarios-fields .result,
+            .honorarios-fields .base-calculo {
+                width: 100%;
+            }
+            
+            /* Tables */
+            .creditos-table { display: block; overflow-x: auto; white-space: nowrap; }
+            
+            /* Modal */
+            .modal-content { width: 95%; padding: 15px; margin: 5% auto; }
+            .report-header { flex-direction: column; text-align: center; }
+            .report-logo { margin-right: 0; margin-bottom: 10px; }
+            .report-grid { grid-template-columns: 1fr; }
+            .report-date { text-align: center; margin-top: 5px; }
+            
+            /* Buttons */
+            .button-group { flex-direction: column; }
+            .button-group button { width: 100%; }
+        }
     </style>
 </head>
 
