@@ -1179,7 +1179,7 @@
                     </div>
                     <div class="form-grid" style="margin-top: 15px;">
                         <div class="info-item">
-                            <label for="adv-principal-percentual">Participação (%):</label>
+                            <label for="adv-principal-percentual">Divisão dos Honorários (%):</label>
                             <input type="text" id="adv-principal-percentual" class="valor-input" placeholder="0,00%"
                                 oninput="formatarPercentual(this)" style="width: 150px;">
                         </div>
@@ -1434,7 +1434,7 @@
             const isPercentual = document.getElementById(`${prefix}-percentual-opt`).checked;
             if (isPercentual) {
                 const percentual = getNumericValue(`${prefix}-percentual`) / 100;
-                const baseCalculo = getNumericValue('valor-bruto-reclamante');
+                const baseCalculo = getNumericValue('adv-base-calculo');
                 resultado = baseCalculo * percentual;
             } else {
                 resultado = getNumericValue(`${prefix}-valor-fixado`);
@@ -1515,7 +1515,7 @@
                     </div>
                     <div class="form-grid" style="margin-top: 15px;">
                         <div class="info-item">
-                            <label for="adv-ad-percentual-${advogadoAdicionalCount}">Participação (%):</label>
+                            <label for="adv-ad-percentual-${advogadoAdicionalCount}">Divisão dos Honorários (%):</label>
                             <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 150px;">
                         </div>
                         <div class="info-item">
@@ -1995,7 +1995,7 @@
                         const advCamposAdicionais = [
                             { id: `adv-ad-nome-${i}`, nome: `Nome do Advogado Adicional #${i}` },
                             { id: `adv-ad-cpf-${i}`, nome: `CPF/CNPJ do Advogado Adicional #${i}` },
-                            { id: `adv-ad-percentual-${i}`, nome: `Participação (%) do Advogado Adicional #${i}` }
+                            { id: `adv-ad-percentual-${i}`, nome: `Divisão dos Honorários (%) do Advogado Adicional #${i}` }
                         ];
                         advCamposAdicionais.forEach(campo => {
                             const el = document.getElementById(campo.id);
