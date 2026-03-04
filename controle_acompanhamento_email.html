@@ -122,9 +122,13 @@
             <h3>➕ Novo Registro</h3>
             <form id="registroForm">
                 <div class="form-row">
-                    <div>
+                    <div style="flex: 2;">
                         <label for="assunto">Assunto</label>
                         <input type="text" id="assunto" required>
+                    </div>
+                    <div>
+                        <label for="processo">Nº Processo (PJe)</label>
+                        <input type="text" id="processo">
                     </div>
                     <div>
                         <label for="tipo">Tipo</label>
@@ -132,10 +136,6 @@
                             <option value="RECEBIDO">RECEBIDO</option>
                             <option value="ENVIADO">ENVIADO</option>
                         </select>
-                    </div>
-                    <div>
-                        <label for="processo">Nº Processo (PJe)</label>
-                        <input type="text" id="processo">
                     </div>
                 </div>
 

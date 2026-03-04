@@ -1,0 +1,89 @@
+CARGA INICIAL: Requisições de Precatório - Pendentes de Pagamentos e Publicadas 
+
+
+Conciliação da Lista com o Relatório de Requisição 
+
+
+** GPREC - Relatório - Requisições de Pagamento 
+
+* Filtros: Precatório - Publicadas (Sim) - Detalhada por Beneficiário
+
+* Busca e Geração Planilha (Excel)
+
+* Tratamento dos Dados:
+- Retirada das Colunas: Tipo de Requisição - Natureza Credito - RP Publicada - Data da Autuação - Entidade Devedora Executora - Permite Acordo - Valor atual - Valor Total - Vara de Origem - Possui Convenio - Data Fim Pagamento - 
+- Remoção dos parâmetros: Situação da RP (Paga e Cancelada) 
+
+* Análise dos Dados:
+- Estado e Federal não possui RPs Pendentes de Pagamento antes de 2025 (Existiam RPs desses períodos ainda como autuadas e parcialmente pagas, entretanto foi verificada a existência de problemas na baixa das requisições, bem como ausência do comando para baixa os quais foram informados no campo observação, e foi usado esse filtro da observação para exclusão dessas RPs)
+
+
+
+** GPREC - Requisição de Pagamento - Precatório - Lista Interna. 
+
+* Filtros: Ente Público (um por um) - Informação o ano de vencimento (Não) 
+
+* Busca e Geração Planilha (Excel)
+
+* Tratamento dos Dados:
+- Retirada das Colunas: Valor 
+- Foi retirada a mesclagem das células e feito o preenchimento de cada linha vazia. 
+- Foi adicionado uma coluna de Esfera para formar a dinâmica e correlacionar com o Relatório de Requisições. 
+
+
+CONCILIAÇÃO ENTRE OS RELATÓRIOS. 
+
+- O Relatório de Requisições foi adequado ao Relatório da Lista Interna no tocante aos Municípios (Vencimentos) - ao comparar as Dinâmicas Geradas (por esfera - ente - ano de venc. - RPs): 
+Verificou-se que as RPs que estam com status de Autuadas e Não Pagas mas que não apareciam mais na Lista Interna, na verdade estão pendentes de resolução da quitação do pagamento no GPREC, e foi colocada a observação, notadamente as anteriores ao ano de 2025.  
+Foi incluídas RPs de 2021 e 2022 ao Relatório de Requisições presentes no Relatório Lista (Roteiro, Rio Largo, Anadia)
+
+- Foi verificada a existencia de RPs que estavam segregadas no Relatório Lista em comparação com o Relatório de Requisições haja vista a segregação de beneficiário por prioridades. Ao gerar nova dinamica somente com os beneficiarios os numeros conciliaram. 
+
+
+
+CARGA INICIAL - Requisições de Precatório - Pendentes de Pagamentos e Não Publicadas 
+
+* Usar a Base da Lista - Precatório
+* No campo: Exequente:
+ Retirar o CPF/CNPJ (Dados - Texto para Colunas)
+- Limpar os espaços de sobra ao final dos nomes através da função - =SE(DIREITA(K6;1)=" "; ESQUERDA(K6; NÚM.CARACT(K6)-1); K6) - Fazer também no Relatório de Requisições
+- Colar os Nomes e Copiar sem formatação que resultaram da aplicação da formulta anterior.  
+- Acrescentar um Campo de Suspensões para colocar as Suspensões mencionadas no Campo Exequente. 
+- Acrescentar um Campo de CPF/CNPJ E fazer PROCV para resgatar o CPF e CNPJ do Relatório de Requisições
+
+* Acrescentar os campos: Regime, Prazo e Situação da RP
+- Fazer Procv do Relatório de Requisições para buscar as informações
+- Colar os Nomes e Copiar sem formatação que resultaram da aplicação da formulta anterior. 
+
+* Formatar os valores
+
+
+ESFERA	
+ENTE DEVEDOR
+
+REGIME	
+
+Nº RP
+Nº PROCESSO	
+Nº PRECATÓRIO	
+PREFERÊNCIA	
+ORDEM DE PAGAMENTO	
+
+BENEFICIÁRIOS	
+CPF/CNPJ	
+SUSPENSÃO
+
+VENCIMENTO
+PRAZO	
+APRESENTAÇÃO
+REQUISIÇÃO	
+ÚLTIMA ATUALIZAÇÃO 
+	
+LÍQUIDO EXEQUENTE + IR	
+FGTS	
+INSS BENEFICIÁRIO	
+INSS EXECUTADO + CUSTAS	
+TOTAL DEVIDO
+	
+SITUAÇÃO
+
