@@ -356,8 +356,8 @@
         /* Estilos para o bloco de Herdeiros/Advogados Adicionais */
         .parte-adicional-block {
             border: 1px dashed var(--info-border);
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
             border-radius: 6px;
             background-color: var(--very-light-bg);
         }
@@ -404,12 +404,12 @@
 
         /* Seção de Honorários */
         .honorarios-section {
-            border: 1px solid var(--info-border);
+            border: 1px dashed var(--info-border);
             padding: 20px;
             margin-top: 20px;
             margin-bottom: 30px;
             border-radius: 8px;
-            background-color: var(--light-bg);
+            background-color: var(--very-light-bg);
         }
 
         .honorarios-options {
@@ -431,9 +431,8 @@
 
         .honorarios-fields {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
-            align-items: end;
         }
 
         .honorarios-fields .field-group label {
@@ -442,14 +441,14 @@
 
         .honorarios-fields .field-group {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 5px;
         }
 
         .honorarios-fields input[type="text"],
         .honorarios-fields input[type="number"] {
-            width: 180px;
+            width: 90%;
             flex-shrink: 0;
             padding: 10px;
             border: 1px solid #ccc;
@@ -460,33 +459,27 @@
 
         .honorarios-fields .result {
             font-weight: bold;
-            padding: 10px;
+            padding: 8px 2px;
             border: 1px solid var(--info-border);
             border-radius: 6px;
-            background-color: var(--success-bg);
+            background-color: #f7fcda;
             text-align: right;
             color: var(--text-primary);
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            width: 180px;
+            display: block;
+            width: 90%;
             flex-shrink: 0;
         }
 
         .honorarios-fields .base-calculo {
             font-weight: bold;
-            padding: 10px;
+            padding: 8px 2px;
             border: 1px solid var(--info-border);
             border-radius: 6px;
             background-color: #e9ecef;
             text-align: right;
             color: var(--text-primary);
-            min-height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            width: 180px;
+            display: block;
+            width: 90%;
             flex-shrink: 0;
         }
 
@@ -555,6 +548,7 @@
         .creditos-table .linha-retencao td {
             background-color: #fff3cd;
             /* Amarelo Claro para Retenções */
+            font-size: 0.85em;
         }
 
         .creditos-table .linha-retencao td:first-child {
@@ -652,8 +646,9 @@
                 padding: 0;
                 margin: 0;
                 background-color: white !important;
-                font-size: 11pt;
-                font-size: 10pt;
+                font-size: 10pt !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
                 /* Fonte menor para impressão */
             }
 
@@ -702,6 +697,17 @@
                 border: none;
             }
 
+            .report-title {
+                font-size: 12pt !important;
+            }
+
+            .report-observacoes-content {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+
             /* Estilização da tabela de créditos para impressão */
             .creditos-table {
                 border-spacing: 0;
@@ -744,7 +750,8 @@
             }
 
             .creditos-table .valor-resultado,
-            .creditos-table .valor-liquido-resultado, .creditos-table .value-col {
+            .creditos-table .valor-liquido-resultado,
+            .creditos-table .value-col {
                 text-align: right;
             }
 
@@ -888,123 +895,455 @@
                 border-radius: 6px;
                 min-height: 50px;
             }
+
+            /* Padronização de fonte 11pt para o relatório impresso (exceto título) */
+            .report-label,
+            .report-value,
+            .report-table,
+            .report-table th,
+            .report-table td,
+            .report-section-title,
+            .report-date,
+            p {
+                font-size: 10pt !important;
+            }
+
+            /* Configurações para quebra de página em relatórios longos */
+            .report-section {
+                page-break-inside: auto;
+                break-inside: auto;
+            }
+
+            .report-table {
+                page-break-inside: auto;
+                break-inside: auto;
+                width: 100%;
+            }
+            
+            .report-table tr {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                page-break-after: auto;
+            }
+            
+            .report-table thead {
+                display: table-header-group;
+                break-inside: avoid;
+            }
+            
+            .report-table tfoot {
+                display: table-row-group;
+            }
+            
+            .report-section-title {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            /* Evita quebra dentro dos blocos de informação */
+            .form-grid > div, 
+            .info-item {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            /* Garante que a assinatura não quebre */
+            .signature-block {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
         }
 
         /* ESTILOS DO MODAL DE RELATÓRIO */
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.5); }
-        .modal-content { background-color: #fefefe; margin: 3% auto; padding: 40px; border: 1px solid #888; width: 85%; max-width: 900px; border-radius: 8px; position: relative; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
-        .close-modal { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; position: absolute; right: 20px; top: 10px; }
-        .close-modal:hover { color: #000; }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 3% auto;
+            padding: 40px;
+            border: 1px solid #888;
+            width: 85%;
+            max-width: 900px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
 
         /* LAYOUT DO RELATÓRIO */
-        .report-header { display: flex; align-items: center; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-bottom: 15px; }
-        .report-logo { height: 45px; margin-right: 15px; }
-        .report-title { flex-grow: 1; text-align: center; color: var(--text-primary); margin: 0; font-size: 1.4em; text-transform: uppercase; font-weight: 800; letter-spacing: 1px; }
-        .report-date { font-size: 0.85em; font-weight: bold; color: #555; text-align: right; min-width: 150px; }
+        .report-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
 
-        .report-section { margin-bottom: 15px; }
-        .report-section-title { background-color: var(--light-bg); color: var(--dark-accent); padding: 5px 10px; font-weight: bold; border-left: 4px solid var(--primary-color); margin-bottom: 10px; font-size: 1em; text-transform: uppercase; text-align: center; }
+        .report-logo {
+            height: 35px;
+            margin-right: 10px;
+        }
 
-        .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; background-color: #fff; padding: 0; }
-        .report-field { margin-bottom: 2px; border-bottom: 1px dotted #eee; padding-bottom: 2px; }
-        .report-label { font-weight: 700; color: #555; font-size: 0.85em; margin-right: 5px; }
-        .report-value { font-weight: 600; color: #222; font-size: 0.9em; }
+        .report-title {
+            flex-grow: 1;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 13pt;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
 
-        .report-table { width: 100%; border-collapse: collapse; margin-top: 5px; font-size: 0.85em; }
-        .report-table th { background-color: var(--primary-color); color: white; padding: 5px; text-align: left; font-weight: bold; text-transform: uppercase; font-size: 0.9em; }
-        .report-table td { border-bottom: 1px solid #ddd; padding: 4px; color: #333; }
-        .report-table tr:nth-child(even) { background-color: #f9f9f9; }
-        .report-table tfoot tr { background-color: var(--success-bg); font-weight: bold; border-top: 2px solid var(--primary-color); }
-        .report-table tfoot td { padding: 6px 5px; font-size: 1em; }
-        .text-left-value { text-align: left; }
+        .report-date {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #555;
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .report-section {
+            margin-bottom: 15px;
+        }
+
+        .report-section-title {
+            background-color: var(--light-bg);
+            color: var(--dark-accent);
+            padding: 5px 10px;
+            font-weight: bold;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            background-color: #fff;
+            padding: 0;
+        }
+
+        .report-field {
+            margin-bottom: 2px;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 2px;
+        }
+
+        .report-label {
+            font-weight: 700;
+            color: #555;
+            font-size: 10pt;
+            margin-right: 5px;
+        }
+
+        .report-value {
+            font-weight: 600;
+            color: #222;
+            font-size: 10pt;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 10pt;
+        }
+
+        .report-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 5px;
+            text-align: left;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 10pt;
+        }
+
+        .report-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 4px;
+            color: #333;
+            font-size: 10pt;
+        }
+
+        .report-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .report-table tfoot tr {
+            background-color: var(--success-bg);
+            font-weight: bold;
+            border-top: 2px solid var(--primary-color);
+        }
+
+        .report-table tfoot td {
+            padding: 6px 5px;
+            font-size: 10pt;
+        }
+
+        .text-left-value {
+            text-align: left;
+        }
 
         @media print {
-            @page { margin: 0; }
-            body > *:not(.modal) { display: none !important; }
-            .modal { display: block !important; position: absolute !important; left: 0 !important; top: 0 !important; width: 100% !important; height: auto !important; background: none !important; z-index: 9999 !important; }
-            .modal-content { border: none !important; box-shadow: none !important; margin: 0 !important; width: 100% !important; max-width: 100% !important; padding: 1cm !important; box-sizing: border-box !important; }
-            .close-modal, .button-group, .btn-print-report { display: none !important; }
-            .report-section-title { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-            .report-table th, .report-table tfoot tr { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            @page {
+                margin: 0;
+                size: A4;
+            }
+
+            body>*:not(.modal) {
+                display: none !important;
+            }
+
+            .modal {
+                display: block !important;
+                position: relative !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                height: auto !important;
+                background: none !important;
+                z-index: 9999 !important;
+            }
+
+            .modal-content {
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .close-modal,
+            .button-group,
+            .btn-print-report {
+                display: none !important;
+            }
+
+            /* Layout de Impressão (Tabela para Margens) */
+            .print-layout-table {
+                width: 100%;
+                border-collapse: collapse;
+                border: none;
+            }
+            .print-header-space, .print-footer-space {
+                height: 1.5cm;
+                border: none !important;
+            }
+            .print-content-cell {
+                padding: 0 1.5cm;
+                border: none !important;
+            }
+
+            .report-section-title {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .report-table th,
+            .report-table tfoot tr {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
         }
 
         /* ======================================================= */
         /* RESPONSIVIDADE (MOBILE) */
         /* ======================================================= */
         @media screen and (max-width: 768px) {
-            body { padding: 10px; }
-            .container { padding: 15px 10px; }
-            
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px 10px;
+            }
+
             /* Header */
-            .header { flex-direction: column; text-align: center; }
-            .header img { margin-right: 0; margin-bottom: 15px; }
-            .header-titles { flex-direction: column; width: 100%; gap: 15px; }
-            .header-item { width: 100%; }
-            .header-input { width: 100%; box-sizing: border-box; }
-            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .header-titles {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+
+            .header-item {
+                width: 100%;
+            }
+
+            .header-input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
             /* Process Block */
-            .info-block.process-block { min-width: 0; width: 100%; box-sizing: border-box; padding: 10px; }
-            .process-input-group { flex-wrap: wrap; justify-content: center !important; gap: 5px; }
-            .header-input.process-part, 
-            .header-input.process-subpart, 
-            .header-input.process-year, 
+            .info-block.process-block {
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px;
+            }
+
+            .process-input-group {
+                flex-wrap: wrap;
+                justify-content: center !important;
+                gap: 5px;
+            }
+
+            .header-input.process-part,
+            .header-input.process-subpart,
+            .header-input.process-year,
             .header-input.process-unit {
-                width: 60px; /* Slightly smaller */
+                width: 60px;
+                /* Slightly smaller */
                 margin-bottom: 5px;
             }
-            
+
             /* Form Grid & Layout */
-            .form-grid { grid-template-columns: 1fr; gap: 15px; }
-            
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
             /* Flex Rows (Reclamante/CPF, Advogado/CPF) - Targeting inline styles */
-            .grid-col-span-2 > div[style*="display: flex"], 
-            .parte-adicional-block > div[style*="display: flex"] {
+            .grid-col-span-2>div[style*="display: flex"],
+            .parte-adicional-block>div[style*="display: flex"] {
                 flex-direction: column;
                 align-items: stretch !important;
                 gap: 10px !important;
             }
-            .grid-col-span-2 > div > div[style*="flex-basis"],
-            .parte-adicional-block > div > div[style*="flex-basis"] {
+
+            .grid-col-span-2>div>div[style*="flex-basis"],
+            .parte-adicional-block>div>div[style*="flex-basis"] {
                 flex-basis: auto !important;
                 width: 100%;
             }
 
             /* Info Items */
-            .info-item { flex-direction: column; align-items: stretch; min-width: 0; }
-            .info-item label { margin-bottom: 5px; }
-            .info-item input[type="text"], 
-            .info-item input[type="number"], 
-            .info-item .valor-display-style, 
+            .info-item {
+                flex-direction: column;
+                align-items: stretch;
+                min-width: 0;
+            }
+
+            .info-item label {
+                margin-bottom: 5px;
+            }
+
+            .info-item input[type="text"],
+            .info-item input[type="number"],
+            .info-item .valor-display-style,
             .info-item .valor-input {
                 width: 100% !important;
                 max-width: none;
             }
-            .header-bruto-display { width: 100%; }
-            
+
+            .header-bruto-display {
+                width: 100%;
+            }
+
             /* Honorarios */
-            .honorarios-options { flex-direction: column; gap: 10px; }
-            .honorarios-fields { grid-template-columns: 1fr; }
-            .honorarios-fields .field-group { flex-direction: column; align-items: stretch; }
+            .honorarios-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .honorarios-fields {
+                grid-template-columns: 1fr;
+            }
+
+            .honorarios-fields .field-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
             .honorarios-fields input[type="text"],
             .honorarios-fields input[type="number"],
             .honorarios-fields .result,
             .honorarios-fields .base-calculo {
                 width: 100%;
             }
-            
+
             /* Tables */
-            .creditos-table { display: block; overflow-x: auto; white-space: nowrap; }
-            
+            .creditos-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
             /* Modal */
-            .modal-content { width: 95%; padding: 15px; margin: 5% auto; }
-            .report-header { flex-direction: column; text-align: center; }
-            .report-logo { margin-right: 0; margin-bottom: 10px; }
-            .report-grid { grid-template-columns: 1fr; }
-            .report-date { text-align: center; margin-top: 5px; }
-            
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+                margin: 5% auto;
+            }
+
+            .report-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .report-logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .report-date {
+                text-align: center;
+                margin-top: 5px;
+            }
+
             /* Buttons */
-            .button-group { flex-direction: column; }
-            .button-group button { width: 100%; }
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -1023,13 +1362,14 @@
         </div>
 
         <details>
-            <summary>Dados do Processo e Valores</summary>
+            <summary>Dados e Valores</summary>
             <div class="section-content">
                 <div class="form-grid">
 
                     <div class="grid-col-span-2">
-                        <div class="process-block" style="text-align: left;">
-                            <span class="header-label">Nº PROCESSO PRECATÓRIO:</span>
+                        <div class="process-block"
+                            style="text-align: left; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                            <span class="header-label" style="margin-bottom: 0;">Nº PROCESSO PRECATÓRIO:</span>
                             <div class="process-input-group" style="justify-content: flex-start;">
                                 <input type="text" id="proc-num" class="header-input process-part" maxlength="7"
                                     placeholder="" oninput="formatarNumero(this, 7)">
@@ -1068,22 +1408,37 @@
                         </div>
                     </div>
 
-                    <div class="info-item">
-                        <label for="valor-deposito" class="required-field-label">Valor do Depósito Bancário:</label>
-                        <input type="text" id="valor-deposito" name="valor-deposito" class="valor-input"
-                            placeholder="0,00" oninput="formatarMoeda(this)">
+                    <div class="grid-col-span-2"
+                        style="margin-top: 15px; padding: 15px; border: 1px dashed var(--info-border); border-radius: 8px; background-color: var(--very-light-bg);">
+                        <h4
+                            style="margin-top: 0; color: var(--dark-accent); font-size: 1.1em; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                            Dados do Depósito Bancário</h4>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                            <div class="info-item">
+                                <label for="valor-deposito" class="required-field-label">Valor do Depósito:</label>
+                                <input type="text" id="valor-deposito" name="valor-deposito" class="valor-input"
+                                    placeholder="0,00" oninput="formatarMoeda(this)" style="width: 150px;">
+                            </div>
+                            <div class="info-item">
+                                <label for="id-deposito" class="required-field-label">ID do Depósito:</label>
+                                <input type="text" id="id-deposito" name="id-deposito" class="valor-input"
+                                    style="width: 150px;">
+                            </div>
+                            <div class="info-item">
+                                <label for="deposito-judicial">Nº Depósito Judicial:</label>
+                                <input type="text" id="deposito-judicial" name="deposito-judicial"
+                                    class="valor-input" style="width: 150px;">
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="info-item">
-                        <label for="id-deposito" class="required-field-label">ID do Depósito Bancário:</label>
-                        <input type="text" id="id-deposito" name="id-deposito" class="valor-input">
-                    </div>
 
                     <div class="grid-col-span-2"
                         style="padding-top: 15px; margin-top: 15px; border-top: 1px dashed var(--info-border); background-color: var(--light-bg); padding: 15px; border-radius: 8px;">
 
                         <label for="valor-bruto-reclamante"
-                            style="font-weight: bold; font-size: 1.2em; color: var(--text-primary);">TOTAL DEVIDO PELO RECLAMADA:</label>
+                            style="font-weight: bold; font-size: 1.2em; color: var(--text-primary);">TOTAL DEVIDO PELA
+                            RECLAMADA:</label>
 
                         <span id="valor-bruto-reclamante" class="valor-display-style"
                             style="background-color: var(--success-bg); border: 1px solid var(--dark-accent); padding: 12px; font-size: 1.2em;">0,00</span>
@@ -1091,8 +1446,9 @@
                     </div>
 
                     <div class="info-item">
-                        <label for="valor-deposito-judicial">Líquido Exequente:</label>
-                        <input type="text" id="valor-deposito-judicial" class="valor-input" placeholder="0,00">
+                        <label for="valor-deposito-judicial">Líquido (Reclamante):</label>
+                        <input type="text" id="valor-deposito-judicial" class="valor-input" placeholder="0,00"
+                            oninput="formatarMoeda(this); atualizarTotalDevidoReclamada()">
                     </div>
 
                     <div class="info-item">
@@ -1115,12 +1471,66 @@
                         <input type="text" id="inss-reclamada" class="valor-input" placeholder="0,00">
                     </div>
 
+                    <details class="grid-col-span-2"
+                        style="margin-top: 15px; border: 1px dashed #ffeeba; border-radius: 8px; background-color: #fffbf2; padding: 0;">
+                        <summary
+                            style="background-color: #fffbf2; color: #856404; border-bottom: none; margin: 0; border-radius: 8px;">
+                            Retenções sobre o Crédito do Reclamante</summary>
+                        <div class="section-content"
+                            style="background-color: #fffbf2; padding: 15px; border-radius: 0 0 8px 8px;">
+
+                            <div style="margin-bottom: 15px;">
+                                <h5 style="margin: 0 0 5px 0; color: #856404; font-size: 0.95em; font-weight: 600;">
+                                    Pensão Alimentícia</h5>
+                                <div class="form-grid" style="grid-template-columns: 1fr 2fr 1fr; gap: 10px;">
+                                    <div class="info-item-block">
+                                        <label for="pensao-alimenticia" style="font-size: 0.9em;">Valor:</label>
+                                        <input type="text" id="pensao-alimenticia" name="pensao-alimenticia"
+                                            class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="pensao-beneficiario" style="font-size: 0.9em;">Beneficiário:</label>
+                                        <input type="text" id="pensao-beneficiario" class="valor-input"
+                                            style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="pensao-cpf" style="font-size: 0.9em;">CPF:</label>
+                                        <input type="text" id="pensao-cpf" class="valor-input" maxlength="14"
+                                            oninput="formatarDocumento(this, 'CPF'); atualizarQuadroResumo()"
+                                            style="width: 100%; text-align: left;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <h5 style="margin: 0 0 5px 0; color: #856404; font-size: 0.95em; font-weight: 600;">
+                                    Retenção</h5>
+                                <div class="form-grid" style="grid-template-columns: 1fr 3fr; gap: 10px;">
+                                    <div class="info-item-block">
+                                        <label for="outras-retencoes" style="font-size: 0.9em;">Valor:</label>
+                                        <input type="text" id="outras-retencoes" name="outras-retencoes"
+                                            class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
+                                            style="width: 100%;">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="outras-motivo" style="font-size: 0.9em;">Motivo:</label>
+                                        <input type="text" id="outras-motivo" class="valor-input"
+                                            style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
                 </div>
             </div>
         </details>
 
         <details class="no-print">
-            <summary>Advogados (as) (Honorários Contratuais)</summary>
+            <summary>Advogados (as)</summary>
             <div class="section-content">
                 <div class="honorarios-section">
                     <div class="honorarios-options">
@@ -1135,18 +1545,22 @@
                             <label for="adv-valor-fixado-opt">Valor Fixado</label>
                         </div>
                     </div>
-                    <div id="adv-percentual-fields" class="honorarios-fields">
-                        <div class="field-group">
+                    <div id="adv-percentual-fields" class="form-grid"
+                        style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
                             <label for="adv-percentual">Percentual (%):</label>
-                            <input type="text" id="adv-percentual" placeholder="0,00%">
+                            <input type="text" id="adv-percentual" class="valor-input" placeholder="0,00%"
+                                style="width: 100%;">
                         </div>
-                        <div class="field-group">
+                        <div class="info-item-block">
                             <label for="adv-base-calculo">Base de Cálculo:</label>
-                            <span id="adv-base-calculo" class="base-calculo">0,00</span>
+                            <span id="adv-base-calculo" class="valor-display-style"
+                                style="background-color: #e9ecef; width: 100%;">0,00</span>
                         </div>
-                        <div class="field-group">
-                            <label>Resultado:</label>
-                            <span id="adv-resultado" class="result">0,00</span>
+                        <div class="info-item-block">
+                            <label>Honorários:</label>
+                            <span id="adv-resultado" class="valor-display-style"
+                                style="background-color: #f7fcda; width: 100%;">0,00</span>
                         </div>
                     </div>
                     <div id="adv-fixado-fields" class="honorarios-fields" style="display: none;">
@@ -1173,31 +1587,48 @@
                             <label for="adv-cpf-principal"
                                 style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
                             <input type="text" id="adv-cpf-principal" maxlength="18"
-                                oninput="formatarDocumento(this, 'AMBOS')" class="valor-input"
+                                oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()" class="valor-input"
                                 style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="form-grid" style="margin-top: 15px;">
-                        <div class="info-item">
-                            <label for="adv-principal-percentual">Divisão dos Honorários (%):</label>
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 4fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="adv-principal-percentual">Participação (%):</label>
                             <input type="text" id="adv-principal-percentual" class="valor-input" placeholder="0,00%"
-                                oninput="formatarPercentual(this)" style="width: 150px;">
+                                oninput="formatarPercentual(this)" style="width: 100%;">
                         </div>
-                        <div class="info-item">
-                            <label>Honorários (Bruto):</label>
+                        <div class="info-item-block">
+                            <label>Honorários Bruto:</label>
                             <span id="adv-principal-resultado" class="valor-display-style"
-                                style="background-color: #f7fcda; width: 180px;">0,00</span>
+                                style="background-color: #f7fcda; width: 100%;">0,00</span>
                         </div>
-                        <div class="info-item">
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 17.5%;">
                             <label for="adv-principal-ir">IRRF (R$):</label>
                             <input type="text" id="adv-principal-ir" class="valor-input" placeholder="0,00"
-                                oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()" style="width: 150px;">
+                                oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()"
+                                style="width: 100%;">
                         </div>
-                        <div class="info-item">
-                            <label>Resultado Líquido:</label>
-                            <span id="adv-principal-liquido" class="valor-display-style"
-                                style="background-color: #e0f7fa; width: 180px; border-color: #008080;">0,00</span>
+                        <div style="flex-basis: 17.5%;">
+                            <label for="adv-principal-retencao">Retenção (R$):</label>
+                            <input type="text" id="adv-principal-retencao" class="valor-input" placeholder="0,00"
+                                oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()"
+                                style="width: 100%;">
                         </div>
+                        <div style="flex-basis: 65%;">
+                            <label for="adv-principal-retencao-motivo">Motivo da Retenção:</label>
+                            <input type="text" id="adv-principal-retencao-motivo" class="valor-input"
+                                style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+
+                    <div
+                        style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários a
+                            Liberar:</label>
+                        <span id="adv-principal-liquido" class="valor-display-style"
+                            style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
                     </div>
                 </div>
 
@@ -1260,8 +1691,11 @@
             </div>
             <div style="margin-top: 15px;">
                 <label for="nome-servidor" class="required-field-label"
-                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Servidor(a) Responsável:</label>
-                <input type="text" id="nome-servidor" class="valor-input" style="width: 100%; text-align: left; background-color: white;" placeholder="Digite seu nome completo">
+                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Servidor(a)
+                    Responsável:</label>
+                <input type="text" id="nome-servidor" class="valor-input"
+                    style="width: 100%; text-align: left; background-color: white;"
+                    placeholder="Digite seu nome completo">
             </div>
         </div>
 
@@ -1280,7 +1714,8 @@
                 <!-- Conteúdo gerado via JS -->
             </div>
             <div class="button-group" style="margin-top: 30px; justify-content: center;">
-                <button type="button" class="primary btn-print-report" onclick="window.print()">Imprimir Relatório</button>
+                <button type="button" class="primary btn-print-report" onclick="window.print()">Imprimir
+                    Relatório</button>
                 <button type="button" class="secondary btn-print-report" onclick="fecharRelatorio()">Fechar</button>
             </div>
         </div>
@@ -1304,10 +1739,10 @@
             const valorNumericoString = valorString.replace(/\./g, '').replace(',', '.').replace('R$', '').replace('%', '').trim();
             return parseFloat(valorNumericoString) || 0;
         }
-        
+
         function getNumericValueFromInput(input) {
-             if (!input) return 0;
-             return getNumericValue(input.id);
+            if (!input) return 0;
+            return getNumericValue(input.id);
         }
 
         function formatarMoedaParaExibicao(valor) {
@@ -1369,7 +1804,7 @@
             let parteInteira = valor.slice(0, -2);
             let parteDecimal = valor.slice(-2);
             parteInteira = parteInteira.replace(/^0+/, '') || '0';
-            
+
             if (parseFloat(parteInteira + '.' + parteDecimal) > 100) {
                 parteInteira = '100';
                 parteDecimal = '00';
@@ -1409,6 +1844,28 @@
             }
             atualizarBasesDeCalculo();
             calcularHonorarios('adv');
+        }
+
+        function validarRetencoes(input) {
+            const credito = getNumericValue('valor-deposito-judicial');
+            const pensao = getNumericValue('pensao-alimenticia');
+            const outras = getNumericValue('outras-retencoes');
+
+            if ((pensao + outras) > credito) {
+                alert('A soma das retenções (Pensão + Outras) não pode exceder o Crédito do Reclamante.');
+
+                let maximo = 0;
+                if (input.id === 'pensao-alimenticia') {
+                    // Se estamos editando a pensão, o máximo é o crédito menos a retenção
+                    maximo = Math.max(0, credito - outras);
+                } else if (input.id === 'outras-retencoes') {
+                    // Se estamos editando outras, o máximo é o crédito menos a pensão
+                    maximo = Math.max(0, credito - pensao);
+                }
+
+                // Ajusta o valor para o máximo permitido
+                input.value = formatarMoedaParaExibicao(maximo);
+            }
         }
 
         function atualizarBasesDeCalculo() {
@@ -1510,26 +1967,36 @@
                         </div>
                         <div style="flex-basis: 25%;">
                             <label for="adv-ad-cpf-${advogadoAdicionalCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
-                            <input type="text" id="adv-ad-cpf-${advogadoAdicionalCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS')" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                            <input type="text" id="adv-ad-cpf-${advogadoAdicionalCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarCredoresAdicionais()" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="form-grid" style="margin-top: 15px;">
-                        <div class="info-item">
-                            <label for="adv-ad-percentual-${advogadoAdicionalCount}">Divisão dos Honorários (%):</label>
-                            <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 150px;">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 4fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="adv-ad-percentual-${advogadoAdicionalCount}">Participação (%):</label>
+                            <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 100%;">
                         </div>
-                        <div class="info-item">
-                            <label>Honorários (Bruto):</label>
-                            <span id="adv-ad-resultado-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #f7fcda; width: 180px;">0,00</span>
+                        <div class="info-item-block">
+                            <label>Honorários Bruto:</label>
+                            <span id="adv-ad-resultado-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
                         </div>
-                        <div class="info-item">
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 20%;">
                             <label for="adv-ad-ir-${advogadoAdicionalCount}">IRRF (R$):</label>
-                            <input type="text" id="adv-ad-ir-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 150px;">
+                            <input type="text" id="adv-ad-ir-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%;">
                         </div>
-                        <div class="info-item">
-                            <label>Resultado Líquido:</label>
-                            <span id="adv-ad-liquido-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080;">0,00</span>
+                        <div style="flex-basis: 20%;">
+                            <label for="adv-ad-retencao-${advogadoAdicionalCount}">Retenção (R$):</label>
+                            <input type="text" id="adv-ad-retencao-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%;">
                         </div>
+                        <div style="flex-basis: 60%;">
+                            <label for="adv-ad-retencao-motivo-${advogadoAdicionalCount}">Motivo da Retenção:</label>
+                            <input type="text" id="adv-ad-retencao-motivo-${advogadoAdicionalCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários a Liberar:</label>
+                        <span id="adv-ad-liquido-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
                     </div>
                     <button type="button" class="remove-button" onclick="removerParte('adv-adicional-${advogadoAdicionalCount}')">Remover</button>
                 </div>`;
@@ -1556,21 +2023,34 @@
                         </div>
                     </div>
 
-                    <div id="her-percentual-fields-${herdeiroCount}" class="honorarios-fields">
-                        <div class="field-group">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
                             <label for="her-percentual-${herdeiroCount}">Percentual (%):</label>
-                            <input type="text" id="her-percentual-${herdeiroCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="required-dynamic">
+                            <input type="text" id="her-percentual-${herdeiroCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%;">
                         </div>
-                        <div class="field-group">
+                        <div class="info-item-block">
                             <label>Base de Cálculo:</label>
-                            <span class="base-calculo base-calculo-herdeiro">${baseCalculoHerdeiro}</span>
+                            <span class="valor-display-style base-calculo-herdeiro" style="background-color: #e9ecef; width: 100%;">${baseCalculoHerdeiro}</span>
                         </div>
-                        <div class="field-group">
+                        <div class="info-item-block">
                             <label>Resultado:</label>
-                            <span id="her-resultado-${herdeiroCount}" class="result" style="background-color: #f7fcda;">0,00</span>
+                            <span id="her-resultado-${herdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
                         </div>
                     </div>
-
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 18%;">
+                            <label for="her-retencao-${herdeiroCount}">Retenção (R$):</label>
+                            <input type="text" id="her-retencao-${herdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 82%;">
+                            <label for="her-retencao-motivo-${herdeiroCount}">Motivo da Retenção:</label>
+                            <input type="text" id="her-retencao-motivo-${herdeiroCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar:</label>
+                        <span id="her-liquido-${herdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                    </div>
                     <button type="button" class="remove-button" onclick="removerParte('herdeiro-${herdeiroCount}')" style="margin-top: 10px;">Remover</button>
                 </div>`;
             listDiv.insertAdjacentHTML('beforeend', newHerHTML);
@@ -1581,7 +2061,9 @@
             cessionarioCount++;
             const listDiv = document.getElementById('cessionarios-list');
             const honAdvTotal = getNumericValue('adv-resultado');
-            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
+            const pensao = getNumericValue('pensao-alimenticia');
+            const outras = getNumericValue('outras-retencoes');
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal - pensao - outras);
 
             const newCesHTML = `
                 <div id="cessionario-${cessionarioCount}" class="parte-adicional-block">
@@ -1597,21 +2079,34 @@
                         </div>
                     </div>
 
-                    <div id="ces-percentual-fields-${cessionarioCount}" class="honorarios-fields">
-                        <div class="field-group">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
                             <label for="ces-percentual-${cessionarioCount}">Percentual (%):</label>
-                            <input type="text" id="ces-percentual-${cessionarioCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="required-dynamic">
+                            <input type="text" id="ces-percentual-${cessionarioCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%;">
                         </div>
-                        <div class="field-group">
+                        <div class="info-item-block">
                             <label>Base de Cálculo:</label>
-                            <span class="base-calculo base-calculo-cessionario">${formatarMoedaParaExibicao(baseCalculoCessionario)}</span>
+                            <span class="valor-display-style base-calculo-cessionario" style="background-color: #e9ecef; width: 100%;">${formatarMoedaParaExibicao(baseCalculoCessionario)}</span>
                         </div>
-                        <div class="field-group">
+                        <div class="info-item-block">
                             <label>Resultado:</label>
-                            <span id="ces-resultado-${cessionarioCount}" class="result" style="background-color: #f7fcda;">0,00</span>
+                            <span id="ces-resultado-${cessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
                         </div>
                     </div>
-
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 18%;">
+                            <label for="ces-retencao-${cessionarioCount}">Retenção (R$):</label>
+                            <input type="text" id="ces-retencao-${cessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 82%;">
+                            <label for="ces-retencao-motivo-${cessionarioCount}">Motivo da Retenção:</label>
+                            <input type="text" id="ces-retencao-motivo-${cessionarioCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar:</label>
+                        <span id="ces-liquido-${cessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                    </div>
                     <button type="button" class="remove-button" onclick="removerParte('cessionario-${cessionarioCount}')" style="margin-top: 10px;">Remover</button>
                 </div>`;
             listDiv.insertAdjacentHTML('beforeend', newCesHTML);
@@ -1627,21 +2122,24 @@
         }
 
         function atualizarLiquidoAdvogado(suffix) {
-            let grossId, irId, netId;
+            let grossId, irId, retId, netId;
             if (suffix === 'principal') {
                 grossId = 'adv-principal-resultado';
                 irId = 'adv-principal-ir';
+                retId = 'adv-principal-retencao';
                 netId = 'adv-principal-liquido';
             } else {
                 grossId = `adv-ad-resultado-${suffix}`;
                 irId = `adv-ad-ir-${suffix}`;
+                retId = `adv-ad-retencao-${suffix}`;
                 netId = `adv-ad-liquido-${suffix}`;
             }
-            
+
             const grossVal = getNumericValue(grossId);
             const irVal = getNumericValue(irId);
-            const netVal = Math.max(0, grossVal - irVal);
-            
+            const retVal = getNumericValue(retId);
+            const netVal = Math.max(0, grossVal - irVal - retVal);
+
             const netEl = document.getElementById(netId);
             if (netEl) {
                 netEl.textContent = formatarMoedaParaExibicao(netVal);
@@ -1662,6 +2160,7 @@
             for (let i = 1; i <= advogadoAdicionalCount; i++) {
                 const nomeInput = document.getElementById(`adv-ad-nome-${i}`);
                 if (!nomeInput) continue;
+
                 const percentualRateio = getNumericValue(`adv-ad-percentual-${i}`);
                 const valorCalculado = (percentualRateio / 100) * honAdvPrincipalNumeric;
                 const resultadoSpan = document.getElementById(`adv-ad-resultado-${i}`);
@@ -1671,7 +2170,9 @@
 
             // --- Lógica dos Cessionários ---
             const honAdvTotal = getNumericValue('adv-resultado');
-            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
+            const pensao = getNumericValue('pensao-alimenticia');
+            const outras = getNumericValue('outras-retencoes');
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal - pensao - outras);
             document.querySelectorAll('.base-calculo-cessionario').forEach(span => {
                 span.textContent = formatarMoedaParaExibicao(baseCalculoCessionario);
             });
@@ -1684,6 +2185,12 @@
                 const valorCalculado = (percentual / 100) * baseCalculoCessionario;
                 const resultadoSpan = document.getElementById(`ces-resultado-${i}`);
                 if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
+
+                const retencao = getNumericValue(`ces-retencao-${i}`);
+                const liquido = Math.max(0, valorCalculado - retencao);
+                const liquidoSpan = document.getElementById(`ces-liquido-${i}`);
+                if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
+
                 totalCessionarios += valorCalculado;
             }
 
@@ -1699,6 +2206,11 @@
                 const valorCalculado = (percentual / 100) * baseCalculoHerdeiro;
                 const resultadoSpan = document.getElementById(`her-resultado-${i}`);
                 if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
+
+                const retencao = getNumericValue(`her-retencao-${i}`);
+                const liquido = Math.max(0, valorCalculado - retencao);
+                const liquidoSpan = document.getElementById(`her-liquido-${i}`);
+                if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
             }
 
             // Chama a atualização do quadro resumo principal
@@ -1714,7 +2226,14 @@
             tbody.innerHTML = '';
             tfoot.innerHTML = '';
             let html = '';
-            let totalLiberado = 0;
+
+            // Totais Globais
+            let globalLiberado = 0;
+            let globalRetido = 0;
+            let globalRecolher = 0;
+
+            // Variáveis para subtotais
+            // Serão calculadas localmente ou acumuladas em objetos para Lib/Ret
 
             // Helper to add rows
             const addRow = (nome, cpf, valor, cssClass = '') => {
@@ -1727,81 +2246,162 @@
                 }
 
                 // Se não tiver classe (beneficiários), aplica negrito. Garante alinhamento a direita no relatório.
-                const style = cssClass === '' ? 'font-weight: bold; text-align: left;' : 'text-align: left;';
+                let style = cssClass === '' ? 'font-weight: bold; text-align: left;' : 'text-align: left;';
+
+                if (nome.includes('Pensão Alimentícia')) {
+                    style += ' font-weight: bold;';
+                }
 
                 html += `
                             <tr class="${cssClass}">
                                 <td>${nome}</td>
-                                <td>${cpf === 'Recolhimento' ? cpf : `<strong>${cpf || ''}</strong>`}</td>
+                                <td>${(cpf === 'Recolhimento' || cpf === 'Retenção') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
                                 <td class="value-col" style="${style}">${formatarMoedaParaExibicao(valorNumerico)}</td>
                             </tr>`;
-                totalLiberado += valorNumerico;
+            };
+
+            // Helper para adicionar linha de subtotal
+            const addSubtotalRow = (label, valorLib, valorRet) => {
+                if (valorLib <= 0.005 && valorRet <= 0.005) return;
+                const total = valorLib + valorRet;
+                html += `
+                    <tr style="background-color: #e2e6ea; font-weight: bold; font-style: italic;">
+                        <td style="text-align: left; padding-right: 10px; color: #555;">TOTAL ${label} (${formatarMoedaParaExibicao(total)})</td>
+                        <td style="text-align: right; color: #856404; font-size: 0.9em;">${valorRet > 0.005 ? 'Retido: ' + formatarMoedaParaExibicao(valorRet) : ''}</td>
+                        <td class="value-col" style="text-align: left; color: #004085;">${valorLib > 0.005 ? 'Liberar: ' + formatarMoedaParaExibicao(valorLib) : ''}</td>
+                    </tr>`;
             };
 
             const honAdvTotal = getNumericValue('adv-resultado');
             const inssReclamada = getNumericValue('inss-reclamada');
-            let irrfAdvogadosRows = [];
+            let irrfAdvogados = [];
+
+            // Retrieve retentions early to deduct from base calculation
+            const pensao = getNumericValue('pensao-alimenticia');
+            const outras = getNumericValue('outras-retencoes');
+            const totalRetencoesReclamante = pensao + outras;
 
             // 1. Cessionários
-            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal);
-            let totalCessionariosValor = 0;
+            const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal - totalRetencoesReclamante);
+            let subLibCessionarios = 0;
+            let subRetCessionarios = 0;
+
             for (let i = 1; i <= cessionarioCount; i++) {
                 const nomeInput = document.getElementById(`ces-nome-${i}`);
                 if (nomeInput) {
                     const percentual = getNumericValue(`ces-percentual-${i}`);
                     const valorCessionario = (percentual / 100) * baseCalculoCessionario;
+                    const retencao = getNumericValue(`ces-retencao-${i}`);
+                    const liquidoCessionario = Math.max(0, valorCessionario - retencao);
+
                     if (valorCessionario > 0) {
                         addRow(
                             `Cessionário: <strong>${nomeInput.value || `Cessionário #${i}`}</strong>`,
                             document.getElementById(`ces-cpf-${i}`).value,
-                            valorCessionario
+                            liquidoCessionario
                         );
-                        totalCessionariosValor += valorCessionario;
+                        subLibCessionarios += liquidoCessionario;
+
+                        if (retencao > 0) {
+                            const motivo = document.getElementById(`ces-retencao-motivo-${i}`).value;
+                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Cessionário #${i})`, 'Retenção', retencao, 'linha-retencao');
+                            subRetCessionarios += retencao;
+                        }
                     }
                 }
             }
+            addSubtotalRow('CESSIONÁRIOS', subLibCessionarios, subRetCessionarios);
+            globalLiberado += subLibCessionarios;
+            globalRetido += subRetCessionarios;
 
             // 2. Reclamante / Herdeiros
-            const baseCalculoReclamante = Math.max(0, baseCalculoCessionario - totalCessionariosValor);
-            let totalHerdeirosValor = 0;
+            // Nota: Para base de cálculo, usamos o valor bruto dos cessionários (Lib + Ret)
+            const baseCalculoReclamante = Math.max(0, baseCalculoCessionario - (subLibCessionarios + subRetCessionarios));
+
+            let subLibHerdeiros = 0;
+            let subRetHerdeiros = 0;
             let herdeirosExistem = false;
+
             for (let i = 1; i <= herdeiroCount; i++) {
                 const nomeInput = document.getElementById(`her-nome-${i}`);
                 if (nomeInput) {
                     herdeirosExistem = true;
                     const percentual = getNumericValue(`her-percentual-${i}`);
                     const valorHerdeiro = (percentual / 100) * baseCalculoReclamante;
+                    const retencao = getNumericValue(`her-retencao-${i}`);
+                    const liquidoHerdeiro = Math.max(0, valorHerdeiro - retencao);
+
                     if (valorHerdeiro > 0) {
                         addRow(
                             `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${i}`}</strong>`,
                             document.getElementById(`her-cpf-${i}`).value,
-                            valorHerdeiro
+                            liquidoHerdeiro
                         );
-                        totalHerdeirosValor += valorHerdeiro;
+                        subLibHerdeiros += liquidoHerdeiro;
+
+                        if (retencao > 0) {
+                            const motivo = document.getElementById(`her-retencao-motivo-${i}`).value;
+                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Herdeiro #${i})`, 'Retenção', retencao, 'linha-retencao');
+                            subRetHerdeiros += retencao;
+                        }
                     }
                 }
             }
+            addSubtotalRow('HERDEIROS', subLibHerdeiros, subRetHerdeiros);
+            globalLiberado += subLibHerdeiros;
+            globalRetido += subRetHerdeiros;
+
+            let subLibReclamante = 0;
+            let subRetReclamante = 0;
+            // Total bruto dos herdeiros para dedução da base
+            const totalBrutoHerdeiros = subLibHerdeiros + subRetHerdeiros;
 
             if (herdeirosExistem) {
-                const valorRestanteReclamante = baseCalculoReclamante - totalHerdeirosValor;
+                const valorRestanteReclamante = Math.max(0, baseCalculoReclamante - totalBrutoHerdeiros);
                 if (valorRestanteReclamante > 0.005) { // Check for residual values
                     addRow(
                         `Reclamante (saldo): <strong>${document.getElementById('reclamante').value}</strong>`,
                         document.getElementById('cpf').value,
                         valorRestanteReclamante
                     );
+                    subLibReclamante += valorRestanteReclamante;
                 }
             } else {
-                if (baseCalculoReclamante > 0) {
+                const liquidoReclamante = Math.max(0, baseCalculoReclamante);
+                if (liquidoReclamante > 0) {
                     addRow(
                         `Reclamante: <strong>${document.getElementById('reclamante').value}</strong>`,
                         document.getElementById('cpf').value,
-                        baseCalculoReclamante
+                        liquidoReclamante
                     );
+                    subLibReclamante += liquidoReclamante;
                 }
             }
 
+            // Retenções do Reclamante (Vinculadas)
+            if (pensao > 0) {
+                const nomeBeneficiario = document.getElementById('pensao-beneficiario').value;
+                const cpfBeneficiario = document.getElementById('pensao-cpf').value;
+                // Destacar em negrito o nome do Beneficiário
+                const labelPensao = nomeBeneficiario ? `Pensão Alimentícia (<strong>${nomeBeneficiario}</strong>)` : 'Pensão Alimentícia';
+                addRow(labelPensao, cpfBeneficiario || '', pensao);
+                subLibReclamante += pensao;
+            }
+            if (outras > 0) {
+                const motivo = document.getElementById('outras-motivo').value;
+                const labelOutras = motivo ? `Retenção (${motivo})` : 'Retenção';
+                addRow(labelOutras, 'Retenção', outras, 'linha-retencao');
+                subRetReclamante += outras;
+            }
+            const labelReclamante = (pensao > 0) ? 'RECLAMANTE / ALIMENTANDO' : 'RECLAMANTE';
+            addSubtotalRow(labelReclamante, subLibReclamante, subRetReclamante);
+            globalLiberado += subLibReclamante;
+            globalRetido += subRetReclamante;
+
             // 3. Advogados
+            let subLibAdvogados = 0;
+            let subRetAdvogados = 0;
+
             if (honAdvTotal > 0) {
                 // Advogado Principal (Baseado no Input)
                 const percentualPrincipal = getNumericValue('adv-principal-percentual');
@@ -1809,21 +2409,24 @@
                 if (percentualPrincipal > 0) {
                     const valorPrincipal = (percentualPrincipal / 100) * honAdvTotal;
                     const irPrincipal = getNumericValue('adv-principal-ir');
-                    const liquidoPrincipal = Math.max(0, valorPrincipal - irPrincipal);
+                    const retPrincipal = getNumericValue('adv-principal-retencao');
+                    const liquidoPrincipal = Math.max(0, valorPrincipal - irPrincipal - retPrincipal);
 
                     addRow(
                         `Advogado: <strong>${document.getElementById('adv-nome-principal').value || 'Adv. Principal'}</strong>`,
                         document.getElementById('adv-cpf-principal').value,
                         liquidoPrincipal
                     );
-                    
+                    subLibAdvogados += liquidoPrincipal;
+
+                    if (retPrincipal > 0) {
+                        const motivoRetPrincipal = document.getElementById('adv-principal-retencao-motivo').value;
+                        const labelRetencao = motivoRetPrincipal ? `Retenção (${motivoRetPrincipal})` : `Retenção (Adv. Principal)`;
+                        addRow(labelRetencao, 'Retenção', retPrincipal, 'linha-retencao');
+                        subRetAdvogados += retPrincipal;
+                    }
                     if (irPrincipal > 0) {
-                        irrfAdvogadosRows.push({
-                            nome: `IRRF (Adv. Principal)`,
-                            cpf: 'Recolhimento',
-                            valor: irPrincipal,
-                            cssClass: 'linha-inss'
-                        });
+                        irrfAdvogados.push({ nome: document.getElementById('adv-nome-principal').value || 'Adv. Principal', valor: irPrincipal });
                     }
                 }
 
@@ -1833,8 +2436,9 @@
                     if (!nomeInput) continue;
                     const percentualRateio = getNumericValue(`adv-ad-percentual-${i}`);
                     const irAdicional = getNumericValue(`adv-ad-ir-${i}`);
+                    const retAdicional = getNumericValue(`adv-ad-retencao-${i}`);
                     const valorCalculado = (percentualRateio / 100) * honAdvTotal;
-                    const liquidoCalculado = Math.max(0, valorCalculado - irAdicional);
+                    const liquidoCalculado = Math.max(0, valorCalculado - irAdicional - retAdicional);
 
                     if (valorCalculado > 0) {
                         addRow(
@@ -1842,47 +2446,86 @@
                             document.getElementById(`adv-ad-cpf-${i}`).value,
                             liquidoCalculado
                         );
+                        subLibAdvogados += liquidoCalculado;
+                        if (retAdicional > 0) {
+                            const motivoRetAdicional = document.getElementById(`adv-ad-retencao-motivo-${i}`).value;
+                            const labelRetencao = motivoRetAdicional ? `Retenção (${motivoRetAdicional})` : `Retenção (Adv. Adicional #${i})`;
+                            addRow(labelRetencao, 'Retenção', retAdicional, 'linha-retencao');
+                            subRetAdvogados += retAdicional;
+                        }
                         if (irAdicional > 0) {
-                             irrfAdvogadosRows.push({
-                                nome: `IRRF (Adv. Adicional #${i})`,
-                                cpf: 'Recolhimento',
-                                valor: irAdicional,
-                                cssClass: 'linha-inss'
-                            });
+                            irrfAdvogados.push({ nome: nomeInput.value || `Adv. Adicional #${i}`, valor: irAdicional });
                         }
                     }
                 }
             }
+            addSubtotalRow('ADVOGADOS', subLibAdvogados, subRetAdvogados);
+            globalLiberado += subLibAdvogados;
+            globalRetido += subRetAdvogados;
 
-            // 4. Recolhimentos
-            addRow('INSS (Reclamante)', 'Recolhimento', getNumericValue('inss-reclamante'), 'linha-inss');
-            addRow('INSS (Reclamada)', 'Recolhimento', getNumericValue('inss-reclamada'), 'linha-inss');
-            addRow('IRRF (Reclamante)', 'Recolhimento', getNumericValue('ir-valor'), 'linha-inss');
-            irrfAdvogadosRows.forEach(item => addRow(item.nome, item.cpf, item.valor, 'linha-inss'));
-            addRow('FGTS a Depositar', 'Recolhimento', getNumericValue('fgts-viculada'), 'linha-fgts');
+            // 4. Recolhimentos (Gerais)
+            let subTotalRecolhimentos = 0;
+            addRow('INSS (Reclamante)', 'Recolhimento', getNumericValue('inss-reclamante'));
+            subTotalRecolhimentos += getNumericValue('inss-reclamante');
+            addRow('INSS (Reclamada)', 'Recolhimento', getNumericValue('inss-reclamada'));
+            subTotalRecolhimentos += getNumericValue('inss-reclamada');
+            addRow('IRRF (Reclamante)', 'Recolhimento', getNumericValue('ir-valor'));
+            subTotalRecolhimentos += getNumericValue('ir-valor');
+
+            irrfAdvogados.forEach(item => {
+                addRow(`IRRF (Adv. ${item.nome})`, 'Recolhimento', item.valor);
+                subTotalRecolhimentos += item.valor;
+            });
+
+            addRow('FGTS a Depositar', 'Recolhimento', getNumericValue('fgts-viculada'));
+            subTotalRecolhimentos += getNumericValue('fgts-viculada');
+
+            if (subTotalRecolhimentos > 0.005) {
+                html += `
+                    <tr style="background-color: #e2e6ea; font-weight: bold; font-style: italic;">
+                        <td style="text-align: left; padding-right: 10px; color: #555;">TOTAL IMPOSTOS (${formatarMoedaParaExibicao(subTotalRecolhimentos)})</td>
+                        <td></td>
+                        <td class="value-col" style="text-align: left; color: #155724; font-size: 1 em;">Recolher: ${formatarMoedaParaExibicao(subTotalRecolhimentos)}</td>
+                     </tr>`;
+            }
+            globalRecolher += subTotalRecolhimentos;
 
             tbody.innerHTML = html;
 
             // Total footer
             const valorBrutoTotal = getNumericValue('valor-bruto-reclamante');
             const valorDeposito = getNumericValue('valor-deposito');
-            const diferenca = valorDeposito - totalLiberado;
+            const diferenca = valorDeposito - (globalLiberado + globalRetido + globalRecolher);
+
+            let totalRetidoRow = '';
+            if (globalRetido > 0.005) {
+                totalRetidoRow = `
+                        <tr>
+                            <td colspan="2" style="font-size: 0.75em; padding-left: 20px; color: #856404;">TOTAL RETIDO</td>
+                            <td class="value-col" style="color: #856404; font-size: 0.75em;">${formatarMoedaParaExibicao(globalRetido)}</td>
+                        </tr>`;
+            }
 
             tfoot.innerHTML = `
-                        <tr>
-                            <td colspan="2">TOTAL DEVIDO</td>
-                            <td class="value-col">${formatarMoedaParaExibicao(valorBrutoTotal)}</td>
-                        </tr>
                          <tr>
                             <td colspan="2">TOTAL DEPOSITADO</td>
                             <td class="value-col">${formatarMoedaParaExibicao(valorDeposito)}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">TOTAL LIBERADO</td>
-                            <td class="value-col">${formatarMoedaParaExibicao(totalLiberado)}</td>
+                            <td colspan="2">TOTAL DEVIDO</td>
+                            <td class="value-col">${formatarMoedaParaExibicao(valorBrutoTotal)}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="font-size: 0.75em; padding-left: 20px; color: #004085;">TOTAL A LIBERAR</td>
+                            <td class="value-col" style="color: #004085; font-size: 0.75em;">${formatarMoedaParaExibicao(globalLiberado)}</td>
+                        </tr>
+                        ${totalRetidoRow}
+                        <tr>
+                            <td colspan="2" style="font-size: 0.75em; padding-left: 20px; color: #155724;">TOTAL A RECOLHER</td>
+                            <td class="value-col" style="color: #155724; font-size: 0.75em;">${formatarMoedaParaExibicao(globalRecolher)}</td>
                         </tr>
                         <tr style="font-weight: bold;">
-                            <td colspan="2" style="color: black;">DIFERENÇA (DEPOSITADO - LIBERADO)</td>
+                            <td colspan="2" style="color: black;">DIFERENÇA (DEPOSITADO - DEVIDO)</td>
                             <td id="diferenca-valor" class="value-col" style="color: ${Math.abs(diferenca) > 0.005 ? 'red' : 'black'};">${formatarMoedaParaExibicao(diferenca)}</td>
                         </tr>
                     `;
@@ -1917,6 +2560,8 @@
             document.getElementById('herdeiros-list').innerHTML = '';
             document.getElementById('cessionarios-list').innerHTML = '';
             document.getElementById('adv-principal-ir').value = ''; // Limpar IR Principal
+            document.getElementById('adv-principal-retencao').value = ''; // Limpar Retenção Principal
+            document.getElementById('adv-principal-retencao-motivo').value = ''; // Limpar Motivo Principal
             const obs = document.getElementById('observacoes-gerais');
             if (obs) obs.value = '';
             const obsPrint = document.getElementById('observacoes-print');
@@ -1939,15 +2584,15 @@
             if (id.startsWith('her-nome-')) return `Nome do Herdeiro #${id.split('-')[2]}`;
             if (id.startsWith('her-cpf-')) return `CPF do Herdeiro #${id.split('-')[2]}`;
             if (id.startsWith('her-percentual-')) return `Percentual do Herdeiro #${id.split('-')[2]}`;
-            
+
             if (id.startsWith('ces-nome-')) return `Nome do Cessionário #${id.split('-')[2]}`;
             if (id.startsWith('ces-cpf-')) return `CPF/CNPJ do Cessionário #${id.split('-')[2]}`;
             if (id.startsWith('ces-percentual-')) return `Percentual do Cessionário #${id.split('-')[2]}`;
-            
+
             if (id.startsWith('adv-ad-nome-')) return `Nome do Advogado Adicional #${id.split('-')[3]}`;
             if (id.startsWith('adv-ad-cpf-')) return `CPF/CNPJ do Advogado Adicional #${id.split('-')[3]}`;
             if (id.startsWith('adv-ad-percentual-')) return `Percentual do Advogado Adicional #${id.split('-')[3]}`;
-            
+
             return null;
         }
 
@@ -1995,7 +2640,7 @@
                         const advCamposAdicionais = [
                             { id: `adv-ad-nome-${i}`, nome: `Nome do Advogado Adicional #${i}` },
                             { id: `adv-ad-cpf-${i}`, nome: `CPF/CNPJ do Advogado Adicional #${i}` },
-                            { id: `adv-ad-percentual-${i}`, nome: `Divisão dos Honorários (%) do Advogado Adicional #${i}` }
+                            { id: `adv-ad-percentual-${i}`, nome: `Participação dos Honorários (%) do Advogado Adicional #${i}` }
                         ];
                         advCamposAdicionais.forEach(campo => {
                             const el = document.getElementById(campo.id);
@@ -2089,27 +2734,57 @@
             const procDigito = document.getElementById('proc-digito').value.padStart(2, '0');
             const procAno = document.getElementById('proc-ano').value;
             const processoCompleto = `${procNum}-${procDigito}.${procAno}.5.19.0000`;
-            
+
             const reclamante = document.getElementById('reclamante').value;
             const cpf = document.getElementById('cpf').value;
-            
+
             const valorDeposito = document.getElementById('valor-deposito').value;
             const idDeposito = document.getElementById('id-deposito').value;
-            
+            const depositoJudicial = document.getElementById('deposito-judicial').value;
+
             const totalDevido = document.getElementById('valor-bruto-reclamante').textContent;
 
             const liquidoExequente = document.getElementById('valor-deposito-judicial').value;
+            const pensaoAlimenticia = document.getElementById('pensao-alimenticia').value;
+            const pensaoBeneficiario = document.getElementById('pensao-beneficiario').value;
+            const pensaoCPF = document.getElementById('pensao-cpf').value;
+            const outrasRetencoes = document.getElementById('outras-retencoes').value;
+            const outrasMotivo = document.getElementById('outras-motivo').value;
             const irValor = document.getElementById('ir-valor').value;
             const inssReclamante = document.getElementById('inss-reclamante').value;
             const fgts = document.getElementById('fgts-viculada').value;
             const inssReclamada = document.getElementById('inss-reclamada').value;
-            
+
             const observacoes = document.getElementById('observacoes-gerais').value;
             const nomeServidor = document.getElementById('nome-servidor').value;
-            
-            // Clonar Tabela de Resumo
-            const tbodyResumo = document.getElementById('quadro-resumo-tbody').innerHTML;
-            const tfootResumo = document.getElementById('quadro-resumo-tfoot').innerHTML;
+
+            // Gerar HTML para o relatório
+            const tempTbody = document.createElement('tbody');
+            tempTbody.innerHTML = document.getElementById('quadro-resumo-tbody').innerHTML;
+
+            // 1 - Não trazer os valores Retido, Liberar e Recolher na linha dos totais
+            tempTbody.querySelectorAll('tr[style*="background-color: #e2e6ea"]').forEach(tr => {
+                const firstTd = tr.cells[0];
+                const lastTd = tr.cells[tr.cells.length - 1];
+                const match = firstTd.textContent.match(/\(([^)]+)\)/);
+                const totalValue = match ? match[1] : '0,00';
+                firstTd.textContent = firstTd.textContent.split('(')[0].trim();
+                if (tr.cells.length > 2) { tr.cells[1].innerHTML = ''; }
+                lastTd.textContent = totalValue;
+                lastTd.style.color = '#333';
+                lastTd.style.fontSize = '1em';
+            });
+            const tbodyResumo = tempTbody.innerHTML;
+
+            // 2 - Não trazer os Totais Depositados e Devidos.
+            const tempTfoot = document.createElement('tfoot');
+            tempTfoot.innerHTML = document.getElementById('quadro-resumo-tfoot').innerHTML;
+            const rowsToRemove = [];
+            tempTfoot.querySelectorAll('tr').forEach(tr => {
+                if (tr.cells[0] && (tr.cells[0].textContent.includes('TOTAL DEPOSITADO') || tr.cells[0].textContent.includes('TOTAL DEVIDO'))) { rowsToRemove.push(tr); }
+            });
+            rowsToRemove.forEach(row => row.remove());
+            const tfootResumo = tempTfoot.innerHTML;
 
             // Construir HTML
             const html = `
@@ -2120,16 +2795,16 @@
                 </div>
 
                 <div class="report-section">
-                    <div class="report-section-title">Dados do Processo e Valores</div>
-                    <div class="form-grid" style="margin-bottom: 10px;">
+                    <div class="report-section-title">Dados e Valores</div>
+                    <div class="form-grid" style="margin-bottom: 10px; gap: 5px 8px;">
                         <div class="grid-col-span-2">
                             <div class="process-block" style="text-align: left; padding: 5px 10px; border: 1px solid #B0D0D0; background-color: #F7FCFC; border-radius: 8px;">
-                                <span class="header-label" style="font-weight: 600; color: #004040; margin-right: 10px;">Nº PROCESSO PRECATÓRIO:</span>
-                                <span style="font-weight: bold; font-size: 1.2em; color: #333;">${processoCompleto}</span>
+                                <span class="header-label" style="font-weight: 600; color: #004040; margin-right: 5px; display: inline-block;">Nº PROCESSO PRECATÓRIO:</span>
+                                <span style="font-weight: bold; font-size: 1.05em; color: #333;">${processoCompleto}</span>
                             </div>
                         </div>
 
-                        <div class="grid-col-span-2">
+                        <div class="grid-col-span-2" style="margin-bottom: 15px;">
                             <div style="display: flex; gap: 20px; align-items: flex-end;">
                                 <div style="flex-basis: 75%;">
                                     <label style="font-weight: 600; color: #333; display: block; margin-bottom: 5px;">Reclamante:</label>
@@ -2142,42 +2817,47 @@
                             </div>
                         </div>
 
-                        <div class="info-item" style="justify-content: flex-start; gap: 10px; align-items: center; display: flex;">
-                            <label style="font-weight: 600; color: #333;">Valor do Depósito Bancário:</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${valorDeposito}</span>
+                        <div class="grid-col-span-2" style="display: flex; gap: 15px; align-items: center; margin-bottom: 5px;">
+                            <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                                <label style="font-weight: 600; color: #333; white-space: nowrap;">Valor Depósito:</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${valorDeposito}</span>
+                            </div>
+                            <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                                <label style="font-weight: 600; color: #333; white-space: nowrap;">ID Depósito:</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${idDeposito}</span>
+                            </div>
+                            <div style="flex: 1; display: flex; align-items: center; gap: 5px;">
+                                <label style="font-weight: 600; color: #333; white-space: nowrap;">Nº Deposito Judicial:</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${depositoJudicial}</span>
+                            </div>
                         </div>
 
-                        <div class="info-item" style="justify-content: flex-start; gap: 10px; align-items: center; display: flex;">
-                            <label style="font-weight: 600; color: #333;">ID do Depósito Bancário:</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${idDeposito}</span>
+                        <div class="grid-col-span-2" style="padding: 4px 10px; border-top: 1px dashed #B0D0D0; background-color: #E0F0F0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
+                            <label style="font-weight: bold; font-size: 0.9em; color: #004040;">TOTAL DEVIDO PELO RECLAMADA:</label>
+                            <span style="background-color: #CCEDED; border: 1px solid #006464; padding: 5px 10px; font-size: 1.05em; font-weight: bold; border-radius: 6px;">${totalDevido}</span>
                         </div>
 
-                        <div class="grid-col-span-2" style="padding: 10px; border-top: 1px dashed #B0D0D0; background-color: #E0F0F0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
-                            <label style="font-weight: bold; font-size: 1.1em; color: #004040;">TOTAL DEVIDO PELO RECLAMADA:</label>
-                            <span style="background-color: #CCEDED; border: 1px solid #006464; padding: 5px 10px; font-size: 1.2em; font-weight: bold; border-radius: 6px;">${totalDevido}</span>
-                        </div>
-
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
-                            <label style="font-weight: 600; color: #333;">Líquido Exequente:</label>
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                            <label style="font-weight: 600; color: #333;">Líquido (Reclamante):</label>
                             <span style="font-weight: bold; font-size: 1.05em;">${liquidoExequente}</span>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
                             <label style="font-weight: 600; color: #333;">IRRF (Reclamante):</label>
                             <span style="font-weight: bold; font-size: 1.05em;">${irValor}</span>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
                             <label style="font-weight: 600; color: #333;">INSS (Reclamante):</label>
                             <span style="font-weight: bold; font-size: 1.05em;">${inssReclamante}</span>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
                             <label style="font-weight: 600; color: #333;">FGTS a Depositar:</label>
                             <span style="font-weight: bold; font-size: 1.05em;">${fgts}</span>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex;">
+                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
                             <label style="font-weight: 600; color: #333;">INSS (Reclamada):</label>
                             <span style="font-weight: bold; font-size: 1.05em;">${inssReclamada}</span>
                         </div>
@@ -2204,12 +2884,12 @@
                 </div>
                 
                 ${observacoes ? `
-                <div class="report-section">
+                <div class="report-section" style="page-break-inside: avoid;">
                     <div class="report-section-title">Observações</div>
-                    <p style="white-space: pre-wrap; font-size: 0.95em; color: #333;">${observacoes}</p>
+                    <div class="report-observacoes-content" style="white-space: pre-wrap; font-size: 0.95em; color: #333; border: 1px solid #ddd; padding: 10px; border-radius: 4px; background-color: #f9f9f9; width: 100%; box-sizing: border-box;">${observacoes.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</div>
                 </div>` : ''}
 
-                <div class="report-section" style="margin-top: 80px; text-align: center; break-inside: avoid;">
+                <div class="report-section signature-block" style="margin-top: 60px; text-align: center;">
                     <div style="border-top: 1px solid #333; width: 60%; margin: 0 auto 10px auto;"></div>
                     <p style="margin: 0; font-weight: bold; font-size: 1.1em; text-transform: uppercase;">${nomeServidor}</p>
                     <p style="margin: 5px 0 0 0;">Secretaria de Precatórios</p>
@@ -2217,7 +2897,17 @@
                 </div>
             `;
 
-            document.getElementById('report-body').innerHTML = html;
+            const printHtml = `
+                <table class="print-layout-table">
+                    <thead><tr><td class="print-header-space"></td></tr></thead>
+                    <tbody><tr><td class="print-content-cell">
+                        ${html}
+                    </td></tr></tbody>
+                    <tfoot><tr><td class="print-footer-space"></td></tr></tfoot>
+                </table>
+            `;
+
+            document.getElementById('report-body').innerHTML = printHtml;
             document.getElementById('relatorio-modal').style.display = 'block';
         }
 
