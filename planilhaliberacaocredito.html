@@ -391,6 +391,24 @@
             background-color: var(--dark-accent);
         }
 
+        .add-adv-button {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .add-adv-button:hover {
+            background-color: var(--light-bg);
+            color: var(--dark-accent);
+            border-color: var(--dark-accent);
+        }
+
         .remove-button {
             background-color: #dc3545;
             color: white;
@@ -1728,6 +1746,8 @@
         let advogadoAdicionalCount = 0;
         let herdeiroCount = 0;
         let cessionarioCount = 0;
+        let advHerdeiroCount = 0;
+        let advCessionarioCount = 0;
 
         // =======================================================================
         // FUNÇÕES DE UTILIDADE E FORMATAÇÃO
@@ -2047,8 +2067,12 @@
                             <input type="text" id="her-retencao-motivo-${herdeiroCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
+
+                    <div id="her-adv-list-${herdeiroCount}"></div>
+                    <button type="button" class="add-adv-button" onclick="adicionarAdvogadoHerdeiro(${herdeiroCount})">+ Adicionar Advogado Específico</button>
+
                     <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
-                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar:</label>
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar (Herdeiro):</label>
                         <span id="her-liquido-${herdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
                     </div>
                     <button type="button" class="remove-button" onclick="removerParte('herdeiro-${herdeiroCount}')" style="margin-top: 10px;">Remover</button>
@@ -2103,13 +2127,163 @@
                             <input type="text" id="ces-retencao-motivo-${cessionarioCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
+
+                    <div id="ces-adv-list-${cessionarioCount}"></div>
+                    <button type="button" class="add-adv-button" onclick="adicionarAdvogadoCessionario(${cessionarioCount})">+ Adicionar Advogado Específico</button>
+
                     <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
-                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar:</label>
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar (Cessionário):</label>
                         <span id="ces-liquido-${cessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
                     </div>
                     <button type="button" class="remove-button" onclick="removerParte('cessionario-${cessionarioCount}')" style="margin-top: 10px;">Remover</button>
                 </div>`;
             listDiv.insertAdjacentHTML('beforeend', newCesHTML);
+            atualizarCredoresAdicionais();
+        }
+
+        function adicionarAdvogadoHerdeiro(herdeiroId) {
+            advHerdeiroCount++;
+            const listDiv = document.getElementById(`her-adv-list-${herdeiroId}`);
+            const html = `
+                <div id="her-adv-block-${advHerdeiroCount}" class="adv-herdeiro-${herdeiroId}" data-adv-id="${advHerdeiroCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;">
+                    <h5 style="margin-top: 0; color: var(--dark-accent); margin-bottom: 15px;">Advogado(a) do Herdeiro #${herdeiroId}</h5>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                        <div style="flex-basis: 75%;">
+                            <label for="her-adv-nome-${advHerdeiroCount}" style="display: block; margin-bottom: 5px;">Nome do Advogado(a):</label>
+                            <input type="text" id="her-adv-nome-${advHerdeiroCount}" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;" oninput="atualizarQuadroResumo()">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="her-adv-cpf-${advHerdeiroCount}" style="display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                            <input type="text" id="her-adv-cpf-${advHerdeiroCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+                    <div class="honorarios-options" style="margin-bottom: 15px;">
+                        <div class="honorarios-option">
+                            <input type="radio" id="her-adv-perc-opt-${advHerdeiroCount}" name="her-adv-tipo-${advHerdeiroCount}" value="percentual" checked onchange="toggleAdvHerTipo(${advHerdeiroCount})">
+                            <label for="her-adv-perc-opt-${advHerdeiroCount}">Percentual</label>
+                        </div>
+                        <div class="honorarios-option">
+                            <input type="radio" id="her-adv-fix-opt-${advHerdeiroCount}" name="her-adv-tipo-${advHerdeiroCount}" value="fixado" onchange="toggleAdvHerTipo(${advHerdeiroCount})">
+                            <label for="her-adv-fix-opt-${advHerdeiroCount}">Valor Fixado</label>
+                        </div>
+                    </div>
+                    <div id="her-adv-perc-fields-${advHerdeiroCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="her-adv-perc-${advHerdeiroCount}">Percentual (%):</label>
+                            <input type="text" id="her-adv-perc-${advHerdeiroCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div class="info-item-block">
+                            <label>Base de Cálculo:</label>
+                            <span id="her-adv-base-${advHerdeiroCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%;">0,00</span>
+                        </div>
+                        <div class="info-item-block">
+                            <label>Honorários Bruto:</label>
+                            <span id="her-adv-resultado-${advHerdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
+                        </div>
+                    </div>
+                    <div id="her-adv-fix-fields-${advHerdeiroCount}" class="form-grid" style="display: none; margin-top: 10px; grid-template-columns: 1fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="her-adv-fix-${advHerdeiroCount}">Valor Fixado:</label>
+                            <input type="text" id="her-adv-fix-${advHerdeiroCount}" class="valor-input required-dynamic" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 18%;">
+                            <label for="her-adv-ir-${advHerdeiroCount}">IRRF (R$):</label>
+                            <input type="text" id="her-adv-ir-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 18%;">
+                            <label for="her-adv-ret-${advHerdeiroCount}">Retenção (R$):</label>
+                            <input type="text" id="her-adv-ret-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 64%;">
+                            <label for="her-adv-ret-motivo-${advHerdeiroCount}">Motivo da Retenção:</label>
+                            <input type="text" id="her-adv-ret-motivo-${advHerdeiroCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 10px;">
+                        <button type="button" class="remove-button" onclick="removerParte('her-adv-block-${advHerdeiroCount}')" style="margin-left: 0;">Remover Advogado</button>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários Líquido:</label>
+                            <span id="her-adv-liquido-${advHerdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            listDiv.insertAdjacentHTML('beforeend', html);
+            atualizarCredoresAdicionais();
+        }
+
+        function adicionarAdvogadoCessionario(cessionarioId) {
+            advCessionarioCount++;
+            const listDiv = document.getElementById(`ces-adv-list-${cessionarioId}`);
+            const html = `
+                <div id="ces-adv-block-${advCessionarioCount}" class="adv-cessionario-${cessionarioId}" data-adv-id="${advCessionarioCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;">
+                    <h5 style="margin-top: 0; color: var(--dark-accent); margin-bottom: 15px;">Advogado(a) do Cessionário #${cessionarioId}</h5>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
+                        <div style="flex-basis: 75%;">
+                            <label for="ces-adv-nome-${advCessionarioCount}" style="display: block; margin-bottom: 5px;">Nome do Advogado(a):</label>
+                            <input type="text" id="ces-adv-nome-${advCessionarioCount}" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;" oninput="atualizarQuadroResumo()">
+                        </div>
+                        <div style="flex-basis: 25%;">
+                            <label for="ces-adv-cpf-${advCessionarioCount}" style="display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                            <input type="text" id="ces-adv-cpf-${advCessionarioCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+                    <div class="honorarios-options" style="margin-bottom: 15px;">
+                        <div class="honorarios-option">
+                            <input type="radio" id="ces-adv-perc-opt-${advCessionarioCount}" name="ces-adv-tipo-${advCessionarioCount}" value="percentual" checked onchange="toggleAdvCesTipo(${advCessionarioCount})">
+                            <label for="ces-adv-perc-opt-${advCessionarioCount}">Percentual</label>
+                        </div>
+                        <div class="honorarios-option">
+                            <input type="radio" id="ces-adv-fix-opt-${advCessionarioCount}" name="ces-adv-tipo-${advCessionarioCount}" value="fixado" onchange="toggleAdvCesTipo(${advCessionarioCount})">
+                            <label for="ces-adv-fix-opt-${advCessionarioCount}">Valor Fixado</label>
+                        </div>
+                    </div>
+                    <div id="ces-adv-perc-fields-${advCessionarioCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="ces-adv-perc-${advCessionarioCount}">Percentual (%):</label>
+                            <input type="text" id="ces-adv-perc-${advCessionarioCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div class="info-item-block">
+                            <label>Base de Cálculo:</label>
+                            <span id="ces-adv-base-${advCessionarioCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%;">0,00</span>
+                        </div>
+                        <div class="info-item-block">
+                            <label>Honorários Bruto:</label>
+                            <span id="ces-adv-resultado-${advCessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
+                        </div>
+                    </div>
+                    <div id="ces-adv-fix-fields-${advCessionarioCount}" class="form-grid" style="display: none; margin-top: 10px; grid-template-columns: 1fr 2fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="ces-adv-fix-${advCessionarioCount}">Valor Fixado:</label>
+                            <input type="text" id="ces-adv-fix-${advCessionarioCount}" class="valor-input required-dynamic" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
+                        <div style="flex-basis: 18%;">
+                            <label for="ces-adv-ir-${advCessionarioCount}">IRRF (R$):</label>
+                            <input type="text" id="ces-adv-ir-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 18%;">
+                            <label for="ces-adv-ret-${advCessionarioCount}">Retenção (R$):</label>
+                            <input type="text" id="ces-adv-ret-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        </div>
+                        <div style="flex-basis: 64%;">
+                            <label for="ces-adv-ret-motivo-${advCessionarioCount}">Motivo da Retenção:</label>
+                            <input type="text" id="ces-adv-ret-motivo-${advCessionarioCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                        </div>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 10px;">
+                        <button type="button" class="remove-button" onclick="removerParte('ces-adv-block-${advCessionarioCount}')" style="margin-left: 0;">Remover Advogado</button>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários Líquido:</label>
+                            <span id="ces-adv-liquido-${advCessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            listDiv.insertAdjacentHTML('beforeend', html);
             atualizarCredoresAdicionais();
         }
 
@@ -2147,6 +2321,10 @@
         }
 
         function atualizarCredoresAdicionais() {
+            const valorBruto = getNumericValue('valor-bruto-reclamante');
+            const inssReclamada = getNumericValue('inss-reclamada');
+            const baseCalculoAdvogadosPrincipal = Math.max(0, valorBruto - inssReclamada);
+
             // --- Lógica de Rateio dos Advogados ---
             const honAdvPrincipalNumeric = getNumericValue('adv-resultado');
 
@@ -2186,8 +2364,43 @@
                 const resultadoSpan = document.getElementById(`ces-resultado-${i}`);
                 if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
 
+                const fractionCes = baseCalculoCessionario > 0 ? (valorCalculado / baseCalculoCessionario) : 0;
+                const baseAdvCes = baseCalculoAdvogadosPrincipal * fractionCes;
+
+                let honorariosAdvCes = 0;
+                
+                const advogados = document.querySelectorAll(`.adv-cessionario-${i}`);
+                advogados.forEach(advBlock => {
+                    const advId = advBlock.dataset.advId;
+                    const isPerc = document.getElementById(`ces-adv-perc-opt-${advId}`).checked;
+                    let honorariosAdvAtual = 0;
+                    if (isPerc) {
+                        const percAdv = getNumericValue(`ces-adv-perc-${advId}`) / 100;
+                        honorariosAdvAtual = baseAdvCes * percAdv;
+                    } else {
+                        honorariosAdvAtual = getNumericValue(`ces-adv-fix-${advId}`);
+                    }
+                    
+                    document.getElementById(`ces-adv-base-${advId}`).textContent = formatarMoedaParaExibicao(baseAdvCes);
+                    
+                    honorariosAdvAtual = Math.min(honorariosAdvAtual, valorCalculado);
+                    honorariosAdvCes += honorariosAdvAtual;
+                    
+                    const advResultSpan = document.getElementById(`ces-adv-resultado-${advId}`);
+                    if (advResultSpan) {
+                        advResultSpan.textContent = formatarMoedaParaExibicao(honorariosAdvAtual);
+                    }
+                    
+                    const irAdv = getNumericValue(`ces-adv-ir-${advId}`);
+                    const retAdv = getNumericValue(`ces-adv-ret-${advId}`);
+                    const liqAdv = Math.max(0, honorariosAdvAtual - irAdv - retAdv);
+                    
+                    const advLiqSpan = document.getElementById(`ces-adv-liquido-${advId}`);
+                    if (advLiqSpan) advLiqSpan.textContent = formatarMoedaParaExibicao(liqAdv);
+                });
+
                 const retencao = getNumericValue(`ces-retencao-${i}`);
-                const liquido = Math.max(0, valorCalculado - retencao);
+                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvCes);
                 const liquidoSpan = document.getElementById(`ces-liquido-${i}`);
                 if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
 
@@ -2207,8 +2420,43 @@
                 const resultadoSpan = document.getElementById(`her-resultado-${i}`);
                 if (resultadoSpan) resultadoSpan.textContent = formatarMoedaParaExibicao(valorCalculado);
 
+                const fractionHer = baseCalculoCessionario > 0 ? (valorCalculado / baseCalculoCessionario) : 0;
+                const baseAdvHer = baseCalculoAdvogadosPrincipal * fractionHer;
+
+                let honorariosAdvHer = 0;
+                
+                const advogados = document.querySelectorAll(`.adv-herdeiro-${i}`);
+                advogados.forEach(advBlock => {
+                    const advId = advBlock.dataset.advId;
+                    const isPerc = document.getElementById(`her-adv-perc-opt-${advId}`).checked;
+                    let honorariosAdvAtual = 0;
+                    if (isPerc) {
+                        const percAdv = getNumericValue(`her-adv-perc-${advId}`) / 100;
+                        honorariosAdvAtual = baseAdvHer * percAdv;
+                    } else {
+                        honorariosAdvAtual = getNumericValue(`her-adv-fix-${advId}`);
+                    }
+                    
+                    document.getElementById(`her-adv-base-${advId}`).textContent = formatarMoedaParaExibicao(baseAdvHer);
+                    
+                    honorariosAdvAtual = Math.min(honorariosAdvAtual, valorCalculado);
+                    honorariosAdvHer += honorariosAdvAtual;
+                    
+                    const advResultSpan = document.getElementById(`her-adv-resultado-${advId}`);
+                    if (advResultSpan) {
+                        advResultSpan.textContent = formatarMoedaParaExibicao(honorariosAdvAtual);
+                    }
+                    
+                    const irAdv = getNumericValue(`her-adv-ir-${advId}`);
+                    const retAdv = getNumericValue(`her-adv-ret-${advId}`);
+                    const liqAdv = Math.max(0, honorariosAdvAtual - irAdv - retAdv);
+                    
+                    const advLiqSpan = document.getElementById(`her-adv-liquido-${advId}`);
+                    if (advLiqSpan) advLiqSpan.textContent = formatarMoedaParaExibicao(liqAdv);
+                });
+
                 const retencao = getNumericValue(`her-retencao-${i}`);
-                const liquido = Math.max(0, valorCalculado - retencao);
+                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvHer);
                 const liquidoSpan = document.getElementById(`her-liquido-${i}`);
                 if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
             }
@@ -2231,6 +2479,10 @@
             let globalLiberado = 0;
             let globalRetido = 0;
             let globalRecolher = 0;
+
+            let advogadosHtml = '';
+            let subLibAdvogados = 0;
+            let subRetAdvogados = 0;
 
             // Variáveis para subtotais
             // Serão calculadas localmente ou acumuladas em objetos para Lib/Ret
@@ -2260,6 +2512,24 @@
                             </tr>`;
             };
 
+            const addAdvogadoRow = (nome, cpf, valor, cssClass = '') => {
+                const valorNumerico = parseFloat(valor) || 0;
+                if (valorNumerico === 0) return; 
+
+                if (nome.includes('IRRF retido')) {
+                    cssClass = 'linha-inss';
+                }
+
+                let style = cssClass === '' ? 'font-weight: bold; text-align: left;' : 'text-align: left;';
+
+                advogadosHtml += `
+                            <tr class="${cssClass}">
+                                <td>${nome}</td>
+                                <td>${(cpf === 'Recolhimento' || cpf === 'Retenção') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
+                                <td class="value-col" style="${style}">${formatarMoedaParaExibicao(valorNumerico)}</td>
+                            </tr>`;
+            };
+
             // Helper para adicionar linha de subtotal
             const addSubtotalRow = (label, valorLib, valorRet) => {
                 if (valorLib <= 0.005 && valorRet <= 0.005) return;
@@ -2274,6 +2544,8 @@
 
             const honAdvTotal = getNumericValue('adv-resultado');
             const inssReclamada = getNumericValue('inss-reclamada');
+            const valorBruto = getNumericValue('valor-bruto-reclamante');
+            const baseCalculoAdvogadosPrincipal = Math.max(0, valorBruto - inssReclamada);
             let irrfAdvogados = [];
 
             // Retrieve retentions early to deduct from base calculation
@@ -2285,6 +2557,7 @@
             const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal - totalRetencoesReclamante);
             let subLibCessionarios = 0;
             let subRetCessionarios = 0;
+            let totalCessionariosBruto = 0;
 
             for (let i = 1; i <= cessionarioCount; i++) {
                 const nomeInput = document.getElementById(`ces-nome-${i}`);
@@ -2292,15 +2565,51 @@
                     const percentual = getNumericValue(`ces-percentual-${i}`);
                     const valorCessionario = (percentual / 100) * baseCalculoCessionario;
                     const retencao = getNumericValue(`ces-retencao-${i}`);
-                    const liquidoCessionario = Math.max(0, valorCessionario - retencao);
+                    totalCessionariosBruto += valorCessionario;
+                    
+                    let honorariosAdvTotal = 0;
+                    const advogados = document.querySelectorAll(`.adv-cessionario-${i}`);
+                    
+                    advogados.forEach(advBlock => {
+                        const advId = advBlock.dataset.advId;
+                        const isPerc = document.getElementById(`ces-adv-perc-opt-${advId}`).checked;
+                        let honorariosAdv = isPerc ? Math.min(valorCessionario, valorCessionario * (getNumericValue(`ces-adv-perc-${advId}`) / 100)) : Math.min(valorCessionario, getNumericValue(`ces-adv-fix-${advId}`));
+                        
+                        let irAdv = getNumericValue(`ces-adv-ir-${advId}`);
+                        let retAdv = getNumericValue(`ces-adv-ret-${advId}`);
+                        let liquidoAdv = Math.max(0, honorariosAdv - irAdv - retAdv);
+                        let nomeAdv = document.getElementById(`ces-adv-nome-${advId}`).value;
+                        let cpfAdv = document.getElementById(`ces-adv-cpf-${advId}`).value;
+                        
+                        honorariosAdvTotal += honorariosAdv;
+                        
+                        if (honorariosAdv > 0) {
+                            if (liquidoAdv > 0) {
+                                addAdvogadoRow(`Advogado (Ces. #${i}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
+                                subLibAdvogados += liquidoAdv;
+                            }
+                            if (retAdv > 0) {
+                                const motivoAdv = document.getElementById(`ces-adv-ret-motivo-${advId}`).value;
+                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. Ces. #${i})`, 'Retenção', retAdv, 'linha-retencao');
+                                subRetAdvogados += retAdv;
+                            }
+                            if (irAdv > 0) {
+                                irrfAdvogados.push({ nome: nomeAdv || `Adv. Ces. #${i}`, valor: irAdv });
+                            }
+                        }
+                    });
+
+                    const liquidoCessionario = Math.max(0, valorCessionario - retencao - honorariosAdvTotal);
 
                     if (valorCessionario > 0) {
-                        addRow(
-                            `Cessionário: <strong>${nomeInput.value || `Cessionário #${i}`}</strong>`,
-                            document.getElementById(`ces-cpf-${i}`).value,
-                            liquidoCessionario
-                        );
-                        subLibCessionarios += liquidoCessionario;
+                        if (liquidoCessionario > 0) {
+                            addRow(
+                                `Cessionário: <strong>${nomeInput.value || `Cessionário #${i}`}</strong>`,
+                                document.getElementById(`ces-cpf-${i}`).value,
+                                liquidoCessionario
+                            );
+                            subLibCessionarios += liquidoCessionario;
+                        }
 
                         if (retencao > 0) {
                             const motivo = document.getElementById(`ces-retencao-motivo-${i}`).value;
@@ -2315,12 +2624,13 @@
             globalRetido += subRetCessionarios;
 
             // 2. Reclamante / Herdeiros
-            // Nota: Para base de cálculo, usamos o valor bruto dos cessionários (Lib + Ret)
-            const baseCalculoReclamante = Math.max(0, baseCalculoCessionario - (subLibCessionarios + subRetCessionarios));
+            // Nota: Para base de cálculo, usamos o valor bruto dos cessionários
+            const baseCalculoReclamante = Math.max(0, baseCalculoCessionario - totalCessionariosBruto);
 
             let subLibHerdeiros = 0;
             let subRetHerdeiros = 0;
             let herdeirosExistem = false;
+            let totalHerdeirosBruto = 0;
 
             for (let i = 1; i <= herdeiroCount; i++) {
                 const nomeInput = document.getElementById(`her-nome-${i}`);
@@ -2329,15 +2639,54 @@
                     const percentual = getNumericValue(`her-percentual-${i}`);
                     const valorHerdeiro = (percentual / 100) * baseCalculoReclamante;
                     const retencao = getNumericValue(`her-retencao-${i}`);
-                    const liquidoHerdeiro = Math.max(0, valorHerdeiro - retencao);
+                    totalHerdeirosBruto += valorHerdeiro;
+
+                    const fractionHer = baseCalculoCessionario > 0 ? (valorHerdeiro / baseCalculoCessionario) : 0;
+                    const baseAdvHer = baseCalculoAdvogadosPrincipal * fractionHer;
+
+                    let honorariosAdvTotal = 0;
+                    const advogados = document.querySelectorAll(`.adv-herdeiro-${i}`);
+                    
+                    advogados.forEach(advBlock => {
+                        const advId = advBlock.dataset.advId;
+                        const isPerc = document.getElementById(`her-adv-perc-opt-${advId}`).checked;
+                        let honorariosAdv = isPerc ? Math.min(valorHerdeiro, baseAdvHer * (getNumericValue(`her-adv-perc-${advId}`) / 100)) : Math.min(valorHerdeiro, getNumericValue(`her-adv-fix-${advId}`));
+                        
+                        let irAdv = getNumericValue(`her-adv-ir-${advId}`);
+                        let retAdv = getNumericValue(`her-adv-ret-${advId}`);
+                        let liquidoAdv = Math.max(0, honorariosAdv - irAdv - retAdv);
+                        let nomeAdv = document.getElementById(`her-adv-nome-${advId}`).value;
+                        let cpfAdv = document.getElementById(`her-adv-cpf-${advId}`).value;
+                        
+                        honorariosAdvTotal += honorariosAdv;
+                        
+                        if (honorariosAdv > 0) {
+                            if (liquidoAdv > 0) {
+                                addAdvogadoRow(`Advogado (Her. #${i}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
+                                subLibAdvogados += liquidoAdv;
+                            }
+                            if (retAdv > 0) {
+                                const motivoAdv = document.getElementById(`her-adv-ret-motivo-${advId}`).value;
+                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. Her. #${i})`, 'Retenção', retAdv, 'linha-retencao');
+                                subRetAdvogados += retAdv;
+                            }
+                            if (irAdv > 0) {
+                                irrfAdvogados.push({ nome: nomeAdv || `Adv. Her. #${i}`, valor: irAdv });
+                            }
+                        }
+                    });
+
+                    const liquidoHerdeiro = Math.max(0, valorHerdeiro - retencao - honorariosAdvTotal);
 
                     if (valorHerdeiro > 0) {
-                        addRow(
-                            `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${i}`}</strong>`,
-                            document.getElementById(`her-cpf-${i}`).value,
-                            liquidoHerdeiro
-                        );
-                        subLibHerdeiros += liquidoHerdeiro;
+                        if (liquidoHerdeiro > 0) {
+                            addRow(
+                                `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${i}`}</strong>`,
+                                document.getElementById(`her-cpf-${i}`).value,
+                                liquidoHerdeiro
+                            );
+                            subLibHerdeiros += liquidoHerdeiro;
+                        }
 
                         if (retencao > 0) {
                             const motivo = document.getElementById(`her-retencao-motivo-${i}`).value;
@@ -2354,7 +2703,7 @@
             let subLibReclamante = 0;
             let subRetReclamante = 0;
             // Total bruto dos herdeiros para dedução da base
-            const totalBrutoHerdeiros = subLibHerdeiros + subRetHerdeiros;
+            const totalBrutoHerdeiros = totalHerdeirosBruto;
 
             if (herdeirosExistem) {
                 const valorRestanteReclamante = Math.max(0, baseCalculoReclamante - totalBrutoHerdeiros);
@@ -2399,8 +2748,6 @@
             globalRetido += subRetReclamante;
 
             // 3. Advogados
-            let subLibAdvogados = 0;
-            let subRetAdvogados = 0;
 
             if (honAdvTotal > 0) {
                 // Advogado Principal (Baseado no Input)
@@ -2412,7 +2759,7 @@
                     const retPrincipal = getNumericValue('adv-principal-retencao');
                     const liquidoPrincipal = Math.max(0, valorPrincipal - irPrincipal - retPrincipal);
 
-                    addRow(
+                    addAdvogadoRow(
                         `Advogado: <strong>${document.getElementById('adv-nome-principal').value || 'Adv. Principal'}</strong>`,
                         document.getElementById('adv-cpf-principal').value,
                         liquidoPrincipal
@@ -2422,7 +2769,7 @@
                     if (retPrincipal > 0) {
                         const motivoRetPrincipal = document.getElementById('adv-principal-retencao-motivo').value;
                         const labelRetencao = motivoRetPrincipal ? `Retenção (${motivoRetPrincipal})` : `Retenção (Adv. Principal)`;
-                        addRow(labelRetencao, 'Retenção', retPrincipal, 'linha-retencao');
+                        addAdvogadoRow(labelRetencao, 'Retenção', retPrincipal, 'linha-retencao');
                         subRetAdvogados += retPrincipal;
                     }
                     if (irPrincipal > 0) {
@@ -2441,7 +2788,7 @@
                     const liquidoCalculado = Math.max(0, valorCalculado - irAdicional - retAdicional);
 
                     if (valorCalculado > 0) {
-                        addRow(
+                        addAdvogadoRow(
                             `Advogado: <strong>${nomeInput.value || `Adv. Adicional #${i}`}</strong>`,
                             document.getElementById(`adv-ad-cpf-${i}`).value,
                             liquidoCalculado
@@ -2450,7 +2797,7 @@
                         if (retAdicional > 0) {
                             const motivoRetAdicional = document.getElementById(`adv-ad-retencao-motivo-${i}`).value;
                             const labelRetencao = motivoRetAdicional ? `Retenção (${motivoRetAdicional})` : `Retenção (Adv. Adicional #${i})`;
-                            addRow(labelRetencao, 'Retenção', retAdicional, 'linha-retencao');
+                            addAdvogadoRow(labelRetencao, 'Retenção', retAdicional, 'linha-retencao');
                             subRetAdvogados += retAdicional;
                         }
                         if (irAdicional > 0) {
@@ -2459,6 +2806,7 @@
                     }
                 }
             }
+            html += advogadosHtml;
             addSubtotalRow('ADVOGADOS', subLibAdvogados, subRetAdvogados);
             globalLiberado += subLibAdvogados;
             globalRetido += subRetAdvogados;
@@ -2569,6 +2917,8 @@
             advogadoAdicionalCount = 0;
             herdeiroCount = 0;
             cessionarioCount = 0;
+            advHerdeiroCount = 0;
+            advCessionarioCount = 0;
             document.getElementById('adv-percentual-opt').checked = true;
             toggleAdvHonorariosFields();
             preencherDataAtual();
@@ -2593,7 +2943,31 @@
             if (id.startsWith('adv-ad-cpf-')) return `CPF/CNPJ do Advogado Adicional #${id.split('-')[3]}`;
             if (id.startsWith('adv-ad-percentual-')) return `Percentual do Advogado Adicional #${id.split('-')[3]}`;
 
+            if (id.startsWith('her-adv-nome-')) return `Nome do Advogado do Herdeiro #${id.split('-')[3]}`;
+            if (id.startsWith('her-adv-cpf-')) return `CPF/CNPJ do Advogado do Herdeiro #${id.split('-')[3]}`;
+            if (id.startsWith('her-adv-perc-')) return `Percentual do Advogado do Herdeiro #${id.split('-')[3]}`;
+            if (id.startsWith('her-adv-fix-')) return `Valor Fixado do Advogado do Herdeiro #${id.split('-')[3]}`;
+
+            if (id.startsWith('ces-adv-nome-')) return `Nome do Advogado do Cessionário #${id.split('-')[3]}`;
+            if (id.startsWith('ces-adv-cpf-')) return `CPF/CNPJ do Advogado do Cessionário #${id.split('-')[3]}`;
+            if (id.startsWith('ces-adv-perc-')) return `Percentual do Advogado do Cessionário #${id.split('-')[3]}`;
+            if (id.startsWith('ces-adv-fix-')) return `Valor Fixado do Advogado do Cessionário #${id.split('-')[3]}`;
+
             return null;
+        }
+
+        function toggleAdvHerTipo(id) {
+            const isPercentual = document.getElementById(`her-adv-perc-opt-${id}`).checked;
+            document.getElementById(`her-adv-perc-fields-${id}`).style.display = isPercentual ? 'grid' : 'none';
+            document.getElementById(`her-adv-fix-fields-${id}`).style.display = isPercentual ? 'none' : 'grid';
+            atualizarCredoresAdicionais();
+        }
+
+        function toggleAdvCesTipo(id) {
+            const isPercentual = document.getElementById(`ces-adv-perc-opt-${id}`).checked;
+            document.getElementById(`ces-adv-perc-fields-${id}`).style.display = isPercentual ? 'grid' : 'none';
+            document.getElementById(`ces-adv-fix-fields-${id}`).style.display = isPercentual ? 'none' : 'grid';
+            atualizarCredoresAdicionais();
         }
 
         function validarFormulario() {
