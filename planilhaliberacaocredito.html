@@ -2562,6 +2562,7 @@
             for (let i = 1; i <= cessionarioCount; i++) {
                 const nomeInput = document.getElementById(`ces-nome-${i}`);
                 if (nomeInput) {
+                    const nomeCessionario = nomeInput.value || `Cessionário #${i}`;
                     const percentual = getNumericValue(`ces-percentual-${i}`);
                     const valorCessionario = (percentual / 100) * baseCalculoCessionario;
                     const retencao = getNumericValue(`ces-retencao-${i}`);
@@ -2585,16 +2586,16 @@
                         
                         if (honorariosAdv > 0) {
                             if (liquidoAdv > 0) {
-                                addAdvogadoRow(`Advogado (Ces. #${i}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
+                                addAdvogadoRow(`Advogado (${nomeCessionario}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
                                 subLibAdvogados += liquidoAdv;
                             }
                             if (retAdv > 0) {
                                 const motivoAdv = document.getElementById(`ces-adv-ret-motivo-${advId}`).value;
-                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. Ces. #${i})`, 'Retenção', retAdv, 'linha-retencao');
+                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. ${nomeCessionario})`, 'Retenção', retAdv, 'linha-retencao');
                                 subRetAdvogados += retAdv;
                             }
                             if (irAdv > 0) {
-                                irrfAdvogados.push({ nome: nomeAdv || `Adv. Ces. #${i}`, valor: irAdv });
+                                irrfAdvogados.push({ nome: nomeAdv || `Adv. ${nomeCessionario}`, valor: irAdv });
                             }
                         }
                     });
@@ -2636,6 +2637,7 @@
                 const nomeInput = document.getElementById(`her-nome-${i}`);
                 if (nomeInput) {
                     herdeirosExistem = true;
+                    const nomeHerdeiro = nomeInput.value || `Herdeiro #${i}`;
                     const percentual = getNumericValue(`her-percentual-${i}`);
                     const valorHerdeiro = (percentual / 100) * baseCalculoReclamante;
                     const retencao = getNumericValue(`her-retencao-${i}`);
@@ -2662,16 +2664,16 @@
                         
                         if (honorariosAdv > 0) {
                             if (liquidoAdv > 0) {
-                                addAdvogadoRow(`Advogado (Her. #${i}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
+                                addAdvogadoRow(`Advogado (${nomeHerdeiro}): <strong>${nomeAdv || `Advogado`}</strong>`, cpfAdv, liquidoAdv);
                                 subLibAdvogados += liquidoAdv;
                             }
                             if (retAdv > 0) {
                                 const motivoAdv = document.getElementById(`her-adv-ret-motivo-${advId}`).value;
-                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. Her. #${i})`, 'Retenção', retAdv, 'linha-retencao');
+                                addAdvogadoRow(motivoAdv ? `Retenção (${motivoAdv})` : `Retenção (Adv. ${nomeHerdeiro})`, 'Retenção', retAdv, 'linha-retencao');
                                 subRetAdvogados += retAdv;
                             }
                             if (irAdv > 0) {
-                                irrfAdvogados.push({ nome: nomeAdv || `Adv. Her. #${i}`, valor: irAdv });
+                                irrfAdvogados.push({ nome: nomeAdv || `Adv. ${nomeHerdeiro}`, valor: irAdv });
                             }
                         }
                     });
