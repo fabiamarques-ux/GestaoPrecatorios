@@ -198,7 +198,7 @@
         }
 
         summary {
-            font-size: 1.3em;
+            font-size: 1.1em;
             font-weight: bold;
             padding: 15px;
             color: var(--primary-color);
@@ -254,6 +254,15 @@
         .process-input-row .process-input-group {
             justify-content: center;
             margin-top: 5px;
+        }
+
+        /* Bloco de Atualização de Cálculos */
+        .bloco-atualizacao-calculo {
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+            margin-top: 15px;
         }
 
         /* Layout de Formulário */
@@ -331,6 +340,12 @@
             font-weight: bold;
         }
 
+        /* Assegura o alinhamento à direita em todos os resultados de fórmulas */
+        .valor-display-style {
+            text-align: right !important;
+            display: block !important;
+        }
+
         /* --- Overrides for full-width text fields --- */
         .info-item-block {
             display: block;
@@ -355,7 +370,7 @@
 
         /* Estilos para o bloco de Herdeiros/Advogados Adicionais */
         .parte-adicional-block {
-            border: 1px dashed var(--info-border);
+            border: 1px solid var(--primary-color);
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 6px;
@@ -385,6 +400,7 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background-color 0.3s;
+            font-size: 0.85em;
         }
 
         .add-button:hover {
@@ -419,13 +435,61 @@
             margin-left: 10px;
         }
 
+        /* Botões de Advogados Específicos */
+        .add-adv-esp-btn {
+            background-color: white;
+            color: var(--dark-accent);
+            border: 1px solid var(--dark-accent);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .add-adv-esp-btn:hover { background-color: #f0f0f0; }
+
+        .remove-adv-esp-btn {
+            background-color: white;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .remove-adv-esp-btn:hover { background-color: #f8d7da; }
+
+        /* Botão Inline (ex: Adicionar Honorários) */
+        .btn-calc-honorarios {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--info-border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-calc-honorarios:hover {
+            background-color: var(--light-bg);
+            border-color: var(--primary-color);
+            color: var(--dark-accent);
+        }
 
         /* Seção de Honorários */
         .honorarios-section {
-            border: 1px dashed var(--info-border);
+            border: 1px solid var(--primary-color);
             padding: 20px;
             margin-top: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 15px;
             border-radius: 8px;
             background-color: var(--very-light-bg);
         }
@@ -595,11 +659,6 @@
             font-weight: 600;
         }
 
-        /* Destaque para linha de FGTS (Amarelo Claro) */
-        .creditos-table .linha-fgts td {
-            background-color: #fff9c4;
-        }
-
         /* Estilos para o novo alerta dinâmico */
         .alerta-bruto-tabela {
             margin-top: 20px;
@@ -658,6 +717,15 @@
             @page {
                 margin: 1.5cm;
                 size: A4;
+            }
+
+            details.parte-adicional-block summary {
+                font-size: 1em !important;
+                color: var(--dark-accent) !important;
+                border-bottom: 1px solid #ccc !important;
+            }
+            details.parte-adicional-block > div {
+                display: block !important;
             }
 
             body {
@@ -811,6 +879,10 @@
                 padding: 10px;
                 margin-bottom: 15px;
                 break-inside: avoid;
+            }
+            
+            .parte-adicional-block {
+                border: 1px dashed var(--info-border) !important;
             }
 
             .honorarios-fields {
@@ -969,6 +1041,20 @@
             .signature-block {
                 page-break-inside: avoid;
                 break-inside: avoid;
+            }
+        }
+        
+        @media print {
+            .bloco-atualizacao-calculo {
+                border: none !important;
+                padding: 0 !important;
+                background-color: transparent !important;
+                margin-top: 0 !important;
+            }
+            .bloco-atualizacao-calculo .calc-inner-total {
+                padding-top: 15px !important;
+                margin-top: 15px !important;
+                border-top: 1px dashed var(--info-border) !important;
             }
         }
 
@@ -1131,6 +1217,15 @@
             text-align: left;
         }
 
+        /* Layout de Impressão e Modal (Tabela para Margens) */
+        .print-layout-table {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            border: none;
+        }
+
         @media print {
             @page {
                 margin: 0;
@@ -1170,9 +1265,7 @@
 
             /* Layout de Impressão (Tabela para Margens) */
             .print-layout-table {
-                width: 100%;
-                border-collapse: collapse;
-                border: none;
+                max-width: none;
             }
             .print-header-space, .print-footer-space {
                 height: 1.5cm;
@@ -1384,31 +1477,36 @@
             <div class="section-content">
                 <div class="form-grid">
 
-                    <div class="grid-col-span-2">
+                    <div class="grid-col-span-2" id="bloco-processo">
                         <div class="process-block"
-                            style="text-align: left; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                            <span class="header-label" style="margin-bottom: 0;">Nº PROCESSO PRECATÓRIO:</span>
-                            <div class="process-input-group" style="justify-content: flex-start;">
-                                <input type="text" id="proc-num" class="header-input process-part" maxlength="7"
-                                    placeholder="" oninput="formatarNumero(this, 7)">
-                                <span class="separator">-</span>
-                                <input type="text" id="proc-digito" class="header-input process-subpart" maxlength="2"
-                                    placeholder="" oninput="formatarNumero(this, 2)">
-                                <span class="separator">.</span>
-                                <input type="text" id="proc-ano" class="header-input process-year" maxlength="4"
-                                    placeholder="" oninput="formatarNumero(this, 4)">
-                                <span class="separator">.</span>
-                                <span class="fixed-part">5</span>
-                                <span class="separator">.</span>
-                                <span class="fixed-part">19</span>
-                                <span class="separator">.</span>
-                                <span class="fixed-part">0000</span>
-
+                            style="text-align: left; display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                                <span class="header-label" style="margin-bottom: 0;">Nº PROCESSO PRECATÓRIO:</span>
+                                <div class="process-input-group" style="justify-content: flex-start;">
+                                    <input type="text" id="proc-num" class="header-input process-part" maxlength="7"
+                                        placeholder="" oninput="formatarNumero(this, 7)" onpaste="handleProcessoPaste(event)">
+                                    <span class="separator">-</span>
+                                    <input type="text" id="proc-digito" class="header-input process-subpart" maxlength="2"
+                                        placeholder="" oninput="formatarNumero(this, 2)" onpaste="handleProcessoPaste(event)">
+                                    <span class="separator">.</span>
+                                    <input type="text" id="proc-ano" class="header-input process-year" maxlength="4"
+                                        placeholder="" oninput="formatarNumero(this, 4)" onpaste="handleProcessoPaste(event)">
+                                    <span class="separator">.</span>
+                                    <span class="fixed-part">5</span>
+                                    <span class="separator">.</span>
+                                    <span class="fixed-part">19</span>
+                                    <span class="separator">.</span>
+                                    <span class="fixed-part">0000</span>
+                                </div>
                             </div>
+                            <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-processo'); limparBloco('bloco-reclamante')" title="Limpar Processo e Reclamante">🧹</button>
                         </div>
                     </div>
 
-                    <div class="grid-col-span-2">
+                    <div class="grid-col-span-2" id="bloco-reclamante">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                            <label style="font-weight: bold; color: var(--primary-color); font-size: 1.05em;">Dados do Reclamante</label>
+                        </div>
                         <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                             <div style="flex-basis: 75%;">
                                 <label for="reclamante" class="required-field-label"
@@ -1426,11 +1524,13 @@
                         </div>
                     </div>
 
-                    <div class="grid-col-span-2"
-                        style="margin-top: 15px; padding: 15px; border: 1px dashed var(--info-border); border-radius: 8px; background-color: var(--very-light-bg);">
-                        <h4
-                            style="margin-top: 0; color: var(--dark-accent); font-size: 1.1em; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
-                            Dados do Depósito Bancário</h4>
+                    <div class="grid-col-span-2" id="bloco-deposito"
+                        style="margin-top: 15px; padding: 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                            <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                                Dados do Depósito Bancário</h4>
+                            <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-deposito')" title="Limpar Depósito">🧹</button>
+                        </div>
                         <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
                             <div class="info-item">
                                 <label for="valor-deposito" class="required-field-label">Valor do Depósito:</label>
@@ -1451,92 +1551,129 @@
                     </div>
 
 
-                    <div class="grid-col-span-2"
-                        style="padding-top: 15px; margin-top: 15px; border-top: 1px dashed var(--info-border); background-color: var(--light-bg); padding: 15px; border-radius: 8px;">
+                    <div class="grid-col-span-2" id="bloco-planilha" style="margin-top: 10px; padding: 10px 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px;">
+                            <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                                Valores Extraídos da Última Planilha de Atualização de Cálculos
+                            </h4>
+                            <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-planilha')" title="Limpar Valores">🧹</button>
+                        </div>
 
-                        <label for="valor-bruto-reclamante"
-                            style="font-weight: bold; font-size: 1.2em; color: var(--text-primary);">TOTAL DEVIDO PELA
-                            RECLAMADA:</label>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <!-- Coluna Esquerda -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div style="background-color: white; padding: 8px 12px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <div class="info-item" style="padding: 0; border: none; background: transparent; margin: 0;">
+                                        <label for="liquido-reclamante-calculo">Líquido (Reclamante):</label>
+                                        <input type="text" id="liquido-reclamante-calculo" class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); atualizarSomaLiquido()">
+                                    </div>
+                                    
+                                    <div class="no-print" style="display: flex; flex-direction: column; gap: 6px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #ccc; border-bottom: 1px dashed #ccc; padding-bottom: 8px; margin-bottom: 8px;">
+                                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                                            <label for="input-honorarios-advocaticios" style="font-weight: normal; color: var(--text-dark); margin: 0; white-space: nowrap;">+ Honorários Advocatícios:</label>
+                                            <input type="text" id="input-honorarios-advocaticios" placeholder="0,00" oninput="atualizarHonorariosSimultaneo(this)" style="width: 120px; padding: 4px 8px; border: 1px solid #ccc; border-radius: 6px; text-align: right; background-color: #fafafa; color: var(--text-primary); font-weight: bold;">
+                                        </div>
+                                        <div style="display: flex; align-items: center; justify-content: flex-end; gap: 6px;">
+                                            <label for="input-irrf-honorarios" style="font-weight: normal; color: var(--text-dark); margin: 0; white-space: nowrap;">+ IRRF Honorários Advocatícios:</label>
+                                            <input type="text" id="input-irrf-honorarios" placeholder="0,00" oninput="atualizarIRRFHonorariosSimultaneo(this)" style="width: 120px; padding: 4px 8px; border: 1px solid #ccc; border-radius: 6px; text-align: right; background-color: #fafafa; color: var(--text-primary); font-weight: bold;">
+                                        </div>
+                                    </div>
 
-                        <span id="valor-bruto-reclamante" class="valor-display-style"
-                            style="background-color: var(--success-bg); border: 1px solid var(--dark-accent); padding: 12px; font-size: 1.2em;">0,00</span>
+                                    <div class="info-item" style="padding: 0; border: none; background: transparent; margin: 0;">
+                                        <label for="valor-deposito-judicial" style="color: var(--text-dark);">Líquido (Reclamante) Total:</label>
+                                        <input type="text" id="valor-deposito-judicial" class="valor-input" placeholder="0,00" readonly style="background-color: #e9ecef; border-color: var(--primary-color);">
+                                    </div>
+                                </div>
 
-                    </div>
+                                <div class="info-item" style="background-color: white; padding: 8px 12px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="fgts-viculada">FGTS a Depositar:</label>
+                                    <input type="text" id="fgts-viculada" class="valor-input" placeholder="0,00">
+                                </div>
+                            </div>
 
-                    <div class="info-item">
-                        <label for="valor-deposito-judicial">Líquido (Reclamante):</label>
-                        <input type="text" id="valor-deposito-judicial" class="valor-input" placeholder="0,00"
-                            oninput="formatarMoeda(this); atualizarTotalDevidoReclamada()">
-                    </div>
+                            <!-- Coluna Direita -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                
+                                <div class="info-item" style="background-color: white; padding: 8px 12px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="ir-valor">IRRF (Reclamante):</label>
+                                    <input type="text" id="ir-valor" class="valor-input" placeholder="0,00">
+                                </div>
 
-                    <div class="info-item">
-                        <label for="ir-valor">IRRF (Reclamante):</label>
-                        <input type="text" id="ir-valor" class="valor-input" placeholder="0,00">
-                    </div>
+                                <div class="info-item" style="background-color: white; padding: 8px 12px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="inss-reclamante">INSS (Reclamante):</label>
+                                    <input type="text" id="inss-reclamante" class="valor-input" placeholder="0,00">
+                                </div>
+                                                                
+                                <div class="info-item" style="background-color: white; padding: 8px 12px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="inss-reclamada">INSS (Reclamada):</label>
+                                    <input type="text" id="inss-reclamada" class="valor-input" placeholder="0,00">
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="info-item">
-                        <label for="inss-reclamante">INSS (Reclamante):</label>
-                        <input type="text" id="inss-reclamante" class="valor-input" placeholder="0,00">
-                    </div>
-
-                    <div class="info-item">
-                        <label for="fgts-viculada">FGTS a Depositar:</label>
-                        <input type="text" id="fgts-viculada" class="valor-input" placeholder="0,00">
-                    </div>
-
-                    <div class="info-item">
-                        <label for="inss-reclamada">INSS (Reclamada):</label>
-                        <input type="text" id="inss-reclamada" class="valor-input" placeholder="0,00">
+                        <div style="margin-top: 10px; padding: 8px 12px; border: 1px solid var(--info-border); background-color: var(--light-bg); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <label for="valor-bruto-reclamante"
+                                style="font-weight: bold; font-size: 1.05em; color: var(--text-primary); margin: 0;">TOTAL DEVIDO PELA RECLAMADA:</label>
+                            <span id="valor-bruto-reclamante"
+                                style="font-size: 1.05em; font-weight: bold; color: var(--text-primary);">0,00</span>
+                        </div>
                     </div>
 
                     <details class="grid-col-span-2"
-                        style="margin-top: 15px; border: 1px dashed #ffeeba; border-radius: 8px; background-color: #fffbf2; padding: 0;">
+                        style="margin-top: 15px; border: 1px solid #b5aa89; border-radius: 8px; background-color: #fffbf2; padding: 0;">
                         <summary
-                            style="background-color: #fffbf2; color: #856404; border-bottom: none; margin: 0; border-radius: 8px;">
-                            Retenções sobre o Crédito do Reclamante</summary>
+                            style="background-color: #fffbf2; color: #856404; border-bottom: none; margin: 0; border-radius: 8px; font-size: 1.1em;">
+                            Descontos sobre o Crédito do Reclamante</summary>
                         <div class="section-content"
-                            style="background-color: #fffbf2; padding: 15px; border-radius: 0 0 8px 8px;">
+                            style="background-color: #fffbf2; padding: 20px; border-radius: 0 0 8px 8px; display: flex; flex-direction: column; gap: 15px;">
 
-                            <div style="margin-bottom: 15px;">
-                                <h5 style="margin: 0 0 5px 0; color: #856404; font-size: 0.95em; font-weight: 600;">
-                                    Pensão Alimentícia</h5>
-                                <div class="form-grid" style="grid-template-columns: 1fr 2fr 1fr; gap: 10px;">
+                            <div style="background-color: white; padding: 15px; border: 1px solid #856404; border-radius: 8px;" id="bloco-pensao">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px;">
+                                    <h5 style="margin: 0; color: #856404; font-size: 1em; font-weight: 600;">
+                                        Pensão Alimentícia</h5>
+                                    <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-pensao')" title="Limpar Pensão">🧹</button>
+                                </div>
+                                <div class="form-grid" style="grid-template-columns: 2fr 1fr 1fr; gap: 15px;">
                                     <div class="info-item-block">
-                                        <label for="pensao-alimenticia" style="font-size: 0.9em;">Valor:</label>
-                                        <input type="text" id="pensao-alimenticia" name="pensao-alimenticia"
-                                            class="valor-input" placeholder="0,00"
-                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="info-item-block">
-                                        <label for="pensao-beneficiario" style="font-size: 0.9em;">Beneficiário:</label>
+                                        <label for="pensao-beneficiario" style="font-size: 0.9em; font-weight: 600;">Beneficiário:</label>
                                         <input type="text" id="pensao-beneficiario" class="valor-input"
                                             style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                                     </div>
                                     <div class="info-item-block">
-                                        <label for="pensao-cpf" style="font-size: 0.9em;">CPF:</label>
+                                        <label for="pensao-cpf" style="font-size: 0.9em; font-weight: 600;">CPF:</label>
                                         <input type="text" id="pensao-cpf" class="valor-input" maxlength="14"
                                             oninput="formatarDocumento(this, 'CPF'); atualizarQuadroResumo()"
                                             style="width: 100%; text-align: left;">
                                     </div>
+                                    <div class="info-item-block">
+                                        <label for="pensao-alimenticia" style="font-size: 0.9em; font-weight: 600;">Valor:</label>
+                                        <input type="text" id="pensao-alimenticia" name="pensao-alimenticia"
+                                            class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
+                                            style="width: 100%; text-align: right;">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div>
-                                <h5 style="margin: 0 0 5px 0; color: #856404; font-size: 0.95em; font-weight: 600;">
-                                    Retenção</h5>
-                                <div class="form-grid" style="grid-template-columns: 1fr 3fr; gap: 10px;">
+                            <div style="background-color: white; padding: 15px; border: 1px solid #856404; border-radius: 8px;" id="bloco-retencoes">
+                                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 5px; margin-bottom: 10px;">
+                                    <h5 style="margin: 0; color: #856404; font-size: 1em; font-weight: 600;">
+                                        Retenções</h5>
+                                    <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-retencoes')" title="Limpar Retenções">🧹</button>
+                                </div>
+                                <div class="form-grid" style="grid-template-columns: 3fr 1fr; gap: 15px;">
                                     <div class="info-item-block">
-                                        <label for="outras-retencoes" style="font-size: 0.9em;">Valor:</label>
+                                        <label for="outras-motivo" style="font-size: 0.9em; font-weight: 600;">Motivo:</label>
+                                        <input type="text" id="outras-motivo" class="valor-input"
+                                            style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="outras-retencoes" style="font-size: 0.9em; font-weight: 600;">Valor:</label>
                                         <input type="text" id="outras-retencoes" name="outras-retencoes"
                                             class="valor-input" placeholder="0,00"
                                             oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
-                                            style="width: 100%;">
-                                    </div>
-                                    <div class="info-item-block">
-                                        <label for="outras-motivo" style="font-size: 0.9em;">Motivo:</label>
-                                        <input type="text" id="outras-motivo" class="valor-input"
-                                            style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
+                                            style="width: 100%; text-align: right;">
                                     </div>
                                 </div>
                             </div>
@@ -1547,11 +1684,12 @@
             </div>
         </details>
 
-        <details class="no-print">
+        <details id="detalhes-advogados" class="no-print">
             <summary>Advogados (as)</summary>
             <div class="section-content">
-                <div class="honorarios-section">
-                    <div class="honorarios-options">
+                <div class="honorarios-section" id="bloco-honorarios-geral">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div class="honorarios-options" style="margin-bottom: 0;">
                         <div class="honorarios-option">
                             <input type="radio" id="adv-percentual-opt" name="adv-calculo-tipo" value="percentual"
                                 checked onchange="toggleAdvHonorariosFields()">
@@ -1563,22 +1701,24 @@
                             <label for="adv-valor-fixado-opt">Valor Fixado</label>
                         </div>
                     </div>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('bloco-honorarios-geral')" title="Limpar Parâmetros">🧹</button>
+                    </div>
                     <div id="adv-percentual-fields" class="form-grid"
-                        style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                        style="margin-top: 10px; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 15px;">
                         <div class="info-item-block">
                             <label for="adv-percentual">Percentual (%):</label>
                             <input type="text" id="adv-percentual" class="valor-input" placeholder="0,00%"
-                                style="width: 100%;">
+                                        style="width: 100%; text-align: right;">
                         </div>
                         <div class="info-item-block">
                             <label for="adv-base-calculo">Base de Cálculo:</label>
                             <span id="adv-base-calculo" class="valor-display-style"
-                                style="background-color: #e9ecef; width: 100%;">0,00</span>
+                                        style="background-color: #e9ecef; width: 100%; text-align: right;">0,00</span>
                         </div>
                         <div class="info-item-block">
                             <label>Honorários:</label>
                             <span id="adv-resultado" class="valor-display-style"
-                                style="background-color: #f7fcda; width: 100%;">0,00</span>
+                                        style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
                     <div id="adv-fixado-fields" class="honorarios-fields" style="display: none;">
@@ -1589,10 +1729,12 @@
                     </div>
                 </div>
 
-                <hr style="margin: 30px 0; border: 0; border-top: 2px solid var(--primary-color);">
-
-                <div id="adv-principal-block" class="parte-adicional-block">
-                    <h4 style="color: var(--dark-accent);">Advogado (a)</h4>
+                <details id="adv-principal-block" class="parte-adicional-block advogado-principal-details" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">Advogado (a) Principal</h4>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('adv-principal-block'); event.preventDefault();" title="Limpar Advogado" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end;">
                         <div style="flex-basis: 75%;">
                             <label for="adv-nome-principal"
@@ -1609,33 +1751,33 @@
                                 style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 4fr; gap: 15px;">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr 3fr; gap: 15px;">
                         <div class="info-item-block">
                             <label for="adv-principal-percentual">Participação (%):</label>
                             <input type="text" id="adv-principal-percentual" class="valor-input" placeholder="0,00%"
-                                oninput="formatarPercentual(this)" style="width: 100%;">
+                                    oninput="formatarPercentual(this)" style="width: 100%; text-align: right;">
                         </div>
                         <div class="info-item-block">
-                            <label>Honorários Bruto:</label>
+                            <label>Honorários:</label>
                             <span id="adv-principal-resultado" class="valor-display-style"
-                                style="background-color: #f7fcda; width: 100%;">0,00</span>
+                                    style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
-                        <div style="flex-basis: 17.5%;">
-                            <label for="adv-principal-ir">IRRF (R$):</label>
+                        <div style="flex-basis: 20%;">
+                            <label for="adv-principal-ir">Retenção IRRF (R$):</label>
                             <input type="text" id="adv-principal-ir" class="valor-input" placeholder="0,00"
                                 oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()"
-                                style="width: 100%;">
+                                style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 17.5%;">
-                            <label for="adv-principal-retencao">Retenção (R$):</label>
+                        <div style="flex-basis: 20%;">
+                            <label for="adv-principal-retencao">Outras Retenções (R$):</label>
                             <input type="text" id="adv-principal-retencao" class="valor-input" placeholder="0,00"
                                 oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()"
-                                style="width: 100%;">
+                                style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 65%;">
-                            <label for="adv-principal-retencao-motivo">Motivo da Retenção:</label>
+                        <div style="flex-basis: 60%;">
+                            <label for="adv-principal-retencao-motivo">Motivo das Outras Retenções:</label>
                             <input type="text" id="adv-principal-retencao-motivo" class="valor-input"
                                 style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
@@ -1646,9 +1788,10 @@
                         <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários a
                             Liberar:</label>
                         <span id="adv-principal-liquido" class="valor-display-style"
-                            style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                                style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                     </div>
-                </div>
+                    </div>
+                </details>
 
                 <div id="adv-adicionais-list">
                 </div>
@@ -1699,7 +1842,7 @@
                     <!-- Total row here -->
                 </tfoot>
             </table>
-            <div style="margin-top: 20px; border-top: 1px dashed var(--info-border); padding-top: 15px;">
+            <div style="margin-top: 20px; border-top: 1px solid var(--info-border); padding-top: 15px;">
                 <label for="observacoes-gerais"
                     style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Observações:</label>
                 <textarea id="observacoes-gerais" rows="5"
@@ -1711,9 +1854,14 @@
                 <label for="nome-servidor" class="required-field-label"
                     style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Servidor(a)
                     Responsável:</label>
-                <input type="text" id="nome-servidor" class="valor-input"
-                    style="width: 100%; text-align: left; background-color: white;"
-                    placeholder="Digite seu nome completo">
+                <select id="nome-servidor" class="valor-input" style="width: 100%; text-align: left; background-color: white; cursor: pointer;">
+                    <option value="">Selecione...</option>
+                    <option value="Breno Roberto Pimentel Lopes">Breno Roberto Pimentel Lopes</option>
+                    <option value="Eliene Silva de Lima Pereira">Eliene Silva de Lima Pereira</option>
+                    <option value="Fábia Fernanda Curvelo Marques">Fábia Fernanda Curvelo Marques</option>
+                    <option value="James José de Souza">James José de Souza</option>
+                    <option value="Wellington Vasconcelos Silva">Wellington Vasconcelos Silva</option>
+                </select>
             </div>
         </div>
 
@@ -1760,9 +1908,34 @@
             return parseFloat(valorNumericoString) || 0;
         }
 
+        function iniciarAdvogadoHerdeiro(id) {
+            document.getElementById(`her-adv-container-${id}`).style.display = 'block';
+            document.getElementById(`btn-add-adv-esp-her-${id}`).style.display = 'none';
+            adicionarAdvogadoHerdeiro(id);
+        }
+
+        function iniciarAdvogadoCessionario(id) {
+            document.getElementById(`ces-adv-container-${id}`).style.display = 'block';
+            document.getElementById(`btn-add-adv-esp-ces-${id}`).style.display = 'none';
+            adicionarAdvogadoCessionario(id);
+        }
+
         function getNumericValueFromInput(input) {
             if (!input) return 0;
             return getNumericValue(input.id);
+        }
+
+        function limparBloco(containerId) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            
+            container.querySelectorAll('input').forEach(input => {
+                if (input.type === 'text' || input.type === 'number') {
+                    input.value = '';
+                }
+            });
+
+            atualizarSomaLiquido(); 
         }
 
         function formatarMoedaParaExibicao(valor) {
@@ -1777,6 +1950,32 @@
         function formatarNumero(input, maxLength) {
             let valor = input.value.replace(/\D/g, '');
             input.value = valor.substring(0, maxLength);
+        }
+
+        function handleProcessoPaste(event) {
+            let pasteData = (event.clipboardData || window.clipboardData).getData('text').trim();
+            
+            // Verifica se possui o formato PJe com traço e ponto (ex: 0000000-00.0000)
+            if (pasteData.match(/^[0-9]+-[0-9]+\.[0-9]+/)) {
+                event.preventDefault();
+                let partes = pasteData.split(/[-.]/);
+                if (partes.length >= 3) {
+                    document.getElementById('proc-num').value = partes[0].replace(/\D/g, '').padStart(7, '0');
+                    document.getElementById('proc-digito').value = partes[1].replace(/\D/g, '').substring(0, 2);
+                    document.getElementById('proc-ano').value = partes[2].replace(/\D/g, '').substring(0, 4);
+                    return;
+                }
+            }
+            
+            // Trata colagens de número bruto contínuo (mínimo de 13 dígitos para garantir validade)
+            let numbers = pasteData.replace(/\D/g, '');
+            if (numbers.length >= 13) {
+                event.preventDefault();
+                numbers = numbers.padStart(20, '0'); // Preenche 20 digitos padrão para garantir alinhamento
+                document.getElementById('proc-num').value = numbers.substring(0, 7);
+                document.getElementById('proc-digito').value = numbers.substring(7, 9);
+                document.getElementById('proc-ano').value = numbers.substring(9, 13);
+            }
         }
 
         function formatarDocumento(input, tipo) {
@@ -1845,12 +2044,31 @@
             } else if (input.id === 'adv-principal-percentual') {
                 validarRateioHonorarios(input);
                 atualizarCredoresAdicionais();
+            } else if (input.id.startsWith('her-adv-part-')) {
+                validarRateioAdvHerdeiro(input);
+                atualizarCredoresAdicionais();
+            } else if (input.id.startsWith('ces-adv-part-')) {
+                validarRateioAdvCessionario(input);
+                atualizarCredoresAdicionais();
+            } else if (input.id.startsWith('her-adv-perc-global-') || input.id.startsWith('ces-adv-perc-global-')) {
+                atualizarCredoresAdicionais();
             }
         }
 
         // =======================================================================
         // FUNÇÕES DE ATUALIZAÇÃO DE VALORES E DISPLAYS
         // =======================================================================
+        function atualizarSomaLiquido() {
+            const liquidoPlanilha = getNumericValue('liquido-reclamante-calculo');
+            const honorarios = getNumericValue('input-honorarios-advocaticios');
+            const irrf = getNumericValue('input-irrf-honorarios');
+            
+            const novoLiquido = liquidoPlanilha + honorarios + irrf;
+            
+            document.getElementById('valor-deposito-judicial').value = formatarMoedaParaExibicao(novoLiquido);
+            atualizarTotalDevidoReclamada();
+        }
+
         function atualizarTotalDevidoReclamada() {
             const liquido = getNumericValue('valor-deposito-judicial');
             const inssReclamante = getNumericValue('inss-reclamante');
@@ -1974,15 +2192,107 @@
             }
         }
 
+        function validarRateioAdvHerdeiro(input) {
+            const advBlock = input.closest('div[class^="adv-herdeiro-"]');
+            if (!advBlock) return;
+            const classList = Array.from(advBlock.classList);
+            const herdeiroClass = classList.find(c => c.startsWith('adv-herdeiro-'));
+            const herdeiroId = herdeiroClass.split('-')[2];
+            
+            let total = 0;
+            const advogados = document.querySelectorAll(`.adv-herdeiro-${herdeiroId}`);
+            advogados.forEach(block => {
+                const advId = block.dataset.advId;
+                total += getNumericValue(`her-adv-part-${advId}`);
+            });
+            
+            if (total > 100.01) {
+                alert('A soma dos percentuais de participação dos advogados deste Herdeiro não pode exceder 100%.');
+                const excedente = total - 100;
+                const currentVal = getNumericValue(input.id);
+                let newVal = Math.max(0, currentVal - excedente);
+                input.value = newVal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+            }
+        }
+
+        function validarRateioAdvCessionario(input) {
+            const advBlock = input.closest('div[class^="adv-cessionario-"]');
+            if (!advBlock) return;
+            const classList = Array.from(advBlock.classList);
+            const cessionarioClass = classList.find(c => c.startsWith('adv-cessionario-'));
+            const cessionarioId = cessionarioClass.split('-')[2];
+            
+            let total = 0;
+            const advogados = document.querySelectorAll(`.adv-cessionario-${cessionarioId}`);
+            advogados.forEach(block => {
+                const advId = block.dataset.advId;
+                total += getNumericValue(`ces-adv-part-${advId}`);
+            });
+            
+            if (total > 100.01) {
+                alert('A soma dos percentuais de participação dos advogados deste Cessionário não pode exceder 100%.');
+                const excedente = total - 100;
+                const currentVal = getNumericValue(input.id);
+                let newVal = Math.max(0, currentVal - excedente);
+                input.value = newVal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+            }
+        }
+
+        function atualizarNumeracaoVisuais() {
+            let countAdicional = 1;
+            document.querySelectorAll('.advogado-adicional-details').forEach(el => {
+                const title = el.querySelector('summary h4');
+                if (title) title.textContent = `Advogado Adicional #${countAdicional}`;
+                countAdicional++;
+            });
+            
+            let countHerdeiro = 1;
+            document.querySelectorAll('.herdeiro-details').forEach(el => {
+                const title = el.querySelector('summary h4');
+                if (title) title.textContent = `Herdeiro #${countHerdeiro}`;
+                
+                let countAdvHer = 1;
+                el.querySelectorAll('details[class*="adv-herdeiro-"]').forEach(advEl => {
+                    const advTitle = advEl.querySelector('summary h5');
+                    const isFirst = countAdvHer === 1;
+                    if (advTitle) advTitle.textContent = `Advogado(a) ${isFirst ? '' : 'Adicional '}(Herdeiro #${countHerdeiro})`;
+                    countAdvHer++;
+                });
+                countHerdeiro++;
+            });
+            
+            let countCessionario = 1;
+            document.querySelectorAll('.cessionario-details').forEach(el => {
+                const title = el.querySelector('summary h4');
+                if (title) title.textContent = `Cessionário #${countCessionario}`;
+                
+                let countAdvCes = 1;
+                el.querySelectorAll('details[class*="adv-cessionario-"]').forEach(advEl => {
+                    const advTitle = advEl.querySelector('summary h5');
+                    const isFirst = countAdvCes === 1;
+                    if (advTitle) advTitle.textContent = `Advogado(a) ${isFirst ? '' : 'Adicional '}(Cessionário #${countCessionario})`;
+                    countAdvCes++;
+                });
+                countCessionario++;
+            });
+        }
+
         function adicionarAdvogadoAdicional() {
             advogadoAdicionalCount++;
+            
+            document.querySelectorAll('.advogado-adicional-details').forEach(el => el.removeAttribute('open'));
+
             const listDiv = document.getElementById('adv-adicionais-list');
             const newAdvHTML = `
-                <div id="adv-adicional-${advogadoAdicionalCount}" class="parte-adicional-block">
-                    <h4>Advogado Adicional #${advogadoAdicionalCount}</h4>
+                <details id="adv-adicional-${advogadoAdicionalCount}" class="parte-adicional-block advogado-adicional-details" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">Advogado Adicional #${advogadoAdicionalCount}</h4>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('adv-adicional-${advogadoAdicionalCount}'); event.preventDefault();" title="Limpar Advogado" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                         <div style="flex-basis: 75%;">
-                             <label for="adv-ad-nome-${advogadoAdicionalCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Advogado:</label>
+                             <label for="adv-ad-nome-${advogadoAdicionalCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Advogado (a):</label>
                              <input type="text" id="adv-ad-nome-${advogadoAdicionalCount}" oninput="atualizarCredoresAdicionais()" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
                         </div>
                         <div style="flex-basis: 25%;">
@@ -1990,48 +2300,57 @@
                             <input type="text" id="adv-ad-cpf-${advogadoAdicionalCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarCredoresAdicionais()" class="valor-input" style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 4fr; gap: 15px;">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr 3fr; gap: 15px;">
                         <div class="info-item-block">
                             <label for="adv-ad-percentual-${advogadoAdicionalCount}">Participação (%):</label>
-                            <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 100%;">
+                            <input type="text" id="adv-ad-percentual-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this)" style="width: 100%; text-align: right;">
                         </div>
                         <div class="info-item-block">
-                            <label>Honorários Bruto:</label>
-                            <span id="adv-ad-resultado-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
+                            <label>Honorários:</label>
+                            <span id="adv-ad-resultado-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
                         <div style="flex-basis: 20%;">
-                            <label for="adv-ad-ir-${advogadoAdicionalCount}">IRRF (R$):</label>
-                            <input type="text" id="adv-ad-ir-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%;">
+                            <label for="adv-ad-ir-${advogadoAdicionalCount}">Retenção IRRF (R$):</label>
+                            <input type="text" id="adv-ad-ir-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%; text-align: right;">
                         </div>
                         <div style="flex-basis: 20%;">
-                            <label for="adv-ad-retencao-${advogadoAdicionalCount}">Retenção (R$):</label>
-                            <input type="text" id="adv-ad-retencao-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%;">
+                            <label for="adv-ad-retencao-${advogadoAdicionalCount}">Outras Retenções (R$):</label>
+                            <input type="text" id="adv-ad-retencao-${advogadoAdicionalCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarLiquidoAdvogado('${advogadoAdicionalCount}'); atualizarQuadroResumo()" style="width: 100%; text-align: right;">
                         </div>
                         <div style="flex-basis: 60%;">
-                            <label for="adv-ad-retencao-motivo-${advogadoAdicionalCount}">Motivo da Retenção:</label>
+                            <label for="adv-ad-retencao-motivo-${advogadoAdicionalCount}">Motivo das Outras Retenções:</label>
                             <input type="text" id="adv-ad-retencao-motivo-${advogadoAdicionalCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
                     <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
                         <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários a Liberar:</label>
-                        <span id="adv-ad-liquido-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                        <span id="adv-ad-liquido-${advogadoAdicionalCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                     </div>
-                    <button type="button" class="remove-button" onclick="removerParte('adv-adicional-${advogadoAdicionalCount}')">Remover</button>
-                </div>`;
+                    <button type="button" class="remove-button" onclick="removerParte('adv-adicional-${advogadoAdicionalCount}')" style="margin-top: 15px; padding: 8px 16px; font-size: 0.85em; border-radius: 6px;">🗑️ Remover Advogado</button>
+                    </div>
+                </details>`;
             listDiv.insertAdjacentHTML('beforeend', newAdvHTML);
+            atualizarNumeracaoVisuais();
             atualizarCredoresAdicionais();
         }
 
         function adicionarHerdeiro() {
             herdeiroCount++;
+            
+            document.querySelectorAll('.herdeiro-details').forEach(el => el.removeAttribute('open'));
+
             const listDiv = document.getElementById('herdeiros-list');
             const baseCalculoHerdeiro = document.getElementById('valor-deposito-judicial').value;
 
             const newHerHTML = `
-                <div id="herdeiro-${herdeiroCount}" class="parte-adicional-block">
-                    <h4>Herdeiro/Sucessor #${herdeiroCount}</h4>
+                <details id="herdeiro-${herdeiroCount}" class="parte-adicional-block herdeiro-details" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">Herdeiro #${herdeiroCount}</h4>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('herdeiro-${herdeiroCount}'); event.preventDefault();" title="Limpar Herdeiro" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                         <div style="flex-basis: 75%;">
                             <label for="her-nome-${herdeiroCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Herdeiro (a):</label>
@@ -2043,46 +2362,90 @@
                         </div>
                     </div>
 
-                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 15px;">
                         <div class="info-item-block">
                             <label for="her-percentual-${herdeiroCount}">Percentual (%):</label>
-                            <input type="text" id="her-percentual-${herdeiroCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%;">
+                            <input type="text" id="her-percentual-${herdeiroCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%; text-align: right;">
                         </div>
                         <div class="info-item-block">
                             <label>Base de Cálculo:</label>
-                            <span class="valor-display-style base-calculo-herdeiro" style="background-color: #e9ecef; width: 100%;">${baseCalculoHerdeiro}</span>
+                            <span class="valor-display-style base-calculo-herdeiro" style="background-color: #e9ecef; width: 100%; text-align: right;">${baseCalculoHerdeiro}</span>
                         </div>
                         <div class="info-item-block">
                             <label>Resultado:</label>
-                            <span id="her-resultado-${herdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
+                            <span id="her-resultado-${herdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
-                        <div style="flex-basis: 18%;">
+                        <div style="flex-basis: 20%;">
                             <label for="her-retencao-${herdeiroCount}">Retenção (R$):</label>
-                            <input type="text" id="her-retencao-${herdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%;">
+                            <input type="text" id="her-retencao-${herdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 82%;">
+                        <div style="flex-basis: 80%;">
                             <label for="her-retencao-motivo-${herdeiroCount}">Motivo da Retenção:</label>
                             <input type="text" id="her-retencao-motivo-${herdeiroCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
 
-                    <div id="her-adv-list-${herdeiroCount}"></div>
-                    <button type="button" class="add-adv-button" onclick="adicionarAdvogadoHerdeiro(${herdeiroCount})">+ Adicionar Advogado Específico</button>
+                    <div id="her-adv-container-${herdeiroCount}" style="display: none;">
+                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--info-border);">
+                        <h5 style="color: var(--dark-accent); margin-bottom: 10px; font-size: 1.05em;">Honorários Advocatícios</h5>
+                        
+                        <div class="honorarios-section" style="padding: 15px; margin-bottom: 15px; border: 1px solid var(--info-border); border-radius: 6px; background-color: #f4f8f8;">
+                            <div class="honorarios-options">
+                                <div class="honorarios-option">
+                                    <input type="radio" id="her-adv-opt-perc-${herdeiroCount}" name="her-adv-calculo-tipo-${herdeiroCount}" value="percentual" checked onchange="toggleHerAdvHonorariosFields(${herdeiroCount})">
+                                    <label for="her-adv-opt-perc-${herdeiroCount}">Percentual</label>
+                                </div>
+                                <div class="honorarios-option">
+                                    <input type="radio" id="her-adv-opt-fix-${herdeiroCount}" name="her-adv-calculo-tipo-${herdeiroCount}" value="fixado" onchange="toggleHerAdvHonorariosFields(${herdeiroCount})">
+                                    <label for="her-adv-opt-fix-${herdeiroCount}">Valor Fixado</label>
+                                </div>
+                            </div>
+                            <div id="her-adv-perc-fields-global-${herdeiroCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 15px;">
+                                <div class="info-item-block">
+                                    <label for="her-adv-perc-global-${herdeiroCount}">Percentual (%):</label>
+                                    <input type="text" id="her-adv-perc-global-${herdeiroCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
+                                </div>
+                                <div class="info-item-block">
+                                    <label>Base de Cálculo:</label>
+                                    <span id="her-adv-base-global-${herdeiroCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%; text-align: right;">0,00</span>
+                                </div>
+                                <div class="info-item-block">
+                                    <label>Honorários:</label>
+                                    <span id="her-adv-resultado-global-${herdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
+                                </div>
+                            </div>
+                            <div id="her-adv-fix-fields-global-${herdeiroCount}" class="honorarios-fields" style="display: none;">
+                                <div class="field-group">
+                                    <label for="her-adv-fix-global-${herdeiroCount}">Valor Fixado:</label>
+                                    <input type="text" id="her-adv-fix-global-${herdeiroCount}" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="her-adv-list-${herdeiroCount}"></div>
+                        <button type="button" class="add-adv-esp-btn" onclick="adicionarAdvogadoHerdeiro(${herdeiroCount})">+ Adicionar Advogado (a)</button>
+                    </div>
+                    <button type="button" id="btn-add-adv-esp-her-${herdeiroCount}" class="add-adv-esp-btn" onclick="iniciarAdvogadoHerdeiro(${herdeiroCount})">+ Adicionar Advogado (a) Específico (a)</button>
 
                     <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
-                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar (Herdeiro):</label>
-                        <span id="her-liquido-${herdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                        <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar (Herdeiro): </label>
+                                               <span id="her-liquido-${herdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                     </div>
-                    <button type="button" class="remove-button" onclick="removerParte('herdeiro-${herdeiroCount}')" style="margin-top: 10px;">Remover</button>
-                </div>`;
+                    <button type="button" class="remove-button" onclick="removerParte('herdeiro-${herdeiroCount}')" style="margin-top: 15px; padding: 8px 16px; font-size: 0.85em; border-radius: 6px;">🗑️ Remover Herdeiro</button>
+                    </div>
+                </details>`;
             listDiv.insertAdjacentHTML('beforeend', newHerHTML);
+            atualizarNumeracaoVisuais();
             atualizarCredoresAdicionais();
         }
 
         function adicionarCessionario() {
             cessionarioCount++;
+            
+            document.querySelectorAll('.cessionario-details').forEach(el => el.removeAttribute('open'));
+
             const listDiv = document.getElementById('cessionarios-list');
             const honAdvTotal = getNumericValue('adv-resultado');
             const pensao = getNumericValue('pensao-alimenticia');
@@ -2090,8 +2453,12 @@
             const baseCalculoCessionario = Math.max(0, getNumericValue('valor-deposito-judicial') - honAdvTotal - pensao - outras);
 
             const newCesHTML = `
-                <div id="cessionario-${cessionarioCount}" class="parte-adicional-block">
-                    <h4>Cessionário #${cessionarioCount}</h4>
+                <details id="cessionario-${cessionarioCount}" class="parte-adicional-block cessionario-details" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">Cessionário #${cessionarioCount}</h4>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('cessionario-${cessionarioCount}'); event.preventDefault();" title="Limpar Cessionário" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                         <div style="flex-basis: 75%;">
                             <label for="ces-nome-${cessionarioCount}" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Cessionário:</label>
@@ -2103,50 +2470,101 @@
                         </div>
                     </div>
 
-                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
+                    <div class="form-grid" style="margin-top: 15px; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 15px;">
                         <div class="info-item-block">
                             <label for="ces-percentual-${cessionarioCount}">Percentual (%):</label>
-                            <input type="text" id="ces-percentual-${cessionarioCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%;">
+                            <input type="text" id="ces-percentual-${cessionarioCount}" oninput="formatarPercentual(this)" placeholder="0,00%" class="valor-input required-dynamic" style="width: 100%; text-align: right;">
                         </div>
                         <div class="info-item-block">
                             <label>Base de Cálculo:</label>
-                            <span class="valor-display-style base-calculo-cessionario" style="background-color: #e9ecef; width: 100%;">${formatarMoedaParaExibicao(baseCalculoCessionario)}</span>
+                            <span class="valor-display-style base-calculo-cessionario" style="background-color: #e9ecef; width: 100%; text-align: right;">${formatarMoedaParaExibicao(baseCalculoCessionario)}</span>
                         </div>
                         <div class="info-item-block">
                             <label>Resultado:</label>
-                            <span id="ces-resultado-${cessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
+                            <span id="ces-resultado-${cessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
-                        <div style="flex-basis: 18%;">
+                        <div style="flex-basis: 20%;">
                             <label for="ces-retencao-${cessionarioCount}">Retenção (R$):</label>
-                            <input type="text" id="ces-retencao-${cessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%;">
+                            <input type="text" id="ces-retencao-${cessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais()" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 82%;">
+                        <div style="flex-basis: 80%;">
                             <label for="ces-retencao-motivo-${cessionarioCount}">Motivo da Retenção:</label>
                             <input type="text" id="ces-retencao-motivo-${cessionarioCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
 
-                    <div id="ces-adv-list-${cessionarioCount}"></div>
-                    <button type="button" class="add-adv-button" onclick="adicionarAdvogadoCessionario(${cessionarioCount})">+ Adicionar Advogado Específico</button>
+                    <div id="ces-adv-container-${cessionarioCount}" style="display: none;">
+                        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--info-border);">
+                        <h5 style="color: var(--dark-accent); margin-bottom: 10px; font-size: 1.05em;">Honorários Advocatícios</h5>
+
+                        <div class="honorarios-section" style="padding: 15px; margin-bottom: 15px; border: 1px solid var(--info-border); border-radius: 6px; background-color: #f4f8f8;">
+                            <div class="honorarios-options">
+                                <div class="honorarios-option">
+                                    <input type="radio" id="ces-adv-opt-perc-${cessionarioCount}" name="ces-adv-calculo-tipo-${cessionarioCount}" value="percentual" checked onchange="toggleCesAdvHonorariosFields(${cessionarioCount})">
+                                    <label for="ces-adv-opt-perc-${cessionarioCount}">Percentual</label>
+                                </div>
+                                <div class="honorarios-option">
+                                    <input type="radio" id="ces-adv-opt-fix-${cessionarioCount}" name="ces-adv-calculo-tipo-${cessionarioCount}" value="fixado" onchange="toggleCesAdvHonorariosFields(${cessionarioCount})">
+                                    <label for="ces-adv-opt-fix-${cessionarioCount}">Valor Fixado</label>
+                                </div>
+                            </div>
+                            <div id="ces-adv-perc-fields-global-${cessionarioCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 1fr 1fr 1fr 2fr; gap: 15px;">
+                                <div class="info-item-block">
+                                    <label for="ces-adv-perc-global-${cessionarioCount}">Percentual (%):</label>
+                                    <input type="text" id="ces-adv-perc-global-${cessionarioCount}" class="valor-input" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
+                                </div>
+                                <div class="info-item-block">
+                                    <label>Base de Cálculo:</label>
+                                    <span id="ces-adv-base-global-${cessionarioCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%; text-align: right;">0,00</span>
+                                </div>
+                                <div class="info-item-block">
+                                    <label>Honorários:</label>
+                                    <span id="ces-adv-resultado-global-${cessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
+                                </div>
+                            </div>
+                            <div id="ces-adv-fix-fields-global-${cessionarioCount}" class="honorarios-fields" style="display: none;">
+                                <div class="field-group">
+                                    <label for="ces-adv-fix-global-${cessionarioCount}">Valor Fixado:</label>
+                                    <input type="text" id="ces-adv-fix-global-${cessionarioCount}" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="ces-adv-list-${cessionarioCount}"></div>
+                        <button type="button" class="add-adv-esp-btn" onclick="adicionarAdvogadoCessionario(${cessionarioCount})">+ Adicionar Advogado (a)</button>
+                    </div>
+                    <button type="button" id="btn-add-adv-esp-ces-${cessionarioCount}" class="add-adv-esp-btn" onclick="iniciarAdvogadoCessionario(${cessionarioCount})">+ Adicionar Advogado (a) Específico (a)</button>
 
                     <div style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
                         <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Líquido a Liberar (Cessionário):</label>
-                        <span id="ces-liquido-${cessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                        <span id="ces-liquido-${cessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                     </div>
-                    <button type="button" class="remove-button" onclick="removerParte('cessionario-${cessionarioCount}')" style="margin-top: 10px;">Remover</button>
-                </div>`;
+                    <button type="button" class="remove-button" onclick="removerParte('cessionario-${cessionarioCount}')" style="margin-top: 15px; padding: 8px 16px; font-size: 0.85em; border-radius: 6px;">🗑️ Remover Cessionário</button>
+                    </div>
+                </details>`;
             listDiv.insertAdjacentHTML('beforeend', newCesHTML);
+            atualizarNumeracaoVisuais();
             atualizarCredoresAdicionais();
         }
 
         function adicionarAdvogadoHerdeiro(herdeiroId) {
             advHerdeiroCount++;
+            
+            document.querySelectorAll(`.adv-herdeiro-${herdeiroId}`).forEach(el => {
+                if (el.tagName === 'DETAILS') el.removeAttribute('open');
+            });
+
             const listDiv = document.getElementById(`her-adv-list-${herdeiroId}`);
+            const isFirst = listDiv.children.length === 0;
             const html = `
-                <div id="her-adv-block-${advHerdeiroCount}" class="adv-herdeiro-${herdeiroId}" data-adv-id="${advHerdeiroCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;">
-                    <h5 style="margin-top: 0; color: var(--dark-accent); margin-bottom: 15px;">Advogado(a) do Herdeiro #${herdeiroId}</h5>
+                <details id="her-adv-block-${advHerdeiroCount}" class="adv-herdeiro-${herdeiroId}" data-adv-id="${advHerdeiroCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h5 style="margin: 0; color: var(--dark-accent); font-size: 1em;">Advogado(a) ${isFirst ? '' : 'Adicional '}(Herdeiro #${herdeiroId})</h5>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('her-adv-block-${advHerdeiroCount}'); event.preventDefault();" title="Limpar Advogado" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                         <div style="flex-basis: 75%;">
                             <label for="her-adv-nome-${advHerdeiroCount}" style="display: block; margin-bottom: 5px;">Nome do Advogado(a):</label>
@@ -2157,69 +2575,63 @@
                             <input type="text" id="her-adv-cpf-${advHerdeiroCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="honorarios-options" style="margin-bottom: 15px;">
-                        <div class="honorarios-option">
-                            <input type="radio" id="her-adv-perc-opt-${advHerdeiroCount}" name="her-adv-tipo-${advHerdeiroCount}" value="percentual" checked onchange="toggleAdvHerTipo(${advHerdeiroCount})">
-                            <label for="her-adv-perc-opt-${advHerdeiroCount}">Percentual</label>
+
+                    <div class="form-grid" style="margin-top: 10px; grid-template-columns: 1fr 1fr 3fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="her-adv-part-${advHerdeiroCount}">Participação (%):</label>
+                            <input type="text" id="her-adv-part-${advHerdeiroCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div class="honorarios-option">
-                            <input type="radio" id="her-adv-fix-opt-${advHerdeiroCount}" name="her-adv-tipo-${advHerdeiroCount}" value="fixado" onchange="toggleAdvHerTipo(${advHerdeiroCount})">
-                            <label for="her-adv-fix-opt-${advHerdeiroCount}">Valor Fixado</label>
+                        <div class="info-item-block">
+                            <label>Honorários:</label>
+                            <span id="her-adv-resultado-${advHerdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
-                    <div id="her-adv-perc-fields-${advHerdeiroCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
-                        <div class="info-item-block">
-                            <label for="her-adv-perc-${advHerdeiroCount}">Percentual (%):</label>
-                            <input type="text" id="her-adv-perc-${advHerdeiroCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%;">
-                        </div>
-                        <div class="info-item-block">
-                            <label>Base de Cálculo:</label>
-                            <span id="her-adv-base-${advHerdeiroCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%;">0,00</span>
-                        </div>
-                        <div class="info-item-block">
-                            <label>Honorários Bruto:</label>
-                            <span id="her-adv-resultado-${advHerdeiroCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
-                        </div>
-                    </div>
-                    <div id="her-adv-fix-fields-${advHerdeiroCount}" class="form-grid" style="display: none; margin-top: 10px; grid-template-columns: 1fr 2fr; gap: 15px;">
-                        <div class="info-item-block">
-                            <label for="her-adv-fix-${advHerdeiroCount}">Valor Fixado:</label>
-                            <input type="text" id="her-adv-fix-${advHerdeiroCount}" class="valor-input required-dynamic" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
-                        </div>
-                    </div>
+
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
-                        <div style="flex-basis: 18%;">
-                            <label for="her-adv-ir-${advHerdeiroCount}">IRRF (R$):</label>
-                            <input type="text" id="her-adv-ir-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        <div style="flex-basis: 20%;">
+                            <label for="her-adv-ir-${advHerdeiroCount}">Retenção IRRF (R$):</label>
+                            <input type="text" id="her-adv-ir-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 18%;">
-                            <label for="her-adv-ret-${advHerdeiroCount}">Retenção (R$):</label>
-                            <input type="text" id="her-adv-ret-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        <div style="flex-basis: 20%;">
+                            <label for="her-adv-ret-${advHerdeiroCount}">Outras Retenções (R$):</label>
+                            <input type="text" id="her-adv-ret-${advHerdeiroCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 64%;">
-                            <label for="her-adv-ret-motivo-${advHerdeiroCount}">Motivo da Retenção:</label>
+                        <div style="flex-basis: 60%;">
+                            <label for="her-adv-ret-motivo-${advHerdeiroCount}">Motivo das Outras Retenções:</label>
                             <input type="text" id="her-adv-ret-motivo-${advHerdeiroCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
                     <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 10px;">
-                        <button type="button" class="remove-button" onclick="removerParte('her-adv-block-${advHerdeiroCount}')" style="margin-left: 0;">Remover Advogado</button>
+                        <button type="button" class="remove-adv-esp-btn" onclick="removerAdvogadoHerdeiro('${advHerdeiroCount}', '${herdeiroId}')" style="margin-left: 0;">🗑️ Remover Advogado</button>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários Líquido:</label>
-                            <span id="her-adv-liquido-${advHerdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários a Liberar:</label>
+                            <span id="her-adv-liquido-${advHerdeiroCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </details>
             `;
             listDiv.insertAdjacentHTML('beforeend', html);
+            atualizarNumeracaoVisuais();
             atualizarCredoresAdicionais();
         }
 
         function adicionarAdvogadoCessionario(cessionarioId) {
             advCessionarioCount++;
+            
+            document.querySelectorAll(`.adv-cessionario-${cessionarioId}`).forEach(el => {
+                if (el.tagName === 'DETAILS') el.removeAttribute('open');
+            });
+
             const listDiv = document.getElementById(`ces-adv-list-${cessionarioId}`);
+            const isFirst = listDiv.children.length === 0;
             const html = `
-                <div id="ces-adv-block-${advCessionarioCount}" class="adv-cessionario-${cessionarioId}" data-adv-id="${advCessionarioCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;">
-                    <h5 style="margin-top: 0; color: var(--dark-accent); margin-bottom: 15px;">Advogado(a) do Cessionário #${cessionarioId}</h5>
+                <details id="ces-adv-block-${advCessionarioCount}" class="adv-cessionario-${cessionarioId}" data-adv-id="${advCessionarioCount}" style="border: 1px solid var(--info-border); padding: 15px; margin-top: 15px; border-radius: 6px; background-color: #f4f8f8;" open>
+                    <summary style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h5 style="margin: 0; color: var(--dark-accent); font-size: 1em;">Advogado(a) ${isFirst ? '' : 'Adicional '}(Cessionário #${cessionarioId})</h5>
+                        <button type="button" class="btn-clear-block no-print" onclick="limparBloco('ces-adv-block-${advCessionarioCount}'); event.preventDefault();" title="Limpar Advogado" style="margin-left: auto;">🧹</button>
+                    </summary>
+                    <div style="padding-top: 5px;">
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-bottom: 15px;">
                         <div style="flex-basis: 75%;">
                             <label for="ces-adv-nome-${advCessionarioCount}" style="display: block; margin-bottom: 5px;">Nome do Advogado(a):</label>
@@ -2230,67 +2642,84 @@
                             <input type="text" id="ces-adv-cpf-${advCessionarioCount}" maxlength="18" oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()" class="valor-input required-dynamic" style="width: 100%; text-align: left; background-color: white;">
                         </div>
                     </div>
-                    <div class="honorarios-options" style="margin-bottom: 15px;">
-                        <div class="honorarios-option">
-                            <input type="radio" id="ces-adv-perc-opt-${advCessionarioCount}" name="ces-adv-tipo-${advCessionarioCount}" value="percentual" checked onchange="toggleAdvCesTipo(${advCessionarioCount})">
-                            <label for="ces-adv-perc-opt-${advCessionarioCount}">Percentual</label>
+                    
+                    <div class="form-grid" style="margin-top: 10px; grid-template-columns: 1fr 1fr 3fr; gap: 15px;">
+                        <div class="info-item-block">
+                            <label for="ces-adv-part-${advCessionarioCount}">Participação (%):</label>
+                            <input type="text" id="ces-adv-part-${advCessionarioCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div class="honorarios-option">
-                            <input type="radio" id="ces-adv-fix-opt-${advCessionarioCount}" name="ces-adv-tipo-${advCessionarioCount}" value="fixado" onchange="toggleAdvCesTipo(${advCessionarioCount})">
-                            <label for="ces-adv-fix-opt-${advCessionarioCount}">Valor Fixado</label>
+                        <div class="info-item-block">
+                            <label>Honorários:</label>
+                            <span id="ces-adv-resultado-${advCessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%; text-align: right;">0,00</span>
                         </div>
                     </div>
-                    <div id="ces-adv-perc-fields-${advCessionarioCount}" class="form-grid" style="margin-top: 10px; grid-template-columns: 0.8fr 2fr 2fr; gap: 15px;">
-                        <div class="info-item-block">
-                            <label for="ces-adv-perc-${advCessionarioCount}">Percentual (%):</label>
-                            <input type="text" id="ces-adv-perc-${advCessionarioCount}" class="valor-input required-dynamic" placeholder="0,00%" oninput="formatarPercentual(this); atualizarCredoresAdicionais();" style="width: 100%;">
-                        </div>
-                        <div class="info-item-block">
-                            <label>Base de Cálculo:</label>
-                            <span id="ces-adv-base-${advCessionarioCount}" class="valor-display-style" style="background-color: #e9ecef; width: 100%;">0,00</span>
-                        </div>
-                        <div class="info-item-block">
-                            <label>Honorários Bruto:</label>
-                            <span id="ces-adv-resultado-${advCessionarioCount}" class="valor-display-style" style="background-color: #f7fcda; width: 100%;">0,00</span>
-                        </div>
-                    </div>
-                    <div id="ces-adv-fix-fields-${advCessionarioCount}" class="form-grid" style="display: none; margin-top: 10px; grid-template-columns: 1fr 2fr; gap: 15px;">
-                        <div class="info-item-block">
-                            <label for="ces-adv-fix-${advCessionarioCount}">Valor Fixado:</label>
-                            <input type="text" id="ces-adv-fix-${advCessionarioCount}" class="valor-input required-dynamic" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
-                        </div>
-                    </div>
+
                     <div style="display: flex; gap: 20px; align-items: flex-end; margin-top: 15px;">
-                        <div style="flex-basis: 18%;">
-                            <label for="ces-adv-ir-${advCessionarioCount}">IRRF (R$):</label>
-                            <input type="text" id="ces-adv-ir-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        <div style="flex-basis: 20%;">
+                            <label for="ces-adv-ir-${advCessionarioCount}">Retenção IRRF (R$):</label>
+                            <input type="text" id="ces-adv-ir-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 18%;">
-                            <label for="ces-adv-ret-${advCessionarioCount}">Retenção (R$):</label>
-                            <input type="text" id="ces-adv-ret-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%;">
+                        <div style="flex-basis: 20%;">
+                            <label for="ces-adv-ret-${advCessionarioCount}">Outras Retenções (R$):</label>
+                            <input type="text" id="ces-adv-ret-${advCessionarioCount}" class="valor-input" placeholder="0,00" oninput="formatarMoeda(this); atualizarCredoresAdicionais();" style="width: 100%; text-align: right;">
                         </div>
-                        <div style="flex-basis: 64%;">
-                            <label for="ces-adv-ret-motivo-${advCessionarioCount}">Motivo da Retenção:</label>
+                        <div style="flex-basis: 60%;">
+                            <label for="ces-adv-ret-motivo-${advCessionarioCount}">Motivo das Outras Retenções:</label>
                             <input type="text" id="ces-adv-ret-motivo-${advCessionarioCount}" class="valor-input" style="width: 100%; text-align: left;" oninput="atualizarQuadroResumo()">
                         </div>
                     </div>
                     <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ddd; padding-top: 10px;">
-                        <button type="button" class="remove-button" onclick="removerParte('ces-adv-block-${advCessionarioCount}')" style="margin-left: 0;">Remover Advogado</button>
+                        <button type="button" class="remove-adv-esp-btn" onclick="removerAdvogadoCessionario('${advCessionarioCount}', '${cessionarioId}')" style="margin-left: 0;">🗑️ Remover Advogado</button>
                         <div style="display: flex; align-items: center; gap: 10px;">
-                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários Líquido:</label>
-                            <span id="ces-adv-liquido-${advCessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em;">0,00</span>
+                            <label style="font-weight: bold; font-size: 1em; color: var(--dark-accent);">Honorários a Liberar:</label>
+                            <span id="ces-adv-liquido-${advCessionarioCount}" class="valor-display-style" style="background-color: #e0f7fa; width: 180px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
                         </div>
                     </div>
-                </div>
+                    </div>
+                </details>
             `;
             listDiv.insertAdjacentHTML('beforeend', html);
+            atualizarNumeracaoVisuais();
             atualizarCredoresAdicionais();
+        }
+
+        function removerAdvogadoHerdeiro(advId, herdeiroId) {
+            removerParte(`her-adv-block-${advId}`);
+            const listDiv = document.getElementById(`her-adv-list-${herdeiroId}`);
+            if (listDiv && listDiv.children.length === 0) {
+                // Remove/Oculta a primeira parte das informações quando esvazia a lista
+                document.getElementById(`her-adv-container-${herdeiroId}`).style.display = 'none';
+                document.getElementById(`btn-add-adv-esp-her-${herdeiroId}`).style.display = 'inline-block';
+                document.getElementById(`her-adv-opt-perc-${herdeiroId}`).checked = true;
+                document.getElementById(`her-adv-perc-global-${herdeiroId}`).value = '';
+                document.getElementById(`her-adv-fix-global-${herdeiroId}`).value = '';
+                document.getElementById(`her-adv-base-global-${herdeiroId}`).textContent = '0,00';
+                document.getElementById(`her-adv-resultado-global-${herdeiroId}`).textContent = '0,00';
+                toggleHerAdvHonorariosFields(herdeiroId);
+            }
+        }
+
+        function removerAdvogadoCessionario(advId, cessionarioId) {
+            removerParte(`ces-adv-block-${advId}`);
+            const listDiv = document.getElementById(`ces-adv-list-${cessionarioId}`);
+            if (listDiv && listDiv.children.length === 0) {
+                // Remove/Oculta a primeira parte das informações quando esvazia a lista
+                document.getElementById(`ces-adv-container-${cessionarioId}`).style.display = 'none';
+                document.getElementById(`btn-add-adv-esp-ces-${cessionarioId}`).style.display = 'inline-block';
+                document.getElementById(`ces-adv-opt-perc-${cessionarioId}`).checked = true;
+                document.getElementById(`ces-adv-perc-global-${cessionarioId}`).value = '';
+                document.getElementById(`ces-adv-fix-global-${cessionarioId}`).value = '';
+                document.getElementById(`ces-adv-base-global-${cessionarioId}`).textContent = '0,00';
+                document.getElementById(`ces-adv-resultado-global-${cessionarioId}`).textContent = '0,00';
+                toggleCesAdvHonorariosFields(cessionarioId);
+            }
         }
 
         function removerParte(id) {
             const elemento = document.getElementById(id);
             if (elemento) {
                 elemento.remove();
+                atualizarNumeracaoVisuais();
                 atualizarCredoresAdicionais();
             }
         }
@@ -2367,24 +2796,37 @@
                 const fractionCes = baseCalculoCessionario > 0 ? (valorCalculado / baseCalculoCessionario) : 0;
                 const baseAdvCes = baseCalculoAdvogadosPrincipal * fractionCes;
 
-                let honorariosAdvCes = 0;
+                const isPercGlobal = document.getElementById(`ces-adv-opt-perc-${i}`).checked;
+                let honorariosAdvTotalBruto = 0;
+                
+                if (isPercGlobal) {
+                    const percAdvGlobal = getNumericValue(`ces-adv-perc-global-${i}`) / 100;
+                    honorariosAdvTotalBruto = baseAdvCes * percAdvGlobal;
+                } else {
+                    honorariosAdvTotalBruto = getNumericValue(`ces-adv-fix-global-${i}`);
+                }
+                
+                honorariosAdvTotalBruto = Math.min(honorariosAdvTotalBruto, valorCalculado);
+
+                const baseAdvGlobalSpan = document.getElementById(`ces-adv-base-global-${i}`);
+                if (baseAdvGlobalSpan) baseAdvGlobalSpan.textContent = formatarMoedaParaExibicao(baseAdvCes);
+                
+                const resAdvGlobalSpan = document.getElementById(`ces-adv-resultado-global-${i}`);
+                if (resAdvGlobalSpan) resAdvGlobalSpan.textContent = formatarMoedaParaExibicao(honorariosAdvTotalBruto);
+
+                let honorariosAdvTotal = 0;
                 
                 const advogados = document.querySelectorAll(`.adv-cessionario-${i}`);
+                let totalPartCes = 0;
                 advogados.forEach(advBlock => {
                     const advId = advBlock.dataset.advId;
-                    const isPerc = document.getElementById(`ces-adv-perc-opt-${advId}`).checked;
-                    let honorariosAdvAtual = 0;
-                    if (isPerc) {
-                        const percAdv = getNumericValue(`ces-adv-perc-${advId}`) / 100;
-                        honorariosAdvAtual = baseAdvCes * percAdv;
-                    } else {
-                        honorariosAdvAtual = getNumericValue(`ces-adv-fix-${advId}`);
-                    }
+                    const partAdv = getNumericValue(`ces-adv-part-${advId}`) / 100;
+                    totalPartCes += partAdv * 100;
+
+                    let honorariosAdvAtual = honorariosAdvTotalBruto * partAdv;
                     
-                    document.getElementById(`ces-adv-base-${advId}`).textContent = formatarMoedaParaExibicao(baseAdvCes);
-                    
-                    honorariosAdvAtual = Math.min(honorariosAdvAtual, valorCalculado);
-                    honorariosAdvCes += honorariosAdvAtual;
+                    honorariosAdvAtual = Math.min(honorariosAdvAtual, honorariosAdvTotalBruto);
+                    honorariosAdvTotal += honorariosAdvAtual;
                     
                     const advResultSpan = document.getElementById(`ces-adv-resultado-${advId}`);
                     if (advResultSpan) {
@@ -2400,7 +2842,7 @@
                 });
 
                 const retencao = getNumericValue(`ces-retencao-${i}`);
-                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvCes);
+                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvTotal);
                 const liquidoSpan = document.getElementById(`ces-liquido-${i}`);
                 if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
 
@@ -2423,24 +2865,37 @@
                 const fractionHer = baseCalculoCessionario > 0 ? (valorCalculado / baseCalculoCessionario) : 0;
                 const baseAdvHer = baseCalculoAdvogadosPrincipal * fractionHer;
 
-                let honorariosAdvHer = 0;
+                const isPercGlobal = document.getElementById(`her-adv-opt-perc-${i}`).checked;
+                let honorariosAdvTotalBruto = 0;
+                
+                if (isPercGlobal) {
+                    const percAdvGlobal = getNumericValue(`her-adv-perc-global-${i}`) / 100;
+                    honorariosAdvTotalBruto = baseAdvHer * percAdvGlobal;
+                } else {
+                    honorariosAdvTotalBruto = getNumericValue(`her-adv-fix-global-${i}`);
+                }
+                
+                honorariosAdvTotalBruto = Math.min(honorariosAdvTotalBruto, valorCalculado);
+
+                const baseAdvGlobalSpan = document.getElementById(`her-adv-base-global-${i}`);
+                if (baseAdvGlobalSpan) baseAdvGlobalSpan.textContent = formatarMoedaParaExibicao(baseAdvHer);
+                
+                const resAdvGlobalSpan = document.getElementById(`her-adv-resultado-global-${i}`);
+                if (resAdvGlobalSpan) resAdvGlobalSpan.textContent = formatarMoedaParaExibicao(honorariosAdvTotalBruto);
+
+                let honorariosAdvTotal = 0;
                 
                 const advogados = document.querySelectorAll(`.adv-herdeiro-${i}`);
+                let totalPartHer = 0;
                 advogados.forEach(advBlock => {
                     const advId = advBlock.dataset.advId;
-                    const isPerc = document.getElementById(`her-adv-perc-opt-${advId}`).checked;
-                    let honorariosAdvAtual = 0;
-                    if (isPerc) {
-                        const percAdv = getNumericValue(`her-adv-perc-${advId}`) / 100;
-                        honorariosAdvAtual = baseAdvHer * percAdv;
-                    } else {
-                        honorariosAdvAtual = getNumericValue(`her-adv-fix-${advId}`);
-                    }
+                    const partAdv = getNumericValue(`her-adv-part-${advId}`) / 100;
+                    totalPartHer += partAdv * 100;
+
+                    let honorariosAdvAtual = honorariosAdvTotalBruto * partAdv;
                     
-                    document.getElementById(`her-adv-base-${advId}`).textContent = formatarMoedaParaExibicao(baseAdvHer);
-                    
-                    honorariosAdvAtual = Math.min(honorariosAdvAtual, valorCalculado);
-                    honorariosAdvHer += honorariosAdvAtual;
+                    honorariosAdvAtual = Math.min(honorariosAdvAtual, honorariosAdvTotalBruto);
+                    honorariosAdvTotal += honorariosAdvAtual;
                     
                     const advResultSpan = document.getElementById(`her-adv-resultado-${advId}`);
                     if (advResultSpan) {
@@ -2456,7 +2911,7 @@
                 });
 
                 const retencao = getNumericValue(`her-retencao-${i}`);
-                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvHer);
+                const liquido = Math.max(0, valorCalculado - retencao - honorariosAdvTotal);
                 const liquidoSpan = document.getElementById(`her-liquido-${i}`);
                 if (liquidoSpan) liquidoSpan.textContent = formatarMoedaParaExibicao(liquido);
             }
@@ -2488,7 +2943,7 @@
             // Serão calculadas localmente ou acumuladas em objetos para Lib/Ret
 
             // Helper to add rows
-            const addRow = (nome, cpf, valor, cssClass = '') => {
+            const addRow = (nome, cpf, valor, cssClass = '', entreParenteses = false) => {
                 const valorNumerico = parseFloat(valor) || 0;
                 if (valorNumerico === 0) return; // Don't show empty values
 
@@ -2500,15 +2955,18 @@
                 // Se não tiver classe (beneficiários), aplica negrito. Garante alinhamento a direita no relatório.
                 let style = cssClass === '' ? 'font-weight: bold; text-align: left;' : 'text-align: left;';
 
-                if (nome.includes('Pensão Alimentícia')) {
+            if (nome.includes('Pensão Alimentícia') || nome.includes('FGTS a Depositar')) {
                     style += ' font-weight: bold;';
                 }
+
+                let valorFormatado = formatarMoedaParaExibicao(valorNumerico);
+                if (entreParenteses) valorFormatado = `(${valorFormatado})`;
 
                 html += `
                             <tr class="${cssClass}">
                                 <td>${nome}</td>
-                                <td>${(cpf === 'Recolhimento' || cpf === 'Retenção') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
-                                <td class="value-col" style="${style}">${formatarMoedaParaExibicao(valorNumerico)}</td>
+                                <td>${(cpf === 'Recolhimento') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
+                                <td class="value-col" style="${style}">${valorFormatado}</td>
                             </tr>`;
             };
 
@@ -2525,7 +2983,7 @@
                 advogadosHtml += `
                             <tr class="${cssClass}">
                                 <td>${nome}</td>
-                                <td>${(cpf === 'Recolhimento' || cpf === 'Retenção') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
+                                <td>${(cpf === 'Recolhimento') ? cpf : `<strong>${cpf || ''}</strong>`}</td>
                                 <td class="value-col" style="${style}">${formatarMoedaParaExibicao(valorNumerico)}</td>
                             </tr>`;
             };
@@ -2535,7 +2993,7 @@
                 if (valorLib <= 0.005 && valorRet <= 0.005) return;
                 const total = valorLib + valorRet;
                 html += `
-                    <tr style="background-color: #e2e6ea; font-weight: bold; font-style: italic;">
+                    <tr style="background-color: #e2e6ea; font-weight: bold;">
                         <td style="text-align: left; padding-right: 10px; color: #555;">TOTAL ${label} (${formatarMoedaParaExibicao(total)})</td>
                         <td style="text-align: right; color: #856404; font-size: 0.9em;">${valorRet > 0.005 ? 'Retido: ' + formatarMoedaParaExibicao(valorRet) : ''}</td>
                         <td class="value-col" style="text-align: left; color: #004085;">${valorLib > 0.005 ? 'Liberar: ' + formatarMoedaParaExibicao(valorLib) : ''}</td>
@@ -2558,23 +3016,36 @@
             let subLibCessionarios = 0;
             let subRetCessionarios = 0;
             let totalCessionariosBruto = 0;
+            let visCes = 1;
 
             for (let i = 1; i <= cessionarioCount; i++) {
                 const nomeInput = document.getElementById(`ces-nome-${i}`);
                 if (nomeInput) {
-                    const nomeCessionario = nomeInput.value || `Cessionário #${i}`;
+                    const nomeCessionario = nomeInput.value || `Cessionário #${visCes}`;
                     const percentual = getNumericValue(`ces-percentual-${i}`);
                     const valorCessionario = (percentual / 100) * baseCalculoCessionario;
                     const retencao = getNumericValue(`ces-retencao-${i}`);
                     totalCessionariosBruto += valorCessionario;
                     
+                    const fractionCes = baseCalculoCessionario > 0 ? (valorCessionario / baseCalculoCessionario) : 0;
+                    const baseAdvCes = baseCalculoAdvogadosPrincipal * fractionCes;
+
+                    let honorariosAdvTotalBruto = 0;
+                    const isPercGlobal = document.getElementById(`ces-adv-opt-perc-${i}`).checked;
+                    if (isPercGlobal) {
+                        honorariosAdvTotalBruto = baseAdvCes * (getNumericValue(`ces-adv-perc-global-${i}`) / 100);
+                    } else {
+                        honorariosAdvTotalBruto = getNumericValue(`ces-adv-fix-global-${i}`);
+                    }
+                    honorariosAdvTotalBruto = Math.min(honorariosAdvTotalBruto, valorCessionario);
+
                     let honorariosAdvTotal = 0;
                     const advogados = document.querySelectorAll(`.adv-cessionario-${i}`);
                     
                     advogados.forEach(advBlock => {
                         const advId = advBlock.dataset.advId;
-                        const isPerc = document.getElementById(`ces-adv-perc-opt-${advId}`).checked;
-                        let honorariosAdv = isPerc ? Math.min(valorCessionario, valorCessionario * (getNumericValue(`ces-adv-perc-${advId}`) / 100)) : Math.min(valorCessionario, getNumericValue(`ces-adv-fix-${advId}`));
+                        const partAdv = getNumericValue(`ces-adv-part-${advId}`) / 100;
+                        let honorariosAdv = honorariosAdvTotalBruto * partAdv;
                         
                         let irAdv = getNumericValue(`ces-adv-ir-${advId}`);
                         let retAdv = getNumericValue(`ces-adv-ret-${advId}`);
@@ -2605,7 +3076,7 @@
                     if (valorCessionario > 0) {
                         if (liquidoCessionario > 0) {
                             addRow(
-                                `Cessionário: <strong>${nomeInput.value || `Cessionário #${i}`}</strong>`,
+                                `Cessionário: <strong>${nomeInput.value || `Cessionário #${visCes}`}</strong>`,
                                 document.getElementById(`ces-cpf-${i}`).value,
                                 liquidoCessionario
                             );
@@ -2614,10 +3085,11 @@
 
                         if (retencao > 0) {
                             const motivo = document.getElementById(`ces-retencao-motivo-${i}`).value;
-                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Cessionário #${i})`, 'Retenção', retencao, 'linha-retencao');
+                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Cessionário #${visCes})`, 'Retenção', retencao, 'linha-retencao');
                             subRetCessionarios += retencao;
                         }
                     }
+                    visCes++;
                 }
             }
             addSubtotalRow('CESSIONÁRIOS', subLibCessionarios, subRetCessionarios);
@@ -2632,12 +3104,13 @@
             let subRetHerdeiros = 0;
             let herdeirosExistem = false;
             let totalHerdeirosBruto = 0;
+            let visHer = 1;
 
             for (let i = 1; i <= herdeiroCount; i++) {
                 const nomeInput = document.getElementById(`her-nome-${i}`);
                 if (nomeInput) {
                     herdeirosExistem = true;
-                    const nomeHerdeiro = nomeInput.value || `Herdeiro #${i}`;
+                    const nomeHerdeiro = nomeInput.value || `Herdeiro #${visHer}`;
                     const percentual = getNumericValue(`her-percentual-${i}`);
                     const valorHerdeiro = (percentual / 100) * baseCalculoReclamante;
                     const retencao = getNumericValue(`her-retencao-${i}`);
@@ -2646,13 +3119,22 @@
                     const fractionHer = baseCalculoCessionario > 0 ? (valorHerdeiro / baseCalculoCessionario) : 0;
                     const baseAdvHer = baseCalculoAdvogadosPrincipal * fractionHer;
 
+                    let honorariosAdvTotalBruto = 0;
+                    const isPercGlobal = document.getElementById(`her-adv-opt-perc-${i}`).checked;
+                    if (isPercGlobal) {
+                        honorariosAdvTotalBruto = baseAdvHer * (getNumericValue(`her-adv-perc-global-${i}`) / 100);
+                    } else {
+                        honorariosAdvTotalBruto = getNumericValue(`her-adv-fix-global-${i}`);
+                    }
+                    honorariosAdvTotalBruto = Math.min(honorariosAdvTotalBruto, valorHerdeiro);
+
                     let honorariosAdvTotal = 0;
                     const advogados = document.querySelectorAll(`.adv-herdeiro-${i}`);
                     
                     advogados.forEach(advBlock => {
                         const advId = advBlock.dataset.advId;
-                        const isPerc = document.getElementById(`her-adv-perc-opt-${advId}`).checked;
-                        let honorariosAdv = isPerc ? Math.min(valorHerdeiro, baseAdvHer * (getNumericValue(`her-adv-perc-${advId}`) / 100)) : Math.min(valorHerdeiro, getNumericValue(`her-adv-fix-${advId}`));
+                        const partAdv = getNumericValue(`her-adv-part-${advId}`) / 100;
+                        let honorariosAdv = honorariosAdvTotalBruto * partAdv;
                         
                         let irAdv = getNumericValue(`her-adv-ir-${advId}`);
                         let retAdv = getNumericValue(`her-adv-ret-${advId}`);
@@ -2683,7 +3165,7 @@
                     if (valorHerdeiro > 0) {
                         if (liquidoHerdeiro > 0) {
                             addRow(
-                                `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${i}`}</strong>`,
+                                `Herdeiro: <strong>${nomeInput.value || `Herdeiro #${visHer}`}</strong>`,
                                 document.getElementById(`her-cpf-${i}`).value,
                                 liquidoHerdeiro
                             );
@@ -2692,10 +3174,11 @@
 
                         if (retencao > 0) {
                             const motivo = document.getElementById(`her-retencao-motivo-${i}`).value;
-                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Herdeiro #${i})`, 'Retenção', retencao, 'linha-retencao');
+                            addRow(motivo ? `Retenção (${motivo})` : `Retenção (Herdeiro #${visHer})`, 'Retenção', retencao, 'linha-retencao');
                             subRetHerdeiros += retencao;
                         }
                     }
+                    visHer++;
                 }
             }
             addSubtotalRow('HERDEIROS', subLibHerdeiros, subRetHerdeiros);
@@ -2740,9 +3223,15 @@
             }
             if (outras > 0) {
                 const motivo = document.getElementById('outras-motivo').value;
-                const labelOutras = motivo ? `Retenção (${motivo})` : 'Retenção';
-                addRow(labelOutras, 'Retenção', outras, 'linha-retencao');
+                const labelOutras = motivo ? `<strong>Retenção</strong> (${motivo})` : '<strong>Retenção</strong>';
+                addRow(labelOutras, 'Retenção', outras, '');
                 subRetReclamante += outras;
+            }
+
+            const fgtsReclamante = getNumericValue('fgts-viculada');
+            if (fgtsReclamante > 0) {
+                addRow('<strong>FGTS a Depositar</strong> <span style="font-size: 0.85em; font-weight: normal; color: #555;">(Conta Vinculada)</span>', 'Depósito CEF', fgtsReclamante, '');
+                subLibReclamante += fgtsReclamante;
             }
             const labelReclamante = (pensao > 0) ? 'RECLAMANTE / ALIMENTANDO' : 'RECLAMANTE';
             addSubtotalRow(labelReclamante, subLibReclamante, subRetReclamante);
@@ -2780,6 +3269,7 @@
                 }
 
                 // Rateio dos Advogados Adicionais
+                let visAdvAd = 1;
                 for (let i = 1; i <= advogadoAdicionalCount; i++) {
                     const nomeInput = document.getElementById(`adv-ad-nome-${i}`);
                     if (!nomeInput) continue;
@@ -2791,21 +3281,22 @@
 
                     if (valorCalculado > 0) {
                         addAdvogadoRow(
-                            `Advogado: <strong>${nomeInput.value || `Adv. Adicional #${i}`}</strong>`,
+                            `Advogado: <strong>${nomeInput.value || `Adv. Adicional #${visAdvAd}`}</strong>`,
                             document.getElementById(`adv-ad-cpf-${i}`).value,
                             liquidoCalculado
                         );
                         subLibAdvogados += liquidoCalculado;
                         if (retAdicional > 0) {
                             const motivoRetAdicional = document.getElementById(`adv-ad-retencao-motivo-${i}`).value;
-                            const labelRetencao = motivoRetAdicional ? `Retenção (${motivoRetAdicional})` : `Retenção (Adv. Adicional #${i})`;
+                            const labelRetencao = motivoRetAdicional ? `Retenção (${motivoRetAdicional})` : `Retenção (Adv. Adicional #${visAdvAd})`;
                             addAdvogadoRow(labelRetencao, 'Retenção', retAdicional, 'linha-retencao');
                             subRetAdvogados += retAdicional;
                         }
                         if (irAdicional > 0) {
-                            irrfAdvogados.push({ nome: nomeInput.value || `Adv. Adicional #${i}`, valor: irAdicional });
+                            irrfAdvogados.push({ nome: nomeInput.value || `Adv. Adicional #${visAdvAd}`, valor: irAdicional });
                         }
                     }
+                    visAdvAd++;
                 }
             }
             html += advogadosHtml;
@@ -2827,13 +3318,10 @@
                 subTotalRecolhimentos += item.valor;
             });
 
-            addRow('FGTS a Depositar', 'Recolhimento', getNumericValue('fgts-viculada'));
-            subTotalRecolhimentos += getNumericValue('fgts-viculada');
-
             if (subTotalRecolhimentos > 0.005) {
                 html += `
-                    <tr style="background-color: #e2e6ea; font-weight: bold; font-style: italic;">
-                        <td style="text-align: left; padding-right: 10px; color: #555;">TOTAL IMPOSTOS (${formatarMoedaParaExibicao(subTotalRecolhimentos)})</td>
+                    <tr style="background-color: #e2e6ea; font-weight: bold;">
+                        <td style="text-align: left; padding-right: 10px; color: #555;">TOTAL TRIBUTOS (${formatarMoedaParaExibicao(subTotalRecolhimentos)})</td>
                         <td></td>
                         <td class="value-col" style="text-align: left; color: #155724; font-size: 1 em;">Recolher: ${formatarMoedaParaExibicao(subTotalRecolhimentos)}</td>
                      </tr>`;
@@ -2862,8 +3350,8 @@
                             <td class="value-col">${formatarMoedaParaExibicao(valorDeposito)}</td>
                         </tr>
                         <tr>
-                            <td colspan="2">TOTAL DEVIDO</td>
-                            <td class="value-col">${formatarMoedaParaExibicao(valorBrutoTotal)}</td>
+                            <td colspan="2" style="font-weight: bold;">TOTAL DEVIDO PELA RECLAMADA</td>
+                            <td class="value-col" style="font-weight: bold;">${formatarMoedaParaExibicao(valorBrutoTotal)}</td>
                         </tr>
                         <tr>
                             <td colspan="2" style="font-size: 0.75em; padding-left: 20px; color: #004085;">TOTAL A LIBERAR</td>
@@ -2916,6 +3404,22 @@
             if (obs) obs.value = '';
             const obsPrint = document.getElementById('observacoes-print');
             if (obsPrint) obsPrint.innerText = '';
+
+            const inputHon = document.getElementById('input-honorarios-advocaticios');
+            if (inputHon) {
+                inputHon.value = '';
+            }
+
+            const inputIrrfHon = document.getElementById('input-irrf-honorarios');
+            if (inputIrrfHon) {
+                inputIrrfHon.value = '';
+            }
+
+            const selectServidor = document.getElementById('nome-servidor');
+            if (selectServidor) {
+                selectServidor.value = '';
+            }
+
             advogadoAdicionalCount = 0;
             herdeiroCount = 0;
             cessionarioCount = 0;
@@ -2924,7 +3428,7 @@
             document.getElementById('adv-percentual-opt').checked = true;
             toggleAdvHonorariosFields();
             preencherDataAtual();
-            atualizarTotalDevidoReclamada(); // Dispara a cadeia de atualização
+            atualizarSomaLiquido(); // Dispara a cadeia de atualização
         }
 
         function preencherDataAtual() {
@@ -2947,28 +3451,30 @@
 
             if (id.startsWith('her-adv-nome-')) return `Nome do Advogado do Herdeiro #${id.split('-')[3]}`;
             if (id.startsWith('her-adv-cpf-')) return `CPF/CNPJ do Advogado do Herdeiro #${id.split('-')[3]}`;
-            if (id.startsWith('her-adv-perc-')) return `Percentual do Advogado do Herdeiro #${id.split('-')[3]}`;
-            if (id.startsWith('her-adv-fix-')) return `Valor Fixado do Advogado do Herdeiro #${id.split('-')[3]}`;
+            if (id.startsWith('her-adv-part-')) return `Participação do Advogado do Herdeiro #${id.split('-')[3]}`;
+            if (id.startsWith('her-adv-perc-global-')) return `Percentual Global de Honorários do Herdeiro #${id.split('-')[4]}`;
+            if (id.startsWith('her-adv-fix-global-')) return `Valor Fixado Global de Honorários do Herdeiro #${id.split('-')[4]}`;
 
             if (id.startsWith('ces-adv-nome-')) return `Nome do Advogado do Cessionário #${id.split('-')[3]}`;
             if (id.startsWith('ces-adv-cpf-')) return `CPF/CNPJ do Advogado do Cessionário #${id.split('-')[3]}`;
-            if (id.startsWith('ces-adv-perc-')) return `Percentual do Advogado do Cessionário #${id.split('-')[3]}`;
-            if (id.startsWith('ces-adv-fix-')) return `Valor Fixado do Advogado do Cessionário #${id.split('-')[3]}`;
+            if (id.startsWith('ces-adv-part-')) return `Participação do Advogado do Cessionário #${id.split('-')[3]}`;
+            if (id.startsWith('ces-adv-perc-global-')) return `Percentual Global de Honorários do Cessionário #${id.split('-')[4]}`;
+            if (id.startsWith('ces-adv-fix-global-')) return `Valor Fixado Global de Honorários do Cessionário #${id.split('-')[4]}`;
 
             return null;
         }
 
-        function toggleAdvHerTipo(id) {
-            const isPercentual = document.getElementById(`her-adv-perc-opt-${id}`).checked;
-            document.getElementById(`her-adv-perc-fields-${id}`).style.display = isPercentual ? 'grid' : 'none';
-            document.getElementById(`her-adv-fix-fields-${id}`).style.display = isPercentual ? 'none' : 'grid';
+        function toggleHerAdvHonorariosFields(id) {
+            const isPercentual = document.getElementById(`her-adv-opt-perc-${id}`).checked;
+            document.getElementById(`her-adv-perc-fields-global-${id}`).style.display = isPercentual ? 'grid' : 'none';
+            document.getElementById(`her-adv-fix-fields-global-${id}`).style.display = isPercentual ? 'none' : 'grid';
             atualizarCredoresAdicionais();
         }
 
-        function toggleAdvCesTipo(id) {
-            const isPercentual = document.getElementById(`ces-adv-perc-opt-${id}`).checked;
-            document.getElementById(`ces-adv-perc-fields-${id}`).style.display = isPercentual ? 'grid' : 'none';
-            document.getElementById(`ces-adv-fix-fields-${id}`).style.display = isPercentual ? 'none' : 'grid';
+        function toggleCesAdvHonorariosFields(id) {
+            const isPercentual = document.getElementById(`ces-adv-opt-perc-${id}`).checked;
+            document.getElementById(`ces-adv-perc-fields-global-${id}`).style.display = isPercentual ? 'grid' : 'none';
+            document.getElementById(`ces-adv-fix-fields-global-${id}`).style.display = isPercentual ? 'none' : 'grid';
             atualizarCredoresAdicionais();
         }
 
@@ -3071,6 +3577,90 @@
                 if (hasCes && Math.abs(totalCes - 100) > 0.01) mensagensEspecificas.push(`A soma dos percentuais dos Cessionários deve ser 100%. Atual: ${totalCes.toFixed(2)}%`);
             }
 
+            // Herdeiros - Advogados
+            for (let i = 1; i <= herdeiroCount; i++) {
+                if (document.getElementById(`herdeiro-${i}`)) {
+                    let totalAdvHer = 0;
+                    let hasAdvHer = false;
+                    const advogados = document.querySelectorAll(`.adv-herdeiro-${i}`);
+                    advogados.forEach(block => {
+                        hasAdvHer = true;
+                        const advId = block.dataset.advId;
+                        totalAdvHer += getNumericValue(`her-adv-part-${advId}`);
+                    });
+                    
+                    let honorariosAdvTotalBruto = 0;
+                    const isPercGlobal = document.getElementById(`her-adv-opt-perc-${i}`).checked;
+                    if (isPercGlobal) {
+                        honorariosAdvTotalBruto = getNumericValue(`her-adv-perc-global-${i}`);
+                    } else {
+                        honorariosAdvTotalBruto = getNumericValue(`her-adv-fix-global-${i}`);
+                    }
+
+                    if (honorariosAdvTotalBruto > 0 && hasAdvHer && Math.abs(totalAdvHer - 100) > 0.01) {
+                        mensagensEspecificas.push(`A soma das participações dos advogados do Herdeiro #${i} deve ser 100%. Atual: ${totalAdvHer.toFixed(2)}%`);
+                    }
+                }
+            }
+
+            // Cessionarios - Advogados
+            for (let i = 1; i <= cessionarioCount; i++) {
+                if (document.getElementById(`cessionario-${i}`)) {
+                    let totalAdvCes = 0;
+                    let hasAdvCes = false;
+                    const advogados = document.querySelectorAll(`.adv-cessionario-${i}`);
+                    advogados.forEach(block => {
+                        hasAdvCes = true;
+                        const advId = block.dataset.advId;
+                        totalAdvCes += getNumericValue(`ces-adv-part-${advId}`);
+                    });
+                    
+                    let honorariosAdvTotalBruto = 0;
+                    const isPercGlobal = document.getElementById(`ces-adv-opt-perc-${i}`).checked;
+                    if (isPercGlobal) {
+                        honorariosAdvTotalBruto = getNumericValue(`ces-adv-perc-global-${i}`);
+                    } else {
+                        honorariosAdvTotalBruto = getNumericValue(`ces-adv-fix-global-${i}`);
+                    }
+
+                    if (honorariosAdvTotalBruto > 0 && hasAdvCes && Math.abs(totalAdvCes - 100) > 0.01) {
+                        mensagensEspecificas.push(`A soma das participações dos advogados do Cessionário #${i} deve ser 100%. Atual: ${totalAdvCes.toFixed(2)}%`);
+                    }
+                }
+            }
+
+            // Validação de Distribuição de IRRF dos Honorários
+            const irrfPlanilha = getNumericValue('input-irrf-honorarios');
+            if (irrfPlanilha > 0) {
+                let totalIrrfAdvogados = 0;
+                
+                totalIrrfAdvogados += getNumericValue('adv-principal-ir');
+                
+                for (let i = 1; i <= advogadoAdicionalCount; i++) {
+                    totalIrrfAdvogados += getNumericValue(`adv-ad-ir-${i}`);
+                }
+                
+                for (let i = 1; i <= herdeiroCount; i++) {
+                    const advs = document.querySelectorAll(`.adv-herdeiro-${i}`);
+                    advs.forEach(block => {
+                        const advId = block.dataset.advId;
+                        totalIrrfAdvogados += getNumericValue(`her-adv-ir-${advId}`);
+                    });
+                }
+                
+                for (let i = 1; i <= cessionarioCount; i++) {
+                    const advs = document.querySelectorAll(`.adv-cessionario-${i}`);
+                    advs.forEach(block => {
+                        const advId = block.dataset.advId;
+                        totalIrrfAdvogados += getNumericValue(`ces-adv-ir-${advId}`);
+                    });
+                }
+
+                if (Math.abs(irrfPlanilha - totalIrrfAdvogados) > 0.01) {
+                    mensagensEspecificas.push(`ATENÇÃO: O valor do IRRF dos Honorários retido na fonte (Planilha: ${formatarMoedaParaExibicao(irrfPlanilha)}) deve ser totalmente distribuído/preenchido no campo "Retenção IRRF (R$)" do(s) Advogado(s).\n\nA soma atual informada nos advogados é de ${formatarMoedaParaExibicao(totalIrrfAdvogados)}, e precisa ser igual ao valor da Planilha.`);
+                } 
+            }
+
             // 5. Validação de Observações se houver diferença positiva
             const diferenca = getNumericValue('diferenca-valor');
             const observacoes = document.getElementById('observacoes-gerais').value;
@@ -3093,6 +3683,48 @@
                 return false;
             }
             return true;
+        }
+
+        function atualizarHonorariosSimultaneo(input) {
+            formatarMoeda(input);
+            atualizarSomaLiquido();
+            atualizarSomaHonorariosFixados();
+        }
+
+        function atualizarIRRFHonorariosSimultaneo(input) {
+            formatarMoeda(input);
+            atualizarSomaLiquido();
+            
+            let currentIRRF = getNumericValueFromInput(input);
+            
+            if (currentIRRF >= 0) {
+                const detalheAdvogado = document.getElementById('detalhes-advogados');
+                if (currentIRRF > 0 && detalheAdvogado && !detalheAdvogado.open) {
+                    detalheAdvogado.open = true;
+                }
+            }
+            atualizarSomaHonorariosFixados();
+        }
+
+        function atualizarSomaHonorariosFixados() {
+            const honLiq = getNumericValue('input-honorarios-advocaticios');
+            const irrfHon = getNumericValue('input-irrf-honorarios');
+            const honBruto = honLiq + irrfHon;
+            
+            if (honBruto >= 0) {
+                document.getElementById('adv-valor-fixado-opt').checked = true;
+                toggleAdvHonorariosFields();
+                document.getElementById('adv-valor-fixado').value = formatarMoedaParaExibicao(honBruto);
+                
+                if (honBruto > 0) {
+                    const detalheAdvogado = document.getElementById('detalhes-advogados');
+                    if (detalheAdvogado && !detalheAdvogado.open) {
+                        detalheAdvogado.open = true;
+                    }
+                }
+            }
+            
+            calcularHonorarios('adv');
         }
 
         // =======================================================================
@@ -3209,33 +3841,34 @@
                         </div>
 
                         <div class="grid-col-span-2" style="padding: 4px 10px; border-top: 1px dashed #B0D0D0; background-color: #E0F0F0; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; margin-top: 5px;">
-                            <label style="font-weight: bold; font-size: 0.9em; color: #004040;">TOTAL DEVIDO PELO RECLAMADA:</label>
-                            <span style="background-color: #CCEDED; border: 1px solid #006464; padding: 5px 10px; font-size: 1.05em; font-weight: bold; border-radius: 6px;">${totalDevido}</span>
+                            <label style="font-weight: bold; font-size: 0.9em; color: #004040;">TOTAL DEVIDO PELA RECLAMADA:</label>
+                            <span style="font-size: 1.05em; font-weight: bold; color: #004040;">${totalDevido}</span>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
-                            <label style="font-weight: 600; color: #333;">Líquido (Reclamante):</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${liquidoExequente}</span>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                                <label style="font-weight: 600; color: #333;">Líquido (Reclamante):</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${liquidoExequente}</span>
+                            </div>
+                            <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                                <label style="font-weight: 600; color: #333;">FGTS a Depositar:</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${fgts}</span>
+                            </div>
                         </div>
 
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
-                            <label style="font-weight: 600; color: #333;">IRRF (Reclamante):</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${irValor}</span>
-                        </div>
-
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
-                            <label style="font-weight: 600; color: #333;">INSS (Reclamante):</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${inssReclamante}</span>
-                        </div>
-
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
-                            <label style="font-weight: 600; color: #333;">FGTS a Depositar:</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${fgts}</span>
-                        </div>
-
-                        <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
-                            <label style="font-weight: 600; color: #333;">INSS (Reclamada):</label>
-                            <span style="font-weight: bold; font-size: 1.05em;">${inssReclamada}</span>
+                        <div style="display: flex; flex-direction: column; gap: 2px;">
+                            <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                                <label style="font-weight: 600; color: #333;">IRRF (Reclamante):</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${irValor}</span>
+                            </div>
+                            <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                                <label style="font-weight: 600; color: #333;">INSS (Reclamante):</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${inssReclamante}</span>
+                            </div>
+                            <div class="info-item" style="justify-content: space-between; align-items: center; display: flex; border-bottom: 1px solid #e0e0e0; padding: 3px 0;">
+                                <label style="font-weight: 600; color: #333;">INSS (Reclamada):</label>
+                                <span style="font-weight: bold; font-size: 1.05em;">${inssReclamada}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3295,7 +3928,7 @@
         // INICIALIZAÇÃO
         // =======================================================================
         document.addEventListener('DOMContentLoaded', function () {
-            const inputsParaObservar = ['valor-deposito-judicial', 'ir-valor', 'inss-reclamante', 'inss-reclamada', 'fgts-viculada', 'valor-deposito'];
+            const inputsParaObservar = ['ir-valor', 'inss-reclamante', 'inss-reclamada', 'fgts-viculada', 'valor-deposito'];
             inputsParaObservar.forEach(id => {
                 document.getElementById(id).addEventListener('input', (e) => {
                     formatarMoeda(e.target);
@@ -3314,6 +3947,7 @@
             document.getElementById('adv-valor-fixado').addEventListener('input', (e) => {
                 formatarMoeda(e.target);
                 calcularHonorarios('adv');
+                atualizarTotalDevidoReclamada();
             });
 
             limparCampos();
