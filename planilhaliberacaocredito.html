@@ -1351,22 +1351,26 @@
 
             /* Form Grid & Layout */
             .form-grid {
-                grid-template-columns: 1fr;
-                gap: 15px;
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
             }
 
-            /* Flex Rows (Reclamante/CPF, Advogado/CPF) - Targeting inline styles */
-            .grid-col-span-2>div[style*="display: flex"],
-            .parte-adicional-block>div[style*="display: flex"] {
-                flex-direction: column;
+            /* Força empilhamento vertical nas linhas de dados adicionais e blocos de formulário */
+            div[style*="align-items: flex-end"] {
+                flex-direction: column !important;
                 align-items: stretch !important;
                 gap: 10px !important;
             }
 
-            .grid-col-span-2>div>div[style*="flex-basis"],
-            .parte-adicional-block>div>div[style*="flex-basis"] {
+            /* Ajusta a largura das colunas baseadas em flex-basis */
+            div[style*="flex-basis"] {
                 flex-basis: auto !important;
-                width: 100%;
+                width: 100% !important;
+            }
+
+            /* Permite que elementos flexíveis inline quebrem linha quando o filho ocupa 100% */
+            div[style*="display: flex"] {
+                flex-wrap: wrap;
             }
 
             /* Info Items */
@@ -1380,12 +1384,18 @@
                 margin-bottom: 5px;
             }
 
+            /* Garante que os inputs de valores e displays fiquem em 100% da largura na versão mobile */
             .info-item input[type="text"],
             .info-item input[type="number"],
             .info-item .valor-display-style,
-            .info-item .valor-input {
+            .info-item .valor-input,
+            .valor-input,
+            .valor-display-style,
+            input[id^="input-honorarios-"],
+            input[id^="input-irrf-"] {
                 width: 100% !important;
                 max-width: none;
+                box-sizing: border-box;
             }
 
             .header-bruto-display {
@@ -1399,7 +1409,7 @@
             }
 
             .honorarios-fields {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
             }
 
             .honorarios-fields .field-group {
@@ -1411,7 +1421,7 @@
             .honorarios-fields input[type="number"],
             .honorarios-fields .result,
             .honorarios-fields .base-calculo {
-                width: 100%;
+                width: 100% !important;
             }
 
             /* Tables */
