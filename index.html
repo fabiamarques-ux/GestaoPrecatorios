@@ -7,195 +7,276 @@
     <title>Portal de Cálculos Trabalhistas - TRT-19ª REGIÃO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f1f5f9;
+            color: #374151;
         }
 
-        .aside-bg {
-            background-color: #005a62;
-        }
-
-        .nav-link {
-            color: #d1d5db;
-            transition: background-color 0.2s ease-in-out;
-        }
-
-        .nav-link:hover {
-            background-color: #007380;
-        }
-
-        .active-link {
-            background-color: #0284c7;
-            color: #ffffff;
-            font-weight: 600;
+        .portal-header {
+            background-color: #ffffff;
+            border-top: 4px solid #004a80;
+            border-bottom: 1px solid #e5e7eb;
         }
 
         .module-card {
-            background-color: white;
+            background-color: #ffffff;
             border: 1px solid #e5e7eb;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-            min-height: 250px;
+            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
         }
 
         .module-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #004a80;
         }
 
-        /* Estilo para os links de funcionalidade dentro do card */
+        .module-title {
+            color: #004a80;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
         .module-link {
-            display: block;
+            display: flex;
+            align-items: center;
             width: 100%;
-            padding: 0.5rem 1rem;
-            margin-bottom: 0.5rem;
-            background-color: #f3f4f6;
-            color: #1f2937;
+            padding: 0.6rem 0.8rem;
+            color: #4b5563;
             font-weight: 500;
+            font-size: 1.15rem;
             border-radius: 0.375rem;
-            /* rounded-md */
-            text-align: left;
-            transition: background-color 0.2s;
-            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            text-decoration: none;
         }
 
         .module-link:hover {
-            background-color: #e5e7eb;
-            color: #007380;
+            background-color: #f3f4f6;
+            color: #004a80;
         }
 
-        /* Estilos específicos para o conteúdo do manual embutido (Removidos, mas mantendo o seletor por segurança) */
-        #manual-completo-section h1.text-3xl {
-            /* Evita que o H1 do manual embutido seja muito grande */
-            font-size: 1.5rem;
+        .module-link::before {
+            content: "\2192";
+            /* Unicode right arrow */
+            margin-right: 0.5rem;
+            color: #9ca3af;
+            font-size: 1.1em;
+            transition: transform 0.2s ease, color 0.2s ease;
+        }
+
+        .module-link:hover::before {
+            color: #004a80;
+            transform: translateX(4px);
+        }
+
+        .card-icon {
+            color: #004a80;
+            width: 1.5rem;
+            height: 1.5rem;
+            margin-right: 0.5rem;
         }
     </style>
 </head>
 
-<body>
-    <div class="p-4 md:p-8">
+<body class="antialiased min-h-screen flex flex-col">
 
-        <header
-            class="max-w-6xl mx-auto bg-white rounded-xl shadow-xl p-6 md:p-10 mb-8 border border-gray-200 text-center">
-            <div class="flex justify-center mb-4">
-                <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png"
-                    alt="Logotipo da Justiça do Trabalho, Tribunal Regional do Trabalho da 19ª Região"
-                    class="w-48 md:w-56 h-auto">
+    <!-- Header -->
+    <header class="portal-header shadow-sm relative">
+        <!-- AdmPrec Badge no extremo topo direito da página -->
+        <div class="absolute top-2 right-2 md:top-3 md:right-4 flex items-center gap-0.5 text-[#004a80]" title="Sistema AdmPrec">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-[#007380]">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 0 1 1.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.559.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.894.149c-.424.07-.764.383-.929.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 0 1-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.398.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 0 1-.12-1.45l.527-.737c.25-.35.272-.806.108-1.204-.165-.397-.506-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.108-1.204l-.526-.738a1.125 1.125 0 0 1 .12-1.45l.773-.773a1.125 1.125 0 0 1 1.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            <span class="text-base md:text-lg font-black tracking-tight">Adm<span class="text-[#007380] font-light">Prec</span></span>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 relative">
+            <div class="flex flex-col md:flex-row items-center md:justify-start gap-6 md:gap-16 lg:gap-32 w-full">
+                <!-- Grupo Esquerdo: Logo e Selo -->
+                <div class="flex items-center justify-center gap-4 shrink-0">
+                    <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png" alt="TRT-19 Logo" class="h-10 md:h-14 w-auto object-contain">
+                    <img src="https://site.trt19.jus.br/sites/default/files/selos_2025_Diamante.png" alt="Selo Diamante 2025" class="h-12 md:h-16 w-auto object-contain">
+                </div>
+                <!-- Título -->
+                <div class="flex justify-center shrink-0">
+                    <h1 class="text-2xl md:text-3xl lg:text-4xl font-bold text-[#004a80] tracking-tight text-center whitespace-nowrap">Administração de Precatórios</h1>
+                </div>
             </div>
-            <h1 class="text-3xl md:text-4xl mb-2 text-[#007380] font-bold">GESTÃO DOS PRECATÓRIOS TRABALHISTAS</h1>
-        </header>
+        </div>
+    </header>
 
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-10 md:py-12">
 
-        <main id="portal-grid" class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-8">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">NORMATIVOS E PROCESSOS </h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="regulamentoseprec.html" class="module-link">Regulamento da SEPREC - TRT19</a>
-                        <a href="processos-fluxograma.html" class="module-link">Fluxograma e POP da SEPREC</a>
-                        <a href="normativos.html" class="module-link">Normativos sobre Precatórios</a>
-                        <a href="https://pje.csjt.jus.br/manual/index.php?title=GPrec_-_Setor_de_Precat%C3%B3rios"
-                            target="_blank" class="module-link">Manual do Usuário - Sistema GPREC<a></a>
-
-                    </div>
+            <!-- Bloco 1 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Normativos e Processos</h3>
                 </div>
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">PLANEJAMENTO E METAS</h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="metas.html" class="module-link">Acompanhamento das Metas</a>
-                        <a href="metas.html" class="module-link">Planejamento da SEPREC</a>
-                    </div>
-                </div>
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">ATUALIZAÇÃO E LIBERAÇÃO DE CRÉDITO</h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="regrasatualizacaocalculos.html" class="module-link">Regras de Atualização de
-                            Crédito</a>
-                        <a href="momentosatualizacao.html" class="module-link">Momentos de Atualização de
-                            Crédito</a>
-                        <a href="atualizacaocalculo.html" class="module-link">Atualização de Cálculo: CalcBot</a>
-                        <a href="planilhaliberacaocredito.html" class="module-link">Planilha de Liberação de
-                            Crédito</a>
-
-                    </div>
-                </div>
-
-                <!-- Grande Bloco Consolidado -->
-                <div class="module-card rounded-xl p-6 shadow-md md:col-span-2 lg:col-span-3">
-                    <h3 class="text-xl font-bold mb-5 text-[#007380] border-b pb-2">PAINÉIS DE ACOMPANHAMENTO, CONTROLES E RELATÓRIOS</h3>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        <!-- Coluna: Visão Gerencial e Estatísticas -->
-                        <div class="lg:col-span-1 flex flex-col gap-2">
-                            <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Visão Gerencial</h4>
-                            <a href="pendentes_atuacao.html" class="module-link font-semibold border-l-4 border-[#007380]">Mapa dos Precatórios</a>
-                            <a href="convenios.html" class="module-link">Cronograma de Pagamento dos Entes</a>
-                            <a href="#" class="module-link">Ranking dos Devedores Públicos</a>
-                            <a href="#" class="module-link">Ranking dos Credores</a>
-                            <a href="#" class="module-link">Precatórios de Ações Coletivas</a>
-                        </div>
-
-                        <!-- Coluna: Controles Operacionais -->
-                        <div class="lg:col-span-2">
-                            <h4 class="text-sm font-bold text-gray-500 uppercase tracking-wide mb-2">Controle de Processos (Pendências)</h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <a href="em.diligencia.html" class="module-link">Pendentes de Autuação</a>
-                                <a href="pendentes_atualização.html" class="module-link">Pendentes de Pagamento</a>
-                                <a href="pendentes_liberacao.html" class="module-link">Pendentes de Atualização de Cálculos</a>
-                                <a href="pendentes_liberacao.html" class="module-link">Pendentes de Depósito Bancário</a>
-                                <a href="pendentes_liberacao.html" class="module-link">Pendentes de Liberação de Crédito</a>
-                                <a href="pendentes_liberacao.html" class="module-link">Pendentes de Emissão de Alvarás</a>
-                                <a href="pendentes_quitacao.html" class="module-link">Pendentes de Quitação de Pagamento</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">CERTIDÕES</h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="controlecertidoes.html" class="module-link">Controle de Emissão de Certidões</a>
-                    </div>
-                </div>
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">INSTRUMENTOS CONTRATUAIS</h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="acordos.html" class="module-link">Acordos</a>
-                        <a href="convenios.html" class="module-link">Convênios</a>
-                    </div>
-                </div>
-
-                <div class="module-card rounded-xl p-6 shadow-md">
-                    <h3 class="text-xl font-bold mb-3 text-[#007380]">AUDITORIA, CORREGEDORIA E OUVIDORIA</h3>
-                    <div class="space-y-2 text-gray-700 flex-grow">
-                        <a href="pendentes_atuacao.html" class="module-link">Acompanhamento das Recomendações da
-                            Corregeria</a>
-                        <a href="pendentes_atuacao.html" class="module-link">Respostas à Ouvidoria</a>
-                    </div>
-
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="regulamentoseprec.html" class="module-link">Regulamento da SEPREC - TRT19</a>
+                    <a href="processos-fluxograma.html" class="module-link">Fluxograma e POP da SEPREC</a>
+                    <a href="normativos.html" class="module-link">Normativos sobre Precatórios</a>
+                    <a href="https://pje.csjt.jus.br/manual/index.php?title=GPrec_-_Setor_de_Precat%C3%B3rios"
+                        target="_blank" class="module-link">Manual do Usuário - Sistema GPREC</a>
                 </div>
             </div>
 
-    </div>
+            <!-- Bloco 2 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Planejamento e Metas</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="metas.html" class="module-link">Acompanhamento das Metas</a>
+                    <a href="metas.html" class="module-link">Planejamento da SEPREC</a>
+                </div>
+            </div>
+
+            <!-- Bloco 3 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Atualização e Liberação</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="regrasatualizacaocalculos.html" class="module-link">Regras de Atualização de Crédito</a>
+                    <a href="momentosatualizacao.html" class="module-link">Momentos de Atualização de Crédito</a>
+                    <a href="atualizacaocalculo.html" class="module-link">Atualização de Cálculo: CalcBot</a>
+                    <a href="planilhaliberacaocredito.html" class="module-link">Planilha de Liberação de Crédito</a>
+                </div>
+            </div>
+
+            <!-- Bloco 4 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Painéis de Acompanhamento</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="pendentes_atuacao.html" class="module-link">Mapa dos Precatórios</a>
+                    <a href="convenios.html" class="module-link">Cronograma de Pagamento</a>
+                </div>
+            </div>
+
+            <!-- Bloco 5 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Controles de Processos</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="em.diligencia.html" class="module-link">Pendentes de Autuação</a>
+                    <a href="em.diligencia.html" class="module-link">Pendentes de Ofício Requisitório</a>
+                    <a href="pendentes_pagamento.html" class="module-link">Pendentes de Pagamento</a>
+                    <a href="pendentes_liberacao.html" class="module-link">Pendentes de Liberação de Crédito</a>
+                    <a href="pendentes_liberacao.html" class="module-link">Pendentes de Emissão de Alvarás</a>
+                    <a href="pendentes_quitacao.html" class="module-link">Pendentes de Quitação</a>
+                    <a href="pendentes_quitacao.html" class="module-link">Pendentes de Atualização</a>
+                </div>
+            </div>
+
+            <!-- Bloco 6 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Relatórios e Estatísticas</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="#" class="module-link">Ranking dos Devedores Públicos</a>
+                    <a href="#" class="module-link">Ranking dos Credores</a>
+                    <a href="#" class="module-link">Precatórios de Ações Coletivas</a>
+                </div>
+            </div>
+
+            <!-- Bloco 7 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Certidões</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="controlecertidoes.html" class="module-link">Controle de Emissão de Certidões</a>
+                </div>
+            </div>
+
+            <!-- Bloco 8 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Instrumentos Contratuais</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="acordos.html" class="module-link">Acordos</a>
+                    <a href="convenios.html" class="module-link">Convênios</a>
+                </div>
+            </div>
+
+            <!-- Bloco 9 -->
+            <div class="module-card rounded-xl shadow-sm">
+                <div class="module-title p-5 pb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="card-icon">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                    <h3 class="text-lg font-bold uppercase tracking-wide">Auditoria e Corregedoria</h3>
+                </div>
+                <div class="p-4 pt-2 flex-grow flex flex-col gap-1">
+                    <a href="pendentes_atuacao.html" class="module-link">Acompanhamento das Recomendações</a>
+                    <a href="pendentes_atuacao.html" class="module-link">Respostas à Ouvidoria</a>
+                </div>
+            </div>
+
+        </div>
     </main>
-    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Nenhum listener é necessário aqui, pois a navegação é feita por links HTML <a>.
-        });
-    </script>
+    <footer class="bg-white border-t border-gray-200 mt-auto py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-500 text-sm">
+            &copy; Tribunal Regional do Trabalho da 19ª Região (Secretaria de Precatórios). Todos os direitos reservados.
+        </div>
+    </footer>
+
 </body>
 
 </html>
