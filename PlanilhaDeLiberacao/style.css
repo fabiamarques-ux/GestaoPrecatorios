@@ -1483,6 +1483,10 @@
                 font-size: 0.95em;
             }
 
+            .tab-pane {
+                padding: 15px 10px !important;
+            }
+
             /* Process Block */
             .info-block.process-block {
                 min-width: 0;
