@@ -1465,10 +1465,21 @@
                 box-sizing: border-box;
             }
 
+            .tabs-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                -ms-overflow-style: none; /* IE e Edge */
+                scrollbar-width: none; /* Firefox */
+            }
+
+            .tabs-container::-webkit-scrollbar {
+                display: none; /* Chrome, Safari e Opera */
+            }
+
             .tab-button {
-                flex: 1 1 auto;
+                flex: 0 0 auto;
                 text-align: center;
-                padding: 10px;
+                padding: 10px 15px;
                 font-size: 0.95em;
             }
 
