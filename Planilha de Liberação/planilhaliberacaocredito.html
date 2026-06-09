@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilha de Liberação de Crédito</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="utils.js"></script>
+    <script src="ui-components.js"></script>
+    <script src="core-logic.js"></script>
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            if (message.includes('Script error')) return true;
+            alert("ERRO DETECTADO:\n" + message + "\nLinha: " + lineno);
+        };
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://site.trt19.jus.br/sites/default/files/logo-trt19.png" alt="Logo TRT19">
+            <div class="header-titles">
+                <h1>PLANILHA DE LIBERAÇÃO DE CRÉDITO</h1>
+                <div class="header-item">
+                    <span class="header-label">DATA DA LIBERAÇÃO:</span>
+                    <input type="text" id="data-liberacao-header" class="header-input">
+                </div>
+            </div>
+            <button type="button" class="btn-help-icon no-print" onclick="abrirPainelAjuda()" title="Ajuda"><i class="fas fa-question-circle"></i></button>
+        </div>
+
+        <!-- Navegação das Abas -->
+        <div class="tabs-container no-print">
+            <button class="tab-button active" onclick="openTab(event, 'tab-dados')"><i class="fas fa-calculator" style="margin-right: 8px;"></i>Dados e Valores</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-advogados')"><i class="fas fa-user-tie" style="margin-right: 8px;"></i>Advogados (as)</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-peritos')"><i class="fas fa-user-edit" style="margin-right: 8px;"></i>Peritos (as)</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-herdeiros')"><i class="fas fa-users" style="margin-right: 8px;"></i>Herdeiros (as)</button>
+            <button class="tab-button" onclick="openTab(event, 'tab-cessionarios')"><i class="fas fa-handshake" style="margin-right: 8px;"></i>Cessionários (as)</button>
+        </div>
+
+        <!-- Conteúdo das Abas -->
+        <div class="tabs-content no-print"
+            style="margin-bottom: 20px; border: 1px solid var(--info-border); border-top: none; border-radius: 0 0 8px 8px; background-color: white;">
+
+            <!-- ABA DADOS E VALORES -->
+            <div id="tab-dados" class="tab-pane" style="display: block; padding: 20px;">
+                <div class="form-grid">
+
+                <div class="grid-col-span-2" id="bloco-processo"
+                    style="padding: 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                        <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                            Dados do Processo</h4>
+                        <button type="button" class="btn-clear-block no-print"
+                            onclick="limparBloco('bloco-processo')" title="Limpar Processo"><i class="fas fa-broom"></i></button>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+                        <label class="required-field-label" style="font-weight: 600; color: var(--text-dark); margin-bottom: 5px;">Nº Processo Precatório:</label>
+                        <div class="process-input-group" style="justify-content: flex-start;">
+                            <input type="text" id="proc-num" class="header-input process-part" maxlength="7"
+                                    placeholder="" oninput="formatarNumero(this, 7)" onblur="padZeros(this, 7)"
+                                onpaste="handleProcessoPaste(event)">
+                            <span class="separator">-</span>
+                            <input type="text" id="proc-digito" class="header-input process-subpart" maxlength="2"
+                                placeholder="" oninput="formatarNumero(this, 2)" onblur="padZeros(this, 2)"
+                                onpaste="handleProcessoPaste(event)">
+                            <span class="separator">.</span>
+                            <input type="text" id="proc-ano" class="header-input process-year" maxlength="4"
+                                    placeholder="" oninput="formatarNumero(this, 4)" onblur="validarAnoProcesso(this)"
+                                onpaste="handleProcessoPaste(event)">
+                            <span class="separator">.</span>
+                            <span class="fixed-part">5</span>
+                            <span class="separator">.</span>
+                            <span class="fixed-part">19</span>
+                            <span class="separator">.</span>
+                            <span class="fixed-part">0000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-col-span-2" id="bloco-reclamante"
+                    style="padding: 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                        <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                            Dados do Reclamante</h4>
+                        <button type="button" class="btn-clear-block no-print"
+                            onclick="limparBloco('bloco-reclamante')" title="Limpar Reclamante"><i class="fas fa-broom"></i></button>
+                    </div>
+
+                    <div style="display: flex; gap: 20px; align-items: center; width: 100%;">
+                        <div style="flex: 1; display: flex; align-items: center; gap: 10px;">
+                            <label for="reclamante" class="required-field-label"
+                                style="font-weight: 600; color: var(--text-dark); white-space: nowrap; margin: 0;">Reclamante:</label>
+                            <input type="text" id="reclamante" name="reclamante" class="valor-input" spellcheck="true" oninput="formatarTextoMaiusculo(this)"
+                                style="flex: 1; min-width: 0; text-align: left; background-color: white;">
+                        </div>
+                        <div style="flex: 0 0 auto; display: flex; align-items: center; gap: 10px;">
+                            <label for="cpf" class="required-field-label"
+                                style="font-weight: 600; color: var(--text-dark); white-space: nowrap; margin: 0;">CPF/CNPJ:</label>
+                            <input type="text" id="cpf" name="cpf" maxlength="18"
+                                oninput="formatarDocumento(this, 'AMBOS')" class="valor-input"
+                                style="width: 180px; flex: 0 0 180px; text-align: left; background-color: white;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-col-span-2" id="bloco-deposito"
+                        style="margin-top: 15px; padding: 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                            <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                                Dados do Depósito Bancário</h4>
+                            <button type="button" class="btn-clear-block no-print"
+                                onclick="limparBloco('bloco-deposito')" title="Limpar Depósito"><i class="fas fa-broom"></i></button>
+                        </div>
+                        <div class="form-grid" style="grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label for="id-deposito" class="required-field-label" style="font-size: 0.95em; font-weight: 600; white-space: nowrap; margin: 0;">ID do Depósito:</label>
+                                <input type="text" id="id-deposito" name="id-deposito" class="valor-input"
+                                    style="width: 160px; flex: 0 0 160px; text-align: right; background-color: white;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label for="conta-judicial" class="required-field-label" style="font-size: 0.95em; font-weight: 600; white-space: nowrap; margin: 0;">Conta Judicial:</label>
+                                <input type="text" id="conta-judicial" name="conta-judicial" class="valor-input"
+                                    maxlength="13" oninput="formatarNumero(this, 13)" style="width: 160px; flex: 0 0 160px; text-align: right; background-color: white;">
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <label for="valor-deposito" class="required-field-label" style="font-size: 0.95 em; font-weight: 600; white-space: nowrap; margin: 0;">Valor do Depósito:</label>
+                                <input type="text" id="valor-deposito" name="valor-deposito" class="valor-input"
+                                    placeholder="0,00" oninput="formatarMoeda(this)" style="width: 160px; flex: 0 0 160px; text-align: right; background-color: white;">
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="grid-col-span-2" id="bloco-planilha"
+                        style="margin-top: 10px; padding: 10px 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg);">
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; flex-wrap: wrap; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 15px; flex-wrap: wrap;">
+                                <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">
+                                    Planilha de Atualização de Cálculos
+                                </h4>
+                                <div class="info-item"
+                                    style="background-color: transparent; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0; min-width: auto;">
+                                    <label for="id-planilha" class="required-field-label" style="font-size: 0.95em; white-space: nowrap;">ID da Planilha:</label>
+                                    <input type="text" id="id-planilha" name="id-planilha" class="valor-input" style="width: 140px; background-color: white;">
+                                </div>
+                            </div>
+                            <button type="button" class="btn-clear-block no-print" onclick="limparBlocoPlanilha()"
+                                title="Limpar Valores"><i class="fas fa-broom"></i></button>
+                        </div>
+
+                        <div class="form-grid" style="grid-template-columns: auto auto 1fr; gap: 15px;">
+                            <!-- Coluna Esquerda -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="liquido-reclamante-calculo" style="font-size: 0.9em;">Líquido
+                                        Reclamante:</label>
+                                    <input type="text" id="liquido-reclamante-calculo" class="valor-input"
+                                        placeholder="0,00" oninput="formatarMoeda(this); atualizarSomaLiquido()"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="fgts-viculada" style="font-size: 0.9em;">FGTS a Depositar:</label>
+                                    <input type="text" id="fgts-viculada" class="valor-input" placeholder="0,00"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="valor-previdencia-privada" style="font-size: 0.9em;">Prev. Privada:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="valor-previdencia-privada" class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'previdencia')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe o valor">
+                                        <button type="button" onclick="abrirModalPrevidencia()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Informar Fundo"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="valor-deposito-judicial" value="0,00">
+                            </div>
+
+                            <!-- Coluna Central -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="ir-valor" style="font-size: 0.9em;">IRRF Reclamante:</label>
+                                    <input type="text" id="ir-valor" class="valor-input" placeholder="0,00"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+                                
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="inss-reclamante" style="font-size: 0.9em;">INSS Reclamante:</label>
+                                    <input type="text" id="inss-reclamante" class="valor-input" placeholder="0,00"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="inss-reclamada" style="font-size: 0.9em;">INSS Executada:</label>
+                                    <input type="text" id="inss-reclamada" class="valor-input" placeholder="0,00"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+                              
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="input-custas-judiciais" style="font-size: 0.9em;">Custas
+                                        Judiciais:</label>
+                                    <input type="text" id="input-custas-judiciais" class="valor-input"
+                                        placeholder="0,00" oninput="atualizarCustasSimultaneo(this)"
+                                        style="width: 130px; background-color: #f9f9f9;">
+                                </div>
+                            </div>
+
+                            <!-- Coluna Direita -->
+                            <div style="display: flex; flex-direction: column; gap: 8px;">
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="input-honorarios-advocaticios" style="font-size: 0.9em;">Hon. Advocatícios:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="input-honorarios-advocaticios" class="valor-input"
+                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'advogado')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe os valores">
+                                        <button type="button" onclick="abrirModalAdvogados()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="input-irrf-honorarios" style="font-size: 0.9em;">IRRF Advocatícios:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="input-irrf-honorarios" class="valor-input" placeholder="0,00"
+                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'advogado')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe os valores">
+                                        <button type="button" onclick="abrirModalAdvogados()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="input-honorarios-periciais" style="font-size: 0.9em;">Hon. Peritos:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="input-honorarios-periciais" class="valor-input"
+                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'perito')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe os valores">
+                                        <button type="button" onclick="abrirModalPeritos()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="input-irrf-periciais" style="font-size: 0.9em;">IRRF Peritos:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="input-irrf-periciais" class="valor-input" placeholder="0,00"
+                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'perito')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe os valores">
+                                        <button type="button" onclick="abrirModalPeritos()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            style="margin-top: 10px; padding: 8px 12px; border: 1px solid var(--info-border); background-color: var(--light-bg); border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
+                            <label for="valor-bruto-reclamante"
+                                style="font-weight: bold; font-size: 1.05em; color: var(--text-primary); margin: 0;">TOTAL
+                                DEVIDO PELA RECLAMADA:</label>
+                            <span id="valor-bruto-reclamante"
+                                style="font-size: 1.05em; font-weight: bold; color: var(--text-primary);">0,00</span>
+                        </div>
+                    </div>
+
+                    <details class="grid-col-span-2"
+                        style="margin-top: 15px; border: 1px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg); padding: 0;">
+                        <summary
+                            style="background-color: var(--very-light-bg); color: var(--dark-accent); border-bottom: none; margin: 0; border-radius: 8px; font-size: 1.1em;">
+                            Descontos sobre o Crédito do Reclamante</summary>
+                        <div class="section-content"
+                            style="background-color: var(--very-light-bg); padding: 20px; border-radius: 0 0 8px 8px; display: flex; flex-direction: column; gap: 15px;">
+
+                            <div style="background-color: white; padding: 15px; border: 1px solid var(--info-border); border-radius: 8px;"
+                                id="bloco-pensao">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px;">
+                                    <h5 style="margin: 0; color: var(--dark-accent); font-size: 1em; font-weight: 600;">
+                                        Pensão Alimentícia</h5>
+                                    <div class="actions-block">
+                                        <button type="button" class="btn-delete-block no-print" onclick="confirmarExclusaoBloco('bloco-pensao', event)" title="Excluir"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-grid" style="grid-template-columns: 2fr 1fr 1fr; gap: 15px;">
+                                    <div class="info-item-block">
+                                        <label for="pensao-beneficiario"
+                                            style="font-size: 0.95em; font-weight: 600;">Beneficiário:</label>
+                                        <input type="text" id="pensao-beneficiario" class="valor-input" spellcheck="true"
+                                            style="width: 100%; text-align: left;" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="pensao-cpf" style="font-size: 0.95em; font-weight: 600;">CPF:</label>
+                                        <input type="text" id="pensao-cpf" class="valor-input" maxlength="14"
+                                            oninput="formatarDocumento(this, 'CPF'); atualizarQuadroResumo()"
+                                            style="width: 100%; text-align: left;">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="pensao-alimenticia"
+                                            style="font-size: 0.95em; font-weight: 600;">Valor:</label>
+                                        <input type="text" id="pensao-alimenticia" name="pensao-alimenticia"
+                                            class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
+                                            style="width: 100%; text-align: right;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="background-color: white; padding: 15px; border: 1px solid var(--info-border); border-radius: 8px;"
+                                id="bloco-retencoes">
+                                <div
+                                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px;">
+                                    <h5 style="margin: 0; color: var(--dark-accent); font-size: 1em; font-weight: 600;">
+                                        Retenções</h5>
+                                    <div class="actions-block">
+                                        <button type="button" class="btn-delete-block no-print" onclick="confirmarExclusaoBloco('bloco-retencoes', event)" title="Excluir"><i class="fas fa-times"></i></button>
+                                    </div>
+                                </div>
+                                <div class="form-grid" style="grid-template-columns: 3fr 1fr; gap: 15px;">
+                                    <div class="info-item-block">
+                                        <label for="outras-motivo"
+                                            style="font-size: 0.95em; font-weight: 600;">Motivo:</label>
+                                        <input type="text" id="outras-motivo" class="valor-input" spellcheck="true"
+                                            style="width: 100%; text-align: left;" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()">
+                                    </div>
+                                    <div class="info-item-block">
+                                        <label for="outras-retencoes"
+                                            style="font-size: 0.95em; font-weight: 600;">Valor:</label>
+                                        <input type="text" id="outras-retencoes" name="outras-retencoes"
+                                            class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); validarRetencoes(this); atualizarTotalDevidoReclamada();"
+                                            style="width: 100%; text-align: right;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </details>
+
+                </div>
+            </div>
+
+            <!-- ABA ADVOGADOS -->
+            <div id="tab-advogados" class="tab-pane" style="display: none; padding: 20px;">
+                <div class="honorarios-section" id="bloco-honorarios-geral">
+                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 15px;">
+                        <h4 style="margin: 0; color: var(--dark-accent); font-size: 1.1em;">Cálculo de Honorários Advocatícios Contratuais</h4>
+                        <button type="button" class="btn-clear-block no-print"
+                                onclick="limparBloco('bloco-honorarios-geral')" title="Limpar Parâmetros"><i class="fas fa-broom"></i></button>
+                    </div>
+
+                    <div id="container-base-calculo-adv">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <label style="font-weight: bold; color: var(--dark-accent); font-size: 1.05em;">Base de Cálculo (R$):</label>
+                            <span id="adv-base-calculo" class="valor-display-style" style="background-color: #e9ecef; width: 220px; text-align: right; font-size: 1.05em;">0,00</span>
+                        </div>
+                        <div style="font-size: 0.85em; color: #555; margin-bottom: 15px; background-color: white; padding: 8px 12px; border-left: 4px solid var(--primary-color); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4;">
+                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é composta pela fórmula: <strong>TOTAL BRUTO DO RECLAMANTE = LÍQUIDO + PREV. PRIVADA + IRRF E INSS RECLAMANTE</strong>.<br>
+                            <span style="display: inline-block; margin-top: 4px; margin-left: 18px;">Caso a base de cálculo dos honorários divirja da regra acima, os valores deverão ser inseridos logo a seguir nos campos <strong>Valor Fixado</strong> e/ou <strong>Honorários Bruto</strong> (na seção de Adição dos Advogados).</span>
+                        </div>
+                    </div>
+
+                    <div id="container-fgts-base-adv" style="display: none; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 10px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px;">
+                        <label class="required-field-label" style="font-weight: bold; color: #856404; font-size: 0.95em;">Deseja adicionar o valor do FGTS a Depositar à Base de Cálculo dos Honorários?</label>
+                        <div style="display: flex; gap: 15px;">
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base" value="sim" onchange="atualizarTotalDevidoReclamada()"> Sim</label>
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base" value="nao" onchange="atualizarTotalDevidoReclamada()"> Não</label>
+                        </div>
+                    </div>
+
+                    <div style="margin-bottom: 15px;">
+                        <div class="honorarios-options" style="margin-bottom: 0;">
+                            <div class="honorarios-option">
+                                <input type="radio" id="adv-percentual-opt" name="adv-calculo-tipo" value="percentual"
+                                    checked onchange="toggleAdvHonorariosFields()">
+                                <label for="adv-percentual-opt">Percentual</label>
+                            </div>
+                            <div class="honorarios-option">
+                                <input type="radio" id="adv-valor-fixado-opt" name="adv-calculo-tipo" value="fixado"
+                                    onchange="toggleAdvHonorariosFields()">
+                                <label for="adv-valor-fixado-opt">Valor Fixado</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="adv-percentual-fields" class="honorarios-fields">
+                        <div class="field-group">
+                            <label for="adv-percentual">Percentual (%):</label>
+                            <input type="text" id="adv-percentual" placeholder="0,00%" style="width: 120px;">
+                        </div>
+                        <div class="field-group">
+                            <label title="Valor Líquido + IRRF" style="cursor: help;">Honorários Bruto <i class="fas fa-info-circle" style="color: var(--primary-color); font-size: 0.85em;"></i>:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span id="adv-resultado"
+                                    title="Valor Líquido + IRRF" style="width: 135px; flex-shrink: 0; padding: 10px; border: 1px solid #ccc; border-radius: 4px; text-align: right; box-sizing: border-box; background-color: white; display: block; font-weight: normal; color: var(--text-dark);">0,00</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="adv-fixado-fields" class="honorarios-fields" style="display: none;">
+                        <div class="field-group">
+                            <label for="adv-valor-fixado" title="Valor Líquido + IRRF" style="cursor: help;">Honorários Bruto <i class="fas fa-info-circle" style="color: var(--primary-color); font-size: 0.85em;"></i>:</label>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <input type="text" id="adv-valor-fixado" placeholder="0,00" data-manual="false" title="Valor Líquido + IRRF" style="width: 135px;">
+                                <span id="adv-valor-fixado-percentual" style="font-size: 0.9em; color: var(--primary-color); font-weight: bold;" title="Percentual sobre o Valor Bruto do Reclamante">(0,00%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <details id="adv-principal-block" class="parte-adicional-block advogado-principal-details" style="display: none;" open>
+                    <summary
+                        style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">
+                            Advogado (a) 1</h4>
+                        <div class="actions-block" style="margin-left: auto;">
+                            <button type="button" class="btn-delete-block no-print" onclick="confirmarExclusaoBloco('adv-principal-block', event)" title="Excluir"><i class="fas fa-times"></i></button>
+                        </div>
+                    </summary>
+                    <div style="padding-top: 5px;">
+                        <div style="display: flex; gap: 20px; align-items: flex-end;">
+                            <div style="flex-basis: 75%;">
+                                <label for="adv-nome-principal"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome
+                                    do Advogado (a):</label>
+                                <input type="text" id="adv-nome-principal" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()" spellcheck="true"
+                                    class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                            <div style="flex-basis: 25%;">
+                                <label for="adv-cpf-principal"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                                <input type="text" id="adv-cpf-principal" maxlength="18"
+                                    oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()"
+                                    class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 15px; align-items: flex-end; margin-top: 15px;">
+                            <div style="flex: 1.5; min-width: 100px;">
+                                <label for="adv-principal-percentual" style="font-weight: 600; font-size: 0.9em; color: var(--text-dark); display: block; margin-bottom: 5px;">Rateio (%):</label>
+                                <input type="text" id="adv-principal-percentual" class="valor-input" placeholder="0,00%"
+                                    oninput="formatarPercentual(this)"
+                                    style="width: 100%; text-align: right; border: 1px solid var(--primary-color); box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                            </div>
+                            <div style="flex: 0 0 135px;">
+                                <label style="font-weight: 600; font-size: 0.9em; color: var(--text-dark); display: block; margin-bottom: 5px; cursor: help;" title="Valor Líquido + IRRF">Honorários Bruto <i class="fas fa-info-circle" style="color: var(--primary-color); font-size: 0.85em;"></i>:</label>
+                                <input type="text" id="adv-principal-resultado" class="valor-input" placeholder="0,00" title="Valor Líquido + IRRF"
+                                    oninput="handleAdvHonorarioManual(this, 'principal')"
+                                    style="background-color: white; width: 100%; text-align: right; font-weight: bold; border: 1px solid #ccc; color: var(--text-dark); box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                            </div>
+                            <div style="flex: 1.5; min-width: 120px;">
+                                <label for="adv-principal-ir" style="font-weight: 600; font-size: 0.9em; color: var(--text-dark); display: block; margin-bottom: 5px;">Retenção IRRF:</label>
+                                <input type="text" id="adv-principal-ir" class="valor-input" placeholder="0,00"
+                                    oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); sincronizarAdvogadosParaGeral(); atualizarQuadroResumo()"
+                                    style="width: 100%; text-align: right; border: 1px solid #ccc; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                            </div>
+                            <div style="flex: 1.5; min-width: 120px;">
+                                <label for="adv-principal-retencao" style="font-weight: 600; font-size: 0.9em; color: var(--text-dark); display: block; margin-bottom: 5px;">Outras Retenções:</label>
+                                <input type="text" id="adv-principal-retencao" class="valor-input" placeholder="0,00"
+                                    oninput="formatarMoeda(this); atualizarLiquidoAdvogado('principal'); atualizarQuadroResumo()"
+                                    style="width: 100%; text-align: right; border: 1px solid #ccc; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);">
+                            </div>
+                            <div style="flex: 4; min-width: 200px;">
+                                <label for="adv-principal-retencao-motivo" style="font-weight: 600; font-size: 0.9em; color: var(--text-dark); display: block; margin-bottom: 5px;">Motivo das Outras Retenções:</label>
+                                <input type="text" id="adv-principal-retencao-motivo" class="valor-input" spellcheck="true"
+                                    style="width: 100%; text-align: left; border: 1px solid #ccc; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()">
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                            <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários Líquido a Liberar:</label>
+                            <span id="adv-principal-liquido" class="valor-display-style"
+                                style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
+                        </div>
+                    </div>
+                </details>
+
+                <div id="adv-adicionais-list"></div>
+                <button type="button" class="add-button" onclick="adicionarAdvogadoAdicional(true)">+ Adicionar Advogado
+                    (a)</button>
+                
+                <div id="adv-sucumbenciais-list" style="margin-top: 20px;"></div>
+            </div>
+
+            <!-- ABA PERITOS -->
+            <div id="tab-peritos" class="tab-pane" style="display: none; padding: 20px;">
+
+                <details id="perito-principal-block" class="parte-adicional-block perito-principal-details" style="display: none;" open>
+                    <summary
+                        style="display: flex; align-items: center; border-bottom: 1px solid var(--info-border); padding-bottom: 5px; margin-bottom: 10px; background: transparent; padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h4 style="margin: 0; border: none; padding: 0; color: var(--dark-accent); font-size: 1.05em;">
+                            Perito (a) 1</h4>
+                        <div class="actions-block" style="margin-left: auto;">
+                            <button type="button" class="btn-delete-block no-print" onclick="confirmarExclusaoBloco('perito-principal-block', event)" title="Excluir"><i class="fas fa-times"></i></button>
+                        </div>
+                    </summary>
+                    <div style="padding-top: 5px;">
+                        <div style="display: flex; gap: 20px; align-items: flex-end;">
+                            <div style="flex-basis: 75%;">
+                                <label for="perito-nome-principal"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome
+                                    do Perito (a):</label>
+                                <input type="text" id="perito-nome-principal" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()" spellcheck="true"
+                                    class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                            <div style="flex-basis: 25%;">
+                                <label for="perito-cpf-principal"
+                                    style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CPF/CNPJ:</label>
+                                <input type="text" id="perito-cpf-principal" maxlength="18"
+                                    oninput="formatarDocumento(this, 'AMBOS'); atualizarQuadroResumo()"
+                                    class="valor-input" style="width: 100%; text-align: left; background-color: white;">
+                            </div>
+                        </div>
+                        <div style="display: flex; gap: 15px; align-items: flex-end; margin-top: 15px;">
+                            <div style="flex: 0 0 135px;">
+                                <label for="perito-principal-resultado"
+                                    style="font-size: 0.9em; font-weight: 600; cursor: help;" title="Valor Líquido + IRRF">Honorários Bruto <i class="fas fa-info-circle" style="color: var(--primary-color); font-size: 0.85em;"></i>:</label>
+                                <input type="text" id="perito-principal-resultado" class="valor-input" title="Valor Líquido + IRRF"
+                                    placeholder="0,00"
+                                    oninput="formatarMoeda(this); this.dataset.origem='aba'; atualizarLiquidoPerito('principal'); sincronizarPeritosParaPrincipal(); atualizarQuadroResumo()"
+                                    style="width: 100%; text-align: right;">
+                            </div>
+                            <div style="flex-basis: 15%;">
+                                <label for="perito-principal-ir">Retenção IRRF:</label>
+                                <input type="text" id="perito-principal-ir" class="valor-input" placeholder="0,00"
+                                    oninput="formatarMoeda(this); atualizarLiquidoPerito('principal'); sincronizarPeritosParaPrincipal(); atualizarQuadroResumo()"
+                                    style="width: 100%; text-align: right;">
+                            </div>
+                            <div style="flex-basis: 15%;">
+                                <label for="perito-principal-retencao">Outras Retenções:</label>
+                                <input type="text" id="perito-principal-retencao" class="valor-input" placeholder="0,00"
+                                    oninput="formatarMoeda(this); atualizarLiquidoPerito('principal'); atualizarQuadroResumo()"
+                                    style="width: 100%; text-align: right;">
+                            </div>
+                            <div style="flex-basis: 55%;">
+                                <label for="perito-principal-retencao-motivo">Motivo das Outras Retenções:</label>
+                                <input type="text" id="perito-principal-retencao-motivo" class="valor-input" spellcheck="true"
+                                    style="width: 100%; text-align: left;" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()">
+                            </div>
+                        </div>
+                        <div
+                            style="margin-top: 15px; display: flex; justify-content: flex-end; align-items: center; gap: 10px; border-top: 1px solid #eee; padding-top: 10px;">
+                            <label style="font-weight: bold; font-size: 1.1em; color: var(--dark-accent);">Honorários Líquido a Liberar:</label>
+                            <span id="perito-principal-liquido" class="valor-display-style"
+                                style="background-color: #e0f7fa; width: 200px; border-color: #008080; font-size: 1.1em; text-align: right;">0,00</span>
+                        </div>
+                    </div>
+                </details>
+
+                <div id="peritos-adicionais-list"></div>
+                <button type="button" class="add-button" onclick="adicionarPeritoAdicional(true)">+ Adicionar Perito
+                    (a)</button>
+            </div>
+
+           
+            <!-- ABA HERDEIROS -->
+            <div id="tab-herdeiros" class="tab-pane" style="display: none; padding: 20px;">
+                <div class="honorarios-section" style="padding: 15px; margin-top: 0; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label style="font-weight: bold; color: var(--dark-accent); font-size: 1.1em;">Base de Cálculo (Crédito do Reclamante - Já excluídas as Retenções/Deduções):</label>
+                        <span id="base-calculo-herdeiros-display" class="valor-display-style" style="background-color: #e9ecef; width: 220px; text-align: right; font-size: 1.1em;">0,00</span>
+                    </div>
+                    <div id="container-fgts-base-her" style="display: none; justify-content: space-between; align-items: center; margin-top: 15px; padding: 10px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px;">
+                        <label class="required-field-label" style="font-weight: bold; color: #856404; font-size: 0.95em;">Deseja adicionar o valor do FGTS a Depositar à Base de Cálculo?</label>
+                        <div style="display: flex; gap: 15px;">
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base-her" value="sim" onchange="atualizarCredoresAdicionais()"> Sim</label>
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base-her" value="nao" onchange="atualizarCredoresAdicionais()"> Não</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="herdeiros-list"></div>
+                <button type="button" class="add-button" onclick="adicionarHerdeiro()">+ Adicionar Herdeiro (a)</button>
+            </div>
+
+            <!-- ABA CESSIONÁRIOS -->
+            <div id="tab-cessionarios" class="tab-pane" style="display: none; padding: 20px;">
+                <div class="honorarios-section" style="padding: 15px; margin-top: 0; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <label style="font-weight: bold; color: var(--dark-accent); font-size: 1.1em;">Base de Cálculo (Crédito do Reclamante - Já excluídas as Retenções/Deduções):</label>
+                        <span id="base-calculo-cessionarios-display" class="valor-display-style" style="background-color: #e9ecef; width: 220px; text-align: right; font-size: 1.1em;">0,00</span>
+                    </div>
+                    <div id="container-fgts-base-ces" style="display: none; justify-content: space-between; align-items: center; margin-top: 15px; padding: 10px; background-color: #fff3cd; border: 1px solid #ffeeba; border-radius: 6px;">
+                        <label class="required-field-label" style="font-weight: bold; color: #856404; font-size: 0.95em;">Deseja adicionar o valor do FGTS a Depositar à Base de Cálculo?</label>
+                        <div style="display: flex; gap: 15px;">
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base-ces" value="sim" onchange="atualizarCredoresAdicionais()"> Sim</label>
+                            <label style="cursor: pointer; color: #856404; font-weight: bold;"><input type="radio" name="incluir-fgts-base-ces" value="nao" onchange="atualizarCredoresAdicionais()"> Não</label>
+                        </div>
+                    </div>
+                </div>
+                <div id="cessionarios-list"></div>
+                <button type="button" class="add-button" onclick="adicionarCessionario()">+ Adicionar Cessionário (a)</button>
+            </div>
+        </div>
+
+
+    <!-- MODAL DE CONFIRMAÇÃO CUSTOMIZADO -->
+    <div id="custom-confirm-modal" class="modal" style="z-index: 1200;">
+        <div class="modal-content" style="max-width: 450px; text-align: center; border-radius: 8px; padding: 25px;">
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-exclamation-triangle" style="color: #ffc107; margin-right: 8px;"></i>ALERTA
+            </h3>
+            <p id="custom-confirm-message" style="font-size: 1.05em; color: var(--text-dark); margin: 25px 0; line-height: 1.5;"></p>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
+                <button type="button" class="secondary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold;" onclick="closeCustomConfirm(false)">Não / Cancelar</button>
+                <button type="button" class="primary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold; background: var(--primary-color); color: white; border: none;" onclick="closeCustomConfirm(true)">Sim / Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE ALERTA CUSTOMIZADO (VALIDAÇÃO E TRAVAMENTOS) -->
+    <div id="custom-alert-modal" class="modal" style="z-index: 1300;">
+        <div class="modal-content" style="max-width: 550px; text-align: center; border-radius: 8px; padding: 25px;">
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-exclamation-circle" style="color: #ffc107; margin-right: 8px;"></i>ALERTA
+            </h3>
+            <div id="custom-alert-message" style="font-size: 1em; color: var(--text-dark); margin: 20px 0; line-height: 1.5; text-align: left; background-color: var(--very-light-bg); padding: 15px; border-radius: 6px; border: 1px solid var(--info-border); max-height: 60vh; overflow-y: auto;">
+                <!-- Mensagem inserida via JavaScript -->
+            </div>
+            <div style="display: flex; justify-content: center; gap: 15px; margin-top: 25px;">
+                <button type="button" class="primary" style="padding: 10px 35px; border-radius: 6px; font-weight: bold; background: var(--primary-color); color: white; border: none; cursor: pointer;" onclick="closeCustomAlert()">OK, Entendi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE PROMPT CUSTOMIZADO -->
+    <div id="custom-prompt-modal" class="modal" style="z-index: 1250;">
+        <div class="modal-content" style="max-width: 450px; text-align: center; border-radius: 8px; padding: 25px;">
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-question-circle" style="color: #ffc107; margin-right: 8px;"></i>INFORMAÇÃO NECESSÁRIA
+            </h3>
+            <p id="custom-prompt-message" style="font-size: 1.05em; color: var(--text-dark); margin: 20px 0 10px 0; line-height: 1.5;"></p>
+            <input type="text" id="custom-prompt-input" class="valor-input" style="width: 100%; text-align: left; margin-bottom: 20px;" maxlength="30" oninput="formatarTextoMaiusculo(this)" onkeypress="if(event.key === 'Enter') closeCustomPrompt(this.value)">
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button type="button" class="secondary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold;" onclick="closeCustomPrompt(null)">Cancelar</button>
+                <button type="button" class="primary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold; background: var(--primary-color); color: white; border: none;" onclick="closeCustomPrompt(document.getElementById('custom-prompt-input').value)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+        <!-- QUADRO RESUMO DA LIBERAÇÃO -->
+        <div class="relatorio-final"
+            style="margin-top: 35px; padding: 25px; border: 2px solid var(--primary-color); border-radius: 8px; background-color: var(--very-light-bg); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);">
+            <h3
+                style="margin-top: 0; font-size: 1.3em; color: var(--primary-color); border-bottom: 1px solid var(--info-border); padding-bottom: 10px; margin-bottom: 15px; text-align: center !important;">
+                Quadro Resumo da Liberação por Credor</h3>
+            <table class="creditos-table" style="margin-top: 0;">
+                <colgroup>
+                    <col style="width: 45%;">
+                    <col style="width: 30%;">
+                    <col style="width: 25%;">
+                </colgroup>
+                <tbody id="quadro-resumo-tbody">
+                    <!-- Dynamic rows here -->
+                </tbody>
+                <tfoot id="quadro-resumo-tfoot"
+                    style="font-weight: bold; border-top: 2px solid var(--primary-color); background-color: var(--light-bg);">
+                    <!-- Total row here -->
+                </tfoot>
+            </table>
+            <div style="margin-top: 20px; border-top: 1px solid var(--info-border); padding-top: 15px;">
+                <label for="observacoes-gerais"
+                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Observações:</label>
+                <textarea id="observacoes-gerais" rows="5"
+                    style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit; resize: vertical; box-sizing: border-box;" spellcheck="true"
+                    oninput="formatarObservacoes(this)"></textarea>
+                <div id="observacoes-print" style="display: none;"></div>
+            </div>
+            <div style="margin-top: 15px;">
+                <label for="nome-servidor" class="required-field-label"
+                    style="font-weight: bold; color: var(--text-primary); display: block; margin-bottom: 5px;">Servidor(a)
+                    Responsável:</label>
+                <select id="nome-servidor" class="valor-input"
+                    style="width: 100%; text-align: left; background-color: white; cursor: pointer; font-weight: normal;">
+                    <option value="">Selecione...</option>
+                    <option value="Breno Roberto Pimentel Sandes">Breno Roberto Pimentel Sandes</option>
+                    <option value="Eduardo do Nascimento Silva">Eduardo do Nascimento Silva</option>
+                    <option value="Eliene Silva de Lima Pereira">Eliene Silva de Lima Pereira</option>
+                    <option value="Fábia Fernanda Curvelo Marques">Fábia Fernanda Curvelo Marques</option>
+                    <option value="James José de Souza">James José de Souza</option>
+                    <option value="Líbia Amélia Chagas Amaral">Libia Amélia Chagas Amaral</option>
+                    <option value="Railane Cunha Gomes">Railane Cunha Gomes</option>
+                    <option value="Wellington Vasconcelos Silva">Wellington Vasconcelos Silva</option>  
+                    <option value="Sandra Magalhães Salgado">Sandra Magalhães Salgado</option>
+                    <option value="Enaura Lívia Vergeth Grangeiro">Enaura Lívia Vergeth Grangeiro</option>
+
+                </select>
+            </div>
+        </div>
+
+
+        <div class="button-group">
+            <button type="button" class="primary" onclick="abrirOpcoesSalvamento()"><i class="fas fa-save"></i> Salvar Planilha</button>
+            <button type="button" class="secondary" onclick="carregarRascunho()"><i class="fas fa-database"></i> Banco de Planilhas</button>
+            <button type="button" class="secondary" onclick="limparCampos()">Limpar Tudo</button>
+        </div>
+    </div>
+
+    <!-- MODAL OPÇÕES DE SALVAMENTO -->
+    <div id="modal-opcoes-salvamento" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 500px; text-align: center; border-radius: 8px; padding: 30px;">
+            <span class="close-modal" onclick="fecharOpcoesSalvamento()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-save" style="margin-right: 8px;"></i> Salvar Planilha
+            </h3>
+            <p style="font-size: 1.1em; color: var(--text-dark); margin: 25px 0;">Como você deseja salvar os dados atuais?</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
+                <button type="button" class="primary" style="padding: 12px 25px; border-radius: 6px; font-size: 1.05em; font-weight: bold; border: none; background-color: var(--primary-color); color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center;" onclick="executarSalvamento('final')">
+                    <div style="display: flex; align-items: center;"><i class="fas fa-check-circle" style="margin-right: 8px;"></i> Salvar como Planilha Final</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 4px; opacity: 0.9;">Valida o preenchimento e habilita a emissão do Relatório</div>
+                </button>
+                
+                <button type="button" class="secondary" style="padding: 12px 25px; border-radius: 6px; font-size: 1.05em; font-weight: bold; border: 1px solid var(--primary-color); color: var(--primary-color); background-color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center;" onclick="executarSalvamento('rascunho')">
+                    <div style="display: flex; align-items: center;"><i class="fas fa-file-alt" style="margin-right: 8px;"></i> Salvar como Rascunho</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 4px; opacity: 0.9;">Salva o progresso parcial para continuar editando depois</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ADVOGADOS (LANÇAMENTO 3ª COLUNA) -->
+    <div id="modal-advogados" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 1000px;">
+            <span class="close-modal" onclick="fecharModalAdvogados()">&times;</span>
+            <h3
+                style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Lançamento de Honorários Advocatícios Contratuais</span>
+                <label
+                    style="font-size: 0.75em; font-weight: bold; background: #fff3cd; padding: 8px 15px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 8px; color: #856404; border: 2px solid #ffc107; box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: transform 0.2s ease-in-out;"
+                    onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+                    <input type="checkbox" id="chk-habilitar-sucumbenciais" onchange="toggleModalSucumbenciais(this)"
+                        style="transform: scale(1.2); cursor: pointer; margin: 0;">
+                    Incluir Honorários Sucumbenciais
+                </label>
+            </h3>
+            <div style="background-color: var(--very-light-bg); border-left: 4px solid var(--primary-color); padding: 12px 15px; margin-bottom: 20px; color: var(--text-dark); font-size: 0.95em; border-radius: 0 4px 4px 0; line-height: 1.5; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div style="margin-bottom: 10px;">
+                    <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> <strong>Instrução:</strong> Informe o nome, o CPF/CNPJ e o valor devido ao Advogado credor, conforme detalhado na Planilha de Cálculos e nos documentos processuais.
+                </div>
+                <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 8px 12px; color: #856404; border-radius: 4px; font-size: 0.95em;">
+                    <i class="fas fa-exclamation-triangle" style="color: #ffc107; margin-right: 5px;"></i> <strong>Atenção:</strong> Caso existam advogados adicionais ou valores complementares não previstos na planilha, utilize a <strong>Aba Advogados</strong> para informar essas complementações.
+                </div>
+            </div>
+            <div id="lista-advogados-modal">
+                <!-- Linhas de advogados inseridas aqui -->
+            </div>
+            <button type="button" class="add-button" onclick="adicionarLinhaAdvogadoModal()">+ Adicionar
+                Advogado(a)</button>
+
+            <div id="modal-sucumbenciais-section" style="display: none; border-top: 2px solid var(--info-border); margin-top: 25px; padding-top: 20px;">
+                <h3 style="color: var(--primary-color); margin-top: 0; margin-bottom: 15px;">Lançamento de Honorários Advocatícios Sucumbenciais</h3>
+                <div id="lista-sucumbenciais-modal"></div>
+                <button type="button" class="add-button" onclick="adicionarLinhaSucumbencialModal()">+ Adicionar Advogado(a) (Sucumbencial)</button>
+            </div>
+
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 15px; align-items: center; border-top: 1px solid var(--info-border); padding-top: 15px;">
+                <div style="text-align: right; padding-right: 15px;">
+                    <strong>Total Honorários:</strong> <span id="total-hon-adv-modal"
+                        style="color: var(--primary-color);">0,00</span><br>
+                    <strong>Total IRRF:</strong> <span id="total-irrf-adv-modal" style="color: #dc3545;">0,00</span>
+                </div>
+                <button type="button" class="primary"
+                    style="padding: 10px 20px; border-radius: 6px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer;"
+                    onclick="confirmarModalAdvogados()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PERITOS (LANÇAMENTO 3ª COLUNA) -->
+    <div id="modal-peritos" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 1000px;">
+            <span class="close-modal" onclick="fecharModalPeritos()">&times;</span>
+            <h3
+                style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                Lançamento de Honorários Periciais</h3>
+            <div style="background-color: var(--very-light-bg); border-left: 4px solid var(--primary-color); padding: 12px 15px; margin-bottom: 20px; color: var(--text-dark); font-size: 0.95em; border-radius: 0 4px 4px 0; line-height: 1.5; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <div style="margin-bottom: 10px;">
+                    <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> <strong>Instrução:</strong> Informe o nome, o CPF/CNPJ e o valor devido ao Perito credor, conforme detalhado na Planilha de Cálculos e nos documentos processuais.
+                </div>
+                <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 8px 12px; color: #856404; border-radius: 4px; font-size: 0.95em;">
+                    <i class="fas fa-exclamation-triangle" style="color: #ffc107; margin-right: 5px;"></i> <strong>Atenção:</strong> Caso existam Peritos adicionais ou valores complementares não previstos na planilha, utilize a <strong>Aba Peritos</strong> para informar essas complementações.
+                </div>
+            </div>
+
+            <div id="lista-peritos-modal">
+                <!-- Linhas de peritos inseridas aqui -->
+            </div>
+            <button type="button" class="add-button" onclick="adicionarLinhaPeritoModal()">+ Adicionar
+                Perito(a)</button>
+
+            <div
+                style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 15px; align-items: center; border-top: 1px solid var(--info-border); padding-top: 15px;">
+                <div style="text-align: right; padding-right: 15px;">
+                    <strong>Total Honorários:</strong> <span id="total-hon-per-modal"
+                        style="color: var(--primary-color);">0,00</span><br>
+                    <strong>Total IRRF:</strong> <span id="total-irrf-per-modal" style="color: #dc3545;">0,00</span>
+                </div>
+                <button type="button" class="primary"
+                    style="padding: 10px 20px; border-radius: 6px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer;"
+                    onclick="confirmarModalPeritos()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MODAL DE RELATÓRIO -->
+    <div id="relatorio-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="fecharRelatorio()">&times;</span>
+            <div id="report-body">
+                <!-- Conteúdo gerado via JS -->
+            </div>
+            <div class="button-group" style="margin-top: 30px; justify-content: center;">
+                <button type="button" class="primary btn-print-report" onclick="window.print()"><i class="fas fa-print" style="margin-right: 5px;"></i> Imprimir / Gerar PDF</button>
+                <button type="button" class="secondary btn-print-report" onclick="fecharRelatorio()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PREVIDÊNCIA PRIVADA -->
+    <div id="modal-previdencia" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-modal" onclick="fecharModalPrevidencia()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                Fundo de Previdência Privada
+            </h3>
+            <div style="margin-top: 20px; display: flex; gap: 15px; align-items: flex-end;">
+                <div style="flex: 2;">
+                    <label for="nome-fundo-previdencia" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Fundo de Previdência:</label>
+                    <input type="text" id="nome-fundo-previdencia" class="valor-input" spellcheck="true" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()"
+                        style="width: 100%; text-align: left; background-color: white;">
+                </div>
+                <div style="flex: 1;">
+                    <label for="cnpj-fundo-previdencia" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CNPJ do Fundo:</label>
+                    <input type="text" id="cnpj-fundo-previdencia" class="valor-input" maxlength="18" oninput="formatarDocumento(this, 'CNPJ'); atualizarQuadroResumo()"
+                        style="width: 100%; text-align: left; background-color: white;">
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; padding-top: 15px; border-top: 1px solid var(--info-border);">
+                <button type="button" class="primary"
+                    style="padding: 10px 20px; border-radius: 6px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer;"
+                    onclick="fecharModalPrevidencia()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BANCO DE RASCUNHOS -->
+    <div id="modal-banco-rascunhos" class="modal" style="z-index: 1100;">
+        <div class="modal-content" style="max-width: 1050px;">
+            <button type="button" onclick="fecharModalBancoRascunhos()" style="position: absolute; top: 20px; right: 25px; padding: 6px 15px; border-radius: 4px; font-weight: bold; font-size: 0.95em; cursor: pointer; border: 1px solid #555; color: #333; background-color: #f8f9fa; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#e2e6ea'" onmouseout="this.style.backgroundColor='#f8f9fa'" title="Fechar Janela">Fechar</button>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                <i class="fas fa-database" style="margin-right: 8px;"></i> Banco de Planilhas Salvas
+            </h3>
+            <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px; background-color: var(--very-light-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--info-border);">
+                <i class="fas fa-search" style="color: var(--primary-color); font-size: 1.1em; margin-left: 5px;"></i>
+                <input type="text" id="pesquisa-rascunhos" placeholder="Pesquisar por Nº do Processo ou Nome..." style="flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; outline: none;" oninput="filtrarRascunhos()">
+            </div>
+            <div style="max-height: 600px; overflow-y: auto; margin-top: 15px; border: 1px solid var(--info-border); border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background-color: var(--light-bg); position: sticky; top: 0; z-index: 1;">
+                        <tr>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 40px; text-align: center;"><input type="checkbox" id="chk-select-all-export" onclick="toggleSelectAllExport(this)" title="Selecionar Todas"></th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent);">Processo / Reclamante</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 140px; text-align: center;">Status</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 160px;">Data da Modificação</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 180px; text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-rascunhos-tbody">
+                        <!-- Inserido via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-start; align-items: center;">
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; background-color: #dc3545; border: none; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#c82333'" onmouseout="this.style.backgroundColor='#dc3545'" onclick="excluirRascunhosSelecionados()"><i class="fas fa-trash-alt" style="margin-right: 5px;"></i> Excluir</button>
+                    <button type="button" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; background-color: var(--primary-color); border: none; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--dark-accent)'" onmouseout="this.style.backgroundColor='var(--primary-color)'" onclick="imprimirRascunhosSelecionados()"><i class="fas fa-file-pdf" style="margin-right: 5px;"></i> Gerar PDF</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid #28a745; color: black;" onclick="exportarExcelSelecionados()"><i class="fas fa-file-excel" style="color: black; margin-right: 5px;"></i> Exportar Excel</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-color);" onclick="exportarBackup()"><i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Json</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-color);" onclick="importarBackup()"><i class="fas fa-upload" style="margin-right: 5px;"></i> Importar Json</button>
+                    <input type="file" id="input-importar-backup" accept=".json" style="display: none;" onchange="processarImportacaoBackup(event)">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE AJUDA -->
+    <div id="modal-ajuda" class="modal" style="z-index: 1400;">
+        <div class="modal-content" style="max-width: 800px; padding: 30px;">
+            <span class="close-modal" onclick="fecharPainelAjuda()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                <i class="fas fa-book-open" style="margin-right: 8px;"></i> Instruções de Uso
+            </h3>
+            
+            <div style="max-height: 60vh; overflow-y: auto; padding-right: 15px; font-size: 0.95em; color: var(--text-dark); line-height: 1.6; text-align: justify;">
+                <h4 style="color: var(--dark-accent); margin-top: 0;">Bem-vindo à Planilha de Liberação de Crédito!</h4>
+                <p>Este sistema foi desenvolvido para facilitar a geração da Planilha de Liberação de Crédito em Precatórios. O sistema também proporciona a auditoria das informações relativas aos valores da planilha de atualização de cálculos e dos depósitos judiciais, garantindo maior segurança na liberação dos valores, além de consolidar as informações para melhor organização do processo.<br><br>Siga as instruções abaixo para um preenchimento correto:</p>
+
+                <div style="margin: 20px 0; text-align: center; background-color: #f4f8f8; padding: 15px; border-radius: 8px; border: 1px solid var(--info-border);">
+                    <h5 style="color: var(--primary-color); margin-top: 0; margin-bottom: 15px; font-size: 1.05em;"><i class="fas fa-play-circle" style="margin-right: 5px;"></i> Vídeo Tutorial</h5>
+                    <iframe width="100%" height="350" src="SUBSTITUA_PELA_URL_DO_SEU_VIDEO_AQUI" title="Vídeo Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 600px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>
+                </div>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">1. Dados Básicos, Processo e Valores</h5>
+                <ul style="margin-top: 5px;">
+                    <li>Preencha os dados do Processo, Reclamante e Depósito Judicial. Você pode <strong>copiar e colar</strong> o número do processo, e a formatação será aplicada automaticamente.</li>
+                    <li>O <strong>ID da Planilha</strong> e o <strong>ID do Depósito</strong> são importantes para facilitar a localização rápida dos documentos nos autos.</li>
+                    <li>Insira os valores exatos oriundos da <strong>Planilha de Atualização de Cálculos</strong> (Líquido, INSS, IRRF, Custas, Honorários).</li>
+                    <li><strong>Previdência Privada:</strong> Preencha o valor retido e clique no ícone do lápis (<i class="fas fa-edit"></i>) para abrir a caixa de diálogo e informar o Nome e o CNPJ do Fundo de Previdência.</li>
+                    <li><strong>Proteção contra Duplicidade:</strong> Se você digitar um Número de Processo que já existe no Banco de Planilhas, o sistema emitirá um alerta. Caso confirme a necessidade de criar uma planilha adicional para o mesmo processo, será exigido um <strong>Motivo (máx. 30 caracteres)</strong>, que aparecerá entre parênteses ao lado do nome na listagem para facilitar a identificação.</li>
+                    <li>O sistema calculará de forma automática o <strong>Total Devido pela Reclamada</strong>. <strong><span style="color: #dc3545;">Certifique-se de que os valores batem com a Última Planilha de Atualização de Cálculos dos autos.</span></strong></li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">2. Retenções e Pensão Alimentícia (Crédito do Reclamante)</h5>
+                <ul style="margin-top: 5px;">
+                    <li>Se houver Pensão Alimentícia ou outra retenção sobre o crédito do Reclamante, lance-as no respectivo bloco de descontos.</li>
+                    <li>Estes valores serão deduzidos da base de cálculo principal antes do rateio para Herdeiros e Cessionários, garantindo a reserva do valor para o beneficiário.</li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">3. Honorários Advocatícios e Periciais</h5>
+                <ul style="margin-top: 5px;">
+                    <li><strong>Honorários da Planilha de Cálculos:</strong> Valores já presentes na planilha devem ser informados utilizando a caixa de diálogo (clicando no ícone do lápis <i class="fas fa-edit"></i>). Eles aparecerão na respectiva Aba (Advogados ou Peritos) <strong>sem permissão de edição</strong> para valores. <strong>Nota:</strong> Nesta situação, a opção de rateio por "Percentual (%)" é desabilitada automaticamente para manter a fidelidade aos valores absolutos calculados; o rateio deverá ser feito inserindo o valor bruto de cada advogado.</li>
+                    <li><strong>Honorários Habilitados nos Autos:</strong> Caso haja documentos de habilitação de advogados/peritos (contratuais extras) não presentes na planilha de atualização, estes devem ser adicionados diretamente na respectiva Aba. Podem ser calculados por <strong>Percentual</strong> sobre o bruto ou <strong>Valor Fixado</strong>.</li>
+                    <li><strong>Rateios:</strong>No caso de mais de 1 advogado habititado/credor, será necessário ratear os valores dos honorários para cada credor. O sistema possibilita a inclusão de Advogados adicionais</li>
+                        <li><strong>Honorários Sucumbenciais:</strong> A norma orienta que possuam um Precatório próprio. No entanto, caso haja determinação para liberação conjunta, siga os passos:
+                            <ol style="margin-top: 5px; margin-bottom: 5px; padding-left: 20px;">
+                                <li>Clique no ícone do lápis (<i class="fas fa-edit"></i>) no campo de Hon. Advocatícios na tela principal.</li>
+                                <li>Marque a caixa <strong>"Incluir Honorários Sucumbenciais"</strong> no topo da janela.</li>
+                                <li>Confirme o aviso de recomendação/segurança.</li>
+                                <li>Preencha os dados do(s) advogado(s) na nova seção que aparecerá na parte inferior da caixa de diálogo.</li>
+                            </ol>
+                            <em>O sistema calculará as retenções de forma independente. Ao utilizar essa função, lembre-se de informar a Vara de origem sobre a ocorrência para fins de melhorias processuais.</em>
+                        </li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">4. Rateio para Herdeiros e Cessionários</h5>
+                <ul style="margin-top: 5px;">
+                    <li>Adicione múltiplos Herdeiros ou Cessionários utilizando as respectivas abas e informando a proporção de cada cota (em % ou R$).</li>
+                    <li>Você pode cadastrar <strong>Advogados específicos</strong> para cada Herdeiro/Cessionário (os honorários desses advogados serão deduzidos apenas da cota daquele beneficiário).</li>
+                    <li>Se houver saldo de FGTS no processo principal, o sistema perguntará (através de um alerta amarelo na aba) se você deseja incluir ou não este valor na base de cálculo global destes credores secundários.<br><strong>Observação:</strong> É necessário confirmar no ofício precatório se o juiz determinou que o FGTS fosse recolhido em sua integralidade para depósito na conta vinculada.</li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">5. Dicas Extras e Funcionalidades</h5>
+                <ul style="margin-top: 5px;">
+                    <li><strong>Campos Obrigatórios:</strong> Marcados com um asterisco vermelho (<span style="color: #dc3545; font-weight: bold;">*</span>).</li>
+                    <li><strong>Limpeza e Exclusão:</strong> O botão com ícone de vassoura (<i class="fas fa-broom"></i>) zera os dados inseridos dentro de um bloco sem apagá-lo da tela. Já o botão vermelho com o ícone de X (<i class="fas fa-times"></i>) exclui e remove a gaveta por completo.</li>
+                    <li><strong>Diferenças de Valores (Conciliação):</strong> Se houver diferença entre o valor total depositado (Conta Judicial) e o valor total devido (Calculado), o campo <strong>Observações</strong> no final da tela passará a ser de preenchimento obrigatório para justificativas antes da geração do relatório.</li>
+                    <li><strong>Validação Automática:</strong> Antes de montar a via de impressão, o sistema fará uma varredura para garantir que todos os percentuais de rateios fechem 100% e verificará pendências vitais de preenchimento.</li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">6. Armazenamento, Histórico e Banco de Planilhas</h5>
+                <ul style="margin-top: 5px;">
+                    <li><strong>Salvar Rascunho / Planilha Final:</strong> O Rascunho salva o progresso parcial sobrescrevendo a edição atual, sem poluir o seu histórico de versões. Já o salvamento como <strong>Planilha Final</strong> cria uma versão validada e definitiva. Se você alterar uma planilha que já era Final e salvá-la novamente, o sistema automaticamente moverá a versão anterior para o <strong>Histórico</strong>.</li>
+                    <li><strong>Ações da Planilha (Ícones na Tabela):</strong> 
+                        <br>- <i class="fas fa-eye"></i> <strong>Visualizar:</strong> Abre a planilha bloqueada para evitar alterações acidentais.
+                        <br>- <i class="fas fa-copy"></i> <strong>Duplicar (Criar Versão):</strong> Cria uma cópia com a tag <strong>(Versão 1, 2...)</strong>. Esta ação <strong>limpa automaticamente</strong> dados sensíveis (Nº Processo, Reclamante, CPF, Depósito, Retenções e Observações), preservando apenas a estrutura de honorários, herdeiros e partes adicionais para agilizar o lançamento de processos parecidos.
+                        <br>- <i class="fas fa-edit"></i> <strong>Alterar:</strong> Carrega a planilha destravada para edição.
+                        <br>- <i class="fas fa-history"></i> <strong>Histórico:</strong> Exibe as versões "Finais" antigas daquela mesma planilha, permitindo visualizá-las novamente.
+                    </li>
+                    <li><strong>Ações em Lote (Caixas de Seleção):</strong> Marque as caixas no início de cada linha para selecionar várias planilhas de uma vez e utilize os botões do rodapé para <strong>Excluir</strong>, <strong>Gerar PDF</strong> (imprime todas as marcadas em sequência), <strong>Exportar Excel</strong> (cria uma tabela com todos os dados) ou manipular backups em <strong>Json</strong>.</li>
+                </ul>
+            </div>
+            
+            <div style="margin-top: 25px; display: flex; justify-content: flex-end; border-top: 1px solid var(--info-border); padding-top: 15px;">
+                <label style="margin-right: auto; display: flex; align-items: center; cursor: pointer; font-size: 0.9em; color: #555;">
+                    <input type="checkbox" id="chk-nao-mostrar-ajuda" style="margin-right: 8px; transform: scale(1.2);"> Não mostrar esta mensagem novamente
+                </label>
+                <button type="button" class="primary" style="padding: 10px 25px; border-radius: 6px; border: none; font-weight: bold; cursor: pointer;" onclick="fecharPainelAjuda()">Começar a Usar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
