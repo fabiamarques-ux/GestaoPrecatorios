@@ -1,0 +1,1631 @@
+            /* DEFINIÇÃO DE CORES (AJUSTADAS PARA TURQUESA ESCURO) */
+        :root {
+            --primary-color: #008080;
+            /* Verde Turquesa Principal (TRT - Mais Escuro) */
+            --dark-accent: #006464;
+            /* Turquesa Escuro para Hover/Destaque */
+            --light-bg: #E0F0F0;
+            /* Fundo Claro Turquesa */
+            --very-light-bg: #F7FCFC;
+            /* Fundo Muito Claro/Off-White */
+            --info-border: #B0D0D0;
+            /* Borda Clara */
+            --success-bg: #CCEDED;
+            /* Fundo para Resultados (Líquido) */
+            --text-dark: #333;
+            /* Cor do Texto Geral */
+            --text-primary: #004040;
+            /* Cor do Texto de Destaque */
+        }
+
+        /* Estilos Gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f4f4;
+            color: var(--text-dark);
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Cabeçalho */
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--primary-color);
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .header img {
+            max-height: 45px;
+            width: auto;
+            margin-right: 25px;
+        }
+
+        .header-titles {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-info-line {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .header h1 {
+            font-size: 1.6em;
+            margin: 0;
+            color: var(--primary-color);
+            line-height: 1.2;
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .info-block.process-block {
+            display: block;
+            padding: 10px 20px;
+            text-align: left;
+            min-width: 420px;
+        }
+
+        .info-block {
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            padding: 10px 15px;
+            background-color: var(--very-light-bg);
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+
+        .process-input-group {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .separator {
+            font-weight: bold;
+            color: var(--text-dark);
+            font-size: 0.9em;
+            margin: 0 1px;
+            white-space: nowrap;
+        }
+
+        .fixed-part {
+            padding: 5px 4px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            background-color: #e9ecef;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.9em;
+            white-space: nowrap;
+        }
+
+        .header-item {
+            text-align: center;
+            min-width: 220px;
+        }
+
+        .header-label {
+            font-size: 0.9em;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .header-input {
+            border: 1px solid var(--info-border);
+            padding: 5px 8px;
+            border-radius: 4px;
+            width: 150px;
+            text-align: center;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .header-input-large {
+            width: 280px;
+        }
+
+        .header-input.process-part,
+        .header-input.process-subpart,
+        .header-input.process-year,
+        .header-input.process-unit {
+            text-align: center;
+            padding: 5px 2px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .header-input.process-part {
+            width: 70px;
+        }
+        
+        .header-input.process-subpart {
+            width: 35px;
+        }
+        
+        .header-input.process-year {
+            width: 50px;
+        }
+
+        .header-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        /* Estilo específico para o campo de display de Valor Bruto no Header */
+        .header-bruto-display {
+            width: 280px;
+            text-align: right;
+            background-color: #e9ecef;
+            color: var(--text-primary);
+            padding: 5px 8px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            font-weight: bold;
+            display: block;
+            min-height: 20px;
+            /* Garante altura mínima */
+            box-sizing: border-box;
+        }
+
+
+        /* Estilo para as gavetas expansíveis */
+        details {
+            margin-bottom: 15px;
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+            transition: box-shadow 0.2s;
+        }
+
+        details:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        summary {
+            font-size: 1.1em;
+            font-weight: bold;
+            padding: 15px;
+            color: var(--primary-color);
+            background-color: var(--light-bg);
+            cursor: pointer;
+            outline: none;
+            border-bottom: 1px solid var(--info-border);
+            border-radius: 8px 8px 0 0;
+            display: list-item;
+            list-style: none;
+            transition: background-color 0.2s;
+        }
+
+        summary:hover {
+            background-color: var(--info-border);
+        }
+
+        details:not([open])>summary {
+            border-bottom: none;
+            border-radius: 8px;
+        }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+
+        summary::before {
+            content: '▶';
+            margin-right: 10px;
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+
+        details[open]>summary::before {
+            content: '▼';
+        }
+
+        .section-content {
+            padding: 20px;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+        }
+
+
+        .process-input-row .process-block {
+            min-width: 100%;
+            padding: 10px;
+            border: 1px solid var(--info-border);
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+        }
+
+        .process-input-row .process-input-group {
+            justify-content: center;
+            margin-top: 5px;
+        }
+
+        /* Bloco de Atualização de Cálculos */
+        .bloco-atualizacao-calculo {
+            border: 2px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+            margin-top: 15px;
+        }
+
+        /* Layout de Formulário */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 30px;
+            width: 100%;
+        }
+
+        .grid-col-span-2 {
+            grid-column: 1 / -1;
+        }
+
+
+        /* Estilos de inputs */
+        .info-row {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 250px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-item label {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .info-item input[type="text"],
+        .info-item input[type="number"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            text-align: right;
+            background-color: #f0f0f0;
+            color: var(--text-primary);
+            font-weight: bold;
+            display: block;
+        }
+
+        .valor-display-style {
+            width: 220px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            text-align: right !important;
+            background-color: #f0f0f0;
+            color: var(--text-primary);
+            font-weight: bold;
+            display: block !important;
+        }
+
+        .valor-input {
+            width: 220px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: right;
+            box-sizing: border-box;
+            background-color: white;
+            font-weight: bold;
+        }
+
+        /* --- Overrides for full-width text fields --- */
+        .info-item-block {
+            display: block;
+        }
+
+        .info-item-block label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .info-item-block input {
+            width: 100% !important;
+            /* Use important to override the 220px */
+        }
+
+
+        .info-item input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 128, 128, 0.3);
+        }
+
+        /* Estilos para o bloco de Herdeiros/Advogados Adicionais */
+        .parte-adicional-block {
+            border: 1px solid var(--primary-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background-color: var(--very-light-bg);
+        }
+
+        .parte-adicional-block h4 {
+            margin-top: 0;
+            color: var(--dark-accent);
+            font-size: 1.1em;
+            border-bottom: 1px solid var(--info-border);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+
+        .info-row.herdeiro-row .info-item:last-child {
+            min-width: 150px;
+            flex-grow: 0.5;
+        }
+
+        .add-button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            font-size: 0.85em;
+        }
+
+        .btn-clear-block {
+            background-color: transparent;
+            border: none;
+            color: #b8860b; /* Cor amadeirada/palha inspirada no emoji da vassoura */
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-clear-block:hover {
+            background-color: #fdf5e6; /* Fundo creme/palha claro no hover */
+            color: #8b6508; /* Tom amadeirado mais escuro no hover */
+        }
+
+        .btn-delete-block {
+            background-color: transparent;
+            border: none;
+            color: #dc3545;
+            cursor: pointer;
+            font-size: 1.1em;
+            padding: 5px 8px;
+            border-radius: 4px;
+            transition: background-color 0.2s, color 0.2s, transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-delete-block:hover {
+            background-color: #f8d7da;
+            color: #a71d2a;
+        }
+
+        .actions-block {
+            margin-left: auto;
+            display: flex;
+            gap: 4px;
+        }
+
+        .add-button:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .add-adv-button {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-size: 0.9em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .add-adv-button:hover {
+            background-color: var(--light-bg);
+            color: var(--dark-accent);
+            border-color: var(--dark-accent);
+        }
+
+        /* Botões de Advogados Específicos */
+        .add-adv-esp-btn {
+            background-color: white;
+            color: var(--dark-accent);
+            border: 1px solid var(--dark-accent);
+            padding: 8px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+
+        .add-adv-esp-btn:hover {
+            background-color: #f0f0f0;
+        }
+
+        .remove-adv-esp-btn {
+            background-color: white;
+            color: #dc3545;
+            border: 1px solid #dc3545;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .remove-adv-esp-btn:hover {
+            background-color: #f8d7da;
+        }
+
+        /* Botão Inline (ex: Adicionar Honorários) */
+        .btn-calc-honorarios {
+            background-color: white;
+            color: var(--primary-color);
+            border: 1px solid var(--info-border);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: bold;
+            transition: all 0.3s;
+            white-space: nowrap;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-calc-honorarios:hover {
+            background-color: var(--light-bg);
+            border-color: var(--primary-color);
+            color: var(--dark-accent);
+        }
+
+        /* Estilos das Abas */
+        .tabs-container {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 4px;
+            margin-top: 20px;
+            border-bottom: 1px solid var(--info-border);
+        }
+
+        .tab-button {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+            border: 1px solid var(--info-border);
+            border-bottom: none;
+            padding: 12px 10px;
+            cursor: pointer;
+            font-size: 1.05em;
+            font-weight: bold;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+            outline: none;
+            margin-bottom: -1px;
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+            /* Sobrepõe a borda inferior */
+        }
+
+        .tab-button:hover {
+            background-color: var(--info-border);
+            color: var(--dark-accent);
+        }
+
+        .tab-button.active {
+            background-color: white;
+            color: var(--dark-accent);
+            border-top: 3px solid var(--primary-color);
+            border-bottom: 1px solid white;
+            z-index: 2;
+            position: relative;
+        }
+
+        .tab-pane {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Seção de Honorários */
+        .honorarios-section {
+            border: 1px solid var(--primary-color);
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background-color: var(--very-light-bg);
+        }
+
+        .honorarios-options {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .honorarios-option {
+            display: flex;
+            align-items: center;
+        }
+
+        .honorarios-option label {
+            font-weight: normal;
+            margin-left: 8px;
+            cursor: pointer;
+        }
+
+        .honorarios-fields {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            flex-wrap: nowrap;
+            gap: 20px;
+        }
+
+        .honorarios-fields .field-group label {
+            font-weight: 600;
+        }
+
+        .honorarios-fields .field-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 5px;
+        }
+
+        .honorarios-fields input[type="text"],
+        .honorarios-fields input[type="number"] {
+            width: 160px;
+            flex-shrink: 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: right;
+            box-sizing: border-box;
+        }
+
+        .honorarios-fields .result {
+            font-weight: bold;
+            padding: 8px 2px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            background-color: #f7fcda;
+            text-align: right;
+            color: var(--text-primary);
+            display: block;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        .honorarios-fields .base-calculo {
+            font-weight: bold;
+            padding: 8px 2px;
+            border: 1px solid var(--info-border);
+            border-radius: 4px;
+            background-color: #e9ecef;
+            text-align: right;
+            color: var(--text-primary);
+            display: block;
+            width: 200px;
+            flex-shrink: 0;
+        }
+
+        /* Tabela de Créditos */
+        .creditos-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin-top: 30px;
+        }
+
+        .creditos-table th,
+        .creditos-table td {
+            border: none;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .creditos-table thead th {
+            background-color: #D1E7DD;
+            color: #000000;
+            font-weight: bold;
+            border-radius: 6px 6px 0 0;
+        }
+
+        .creditos-table tbody tr {
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .creditos-table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .creditos-table tbody tr:last-child {
+            border-top: 2px solid var(--primary-color);
+            background-color: #F8F9FA;
+            font-weight: bold;
+        }
+
+        .creditos-table tbody tr:last-child:hover {
+            background-color: #F8F9FA;
+        }
+
+        .creditos-table .value-col {
+            text-align: left;
+            font-weight: bold;
+            color: var(--text-dark);
+        }
+
+        .creditos-table th.value-col {
+            color: #000000;
+        }
+
+
+        .creditos-table .valor-liquido-resultado {
+            background-color: transparent;
+            color: var(--text-primary);
+        }
+
+        .creditos-table .row-title {
+            color: var(--text-primary);
+        }
+
+        .creditos-table .linha-retencao td {
+            background-color: #fff3cd;
+            /* Amarelo Claro para Retenções */
+            font-size: 0.85em;
+        }
+
+        .creditos-table .linha-retencao td:first-child {
+            color: #856404;
+            /* Cor escura para o texto */
+        }
+
+        .creditos-table .linha-retencao td:last-child {
+            font-weight: bold;
+        }
+
+        /* Novo estilo para Credores Adicionais */
+        .creditos-table .credor-adicional-linha td {
+            background-color: #f7f9fa;
+            /* Fundo mais claro para credores */
+            font-weight: 500;
+        }
+
+        .creditos-table .credor-adicional-linha td:last-child {
+            font-weight: bold;
+        }
+
+        /* Destaque para linhas de INSS (Cinza) */
+        .creditos-table .linha-inss td {
+            background-color: #e0e0e0;
+            font-weight: 600;
+        }
+
+        /* Highlight para erros de validação */
+        .input-error {
+            border: 2px solid #dc3545 !important;
+            background-color: #fff8f8 !important;
+            box-shadow: 0 0 5px rgba(220, 53, 69, 0.3) !important;
+        }
+
+        /* Sinalizador visual de campo obrigatório */
+        .required-field-label::after {
+            content: " *";
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        /* Estilos para o novo alerta dinâmico */
+        .alerta-bruto-tabela {
+            margin-top: 20px;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            background-color: var(--light-bg);
+            font-weight: bold;
+            color: var(--text-primary);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .btn-help-icon {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            background-color: transparent;
+            border: none;
+            color: var(--primary-color);
+            opacity: 0.5;
+            cursor: pointer;
+            font-size: 1.6em;
+            transition: color 0.3s, transform 0.2s, opacity 0.3s;
+            padding: 5px;
+        }
+
+        .btn-help-icon:hover {
+            color: var(--dark-accent);
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        /* Rodapé */
+        .button-group {
+            margin-top: 30px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .button-group button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.1s;
+        }
+
+        .button-group .primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .button-group .primary:hover {
+            background-color: var(--dark-accent);
+        }
+
+        .button-group .secondary {
+            background-color: #f8f9fa;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+
+        .button-group .secondary:hover {
+            background-color: #e2e6ea;
+        }
+
+
+        /* ======================================================= */
+        /* ESTILOS DE IMPRESSÃO */
+        /* (Manter estilos print do original para consistência) */
+        /* ======================================================= */
+        @media print {
+            details.parte-adicional-block summary {
+                font-size: 1em !important;
+                color: var(--dark-accent) !important;
+                border-bottom: 1px solid #ccc !important;
+            }
+
+            details.parte-adicional-block>div {
+                display: block !important;
+            }
+
+            body {
+                padding: 0;
+                margin: 0;
+                background-color: white !important;
+                font-size: 10pt !important;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                /* Fonte menor para impressão */
+            }
+
+            .container {
+                box-shadow: none !important;
+                border: none !important;
+                padding: 10px;
+                max-width: none;
+                width: 100%;
+            }
+
+            /* Ocultar elementos interativos */
+            .button-group,
+            .honorarios-options,
+            .add-button {
+                display: none !important;
+            }
+
+            /* FORÇAR ABERTURA E ESTILIZAÇÃO DAS SEÇÕES DE DETALHES */
+            details {
+                border: none !important;
+                margin-bottom: 20px;
+                break-inside: avoid;
+                /* Evita quebras de página dentro da seção */
+            }
+
+            details summary {
+                background-color: transparent !important;
+                color: var(--primary-color) !important;
+                border-bottom: 1px solid #ccc !important;
+                list-style: none !important;
+                font-size: 1.4em;
+                padding: 5px 0;
+                margin-bottom: 10px;
+            }
+
+            details summary::before {
+                display: none !important;
+            }
+
+            .section-content {
+                background-color: transparent !important;
+                padding: 0;
+                border: none;
+            }
+
+            .report-title {
+                font-size: 12pt !important;
+            }
+
+            .report-observacoes-content {
+                background-color: transparent !important;
+                border: none !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+            }
+
+            /* Estilização da tabela de créditos para impressão */
+            .creditos-table {
+                border-spacing: 0;
+                margin-top: 15px;
+                border: 1px solid #000;
+            }
+
+            .creditos-table thead th {
+                background-color: #eee !important;
+                color: #000 !important;
+                border-bottom: 1px solid #000 !important;
+                border-radius: 0 !important;
+                border: 1px solid #000;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .creditos-table th,
+            .creditos-table td {
+                padding: 8px 10px;
+                border-right: 1px dotted #ccc;
+                border: 1px solid #000;
+            }
+
+            .creditos-table tbody tr {
+                background-color: white !important;
+                border-bottom: 1px solid #eee;
+            }
+
+            .creditos-table tbody tr:last-child {
+                background-color: #e0f0f0 !important;
+                font-weight: bold;
+                border-top: 2px solid #000;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .creditos-table .valor-resultado,
+            .creditos-table .valor-liquido-resultado,
+            .creditos-table .value-col {
+                text-align: right;
+            }
+
+            /* FORÇAR EXIBIÇÃO DE INPUTS COMO TEXTO NA IMPRESSÃO */
+            input[type="text"],
+            input[type="number"],
+            .valor-input,
+            .header-input {
+                /* Indentação para o valor */
+                font-weight: bold !important;
+                text-align: left !important;
+                width: auto !important;
+                box-shadow: none !important;
+                display: inline !important;
+                /* Para ficar na mesma linha da label */
+                color: var(--text-dark) !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 5px !important;
+                background: none !important;
+            }
+
+            .info-item label {
+                display: inline !important;
+                /* Para ficar na mesma linha do input */
+                font-weight: 600;
+                margin-bottom: 0;
+            }
+
+            .info-row {
+                gap: 10px;
+                margin-bottom: 5px;
+            }
+
+            /* ESTILIZAÇÃO PARA HONORÁRIOS */
+            .honorarios-section {
+                border: 1px dashed var(--info-border) !important;
+                background-color: white !important;
+                padding: 10px;
+                margin-bottom: 15px;
+                break-inside: avoid;
+            }
+
+            .parte-adicional-block {
+                border: 1px dashed var(--info-border) !important;
+            }
+
+            .honorarios-fields {
+                display: flex !important;
+                /* Usar flex para uma linha horizontal */
+                gap: 20px;
+                align-items: center;
+                margin-top: 10px;
+            }
+
+            .honorarios-fields .field-group {
+                flex: 1;
+                min-width: 150px;
+            }
+
+            .honorarios-fields .field-group label {
+                font-weight: 600 !important;
+                display: inline !important;
+            }
+
+            /* Ocultar inputs e mostrar somente o resultado com destaque */
+            .honorarios-fields input {
+                display: none !important;
+            }
+
+            /* Garantir que o resultado do honorário seja visível e formatado */
+            .honorarios-fields .result {
+                background-color: #e0f0f0 !important;
+                color: var(--text-primary) !important;
+                border: 1px solid var(--info-border) !important;
+                padding: 5px 10px !important;
+                min-height: auto;
+                line-height: normal;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            /* Estilização para Relatório Final */
+            .relatorio-final {
+                display: block !important;
+                /* Força a exibição na impressão */
+                margin-top: 25px !important;
+                padding: 15px !important;
+                border: none !important;
+                background-color: #ffffff !important;
+                box-shadow: none !important;
+                break-before: auto;
+                /* Evita quebra de página desnecessária */
+                break-inside: avoid;
+            }
+
+            .relatorio-final h2 {
+                font-size: 1.3em !important;
+                border-bottom: 2px solid #000 !important;
+            }
+
+            .relatorio-final h3 {
+                font-size: 1em !important;
+            }
+
+            .relatorio-final .final-value.liquido {
+                background-color: var(--success-bg) !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            /* Estilização das Mensagens Adicionais */
+            .print-messages {
+                display: block !important;
+                margin-top: 30px;
+                padding: 15px 0;
+                border-top: 2px solid var(--primary-color);
+                font-size: 1em;
+                line-height: 1.6;
+            }
+
+            .print-messages p {
+                margin: 8px 0;
+                color: var(--text-dark);
+                font-weight: 500;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            /* Ajuste para o campo de observações na impressão */
+            #observacoes-gerais {
+                display: none !important;
+            }
+
+            #observacoes-print {
+                display: block !important;
+                white-space: pre-wrap;
+                border: 1px solid var(--info-border);
+                border: 1px solid #000;
+                padding: 10px;
+                border-radius: 4px;
+                min-height: 50px;
+            }
+
+            /* Padronização de fonte 11pt para o relatório impresso (exceto título) */
+            .report-label,
+            .report-value,
+            .report-table,
+            .report-table th,
+            .report-table td,
+            .report-section-title,
+            .report-date,
+            p {
+                font-size: 10pt !important;
+            }
+
+            /* Configurações para quebra de página em relatórios longos */
+            .report-section {
+                page-break-inside: auto;
+                break-inside: auto;
+            }
+
+            .report-table {
+                page-break-inside: auto;
+                break-inside: auto;
+                width: 100%;
+            }
+
+            .report-table tr {
+                page-break-inside: avoid;
+                break-inside: avoid;
+                page-break-after: auto;
+            }
+
+            .report-table thead {
+                display: table-header-group;
+                break-inside: avoid;
+            }
+
+            .report-table tfoot {
+                display: table-row-group;
+            }
+
+            .report-section-title {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            /* Evita quebra dentro dos blocos de informação */
+            .form-grid>div,
+            .info-item {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            /* Garante que a assinatura não quebre */
+            .signature-block {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+        }
+
+        @media print {
+            .bloco-atualizacao-calculo {
+                border: none !important;
+                padding: 0 !important;
+                background-color: transparent !important;
+                margin-top: 0 !important;
+            }
+
+            .bloco-atualizacao-calculo .calc-inner-total {
+                padding-top: 15px !important;
+                margin-top: 15px !important;
+                border-top: 1px dashed var(--info-border) !important;
+            }
+        }
+
+        /* ESTILOS DO MODAL DE RELATÓRIO */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 3% auto;
+            padding: 40px;
+            border: 1px solid #888;
+            width: 85%;
+            max-width: 900px;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .close-modal {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+
+        .close-modal:hover {
+            color: #000;
+        }
+
+        /* LAYOUT DO RELATÓRIO */
+        .report-header {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .report-logo {
+            height: 35px;
+            margin-right: 10px;
+        }
+
+        .report-title {
+            flex-grow: 1;
+            text-align: center;
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 13pt;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .report-date {
+            font-size: 10pt;
+            font-weight: bold;
+            color: #555;
+            text-align: right;
+            min-width: 150px;
+        }
+
+        .report-section {
+            margin-bottom: 15px;
+        }
+
+        .report-section-title {
+            background-color: var(--light-bg);
+            color: var(--dark-accent);
+            padding: 5px 10px;
+            font-weight: bold;
+            border-left: 4px solid var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1em;
+            text-transform: uppercase;
+            text-align: center;
+        }
+
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 5px;
+            background-color: #fff;
+            padding: 0;
+        }
+
+        .report-field {
+            margin-bottom: 2px;
+            border-bottom: 1px dotted #eee;
+            padding-bottom: 2px;
+        }
+
+        .report-label {
+            font-weight: 700;
+            color: #555;
+            font-size: 10pt;
+            margin-right: 5px;
+        }
+
+        .report-value {
+            font-weight: 600;
+            color: #222;
+            font-size: 10pt;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+            font-size: 10pt;
+        }
+
+        .report-table th {
+            background-color: #D1E7DD;
+            color: #000000;
+            padding: 5px;
+            text-align: left;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 10pt;
+        }
+
+        .report-table td {
+            border-bottom: 1px solid #ddd;
+            padding: 4px;
+            color: #333;
+            font-size: 10pt;
+        }
+
+        .report-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .report-table tfoot tr {
+            background-color: #F8F9FA;
+            font-weight: bold;
+            border-top: 2px solid #000000;
+        }
+
+        .report-table tfoot td {
+            padding: 6px 5px;
+            font-size: 10pt;
+        }
+
+        .text-left-value {
+            text-align: left;
+        }
+
+        /* Layout de Impressão e Modal (Tabela para Margens) */
+        .print-layout-table {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            border-collapse: collapse;
+            border: none;
+        }
+
+    /* Ocultar elementos exclusivos da folha impressa durante a visualização na tela */
+    @media screen {
+        .print-footer-content {
+            display: none !important;
+        }
+    }
+
+        @media print {
+            @page {
+                margin: 0;
+                size: A4;
+            }
+
+            body.printing-modal > *:not(#relatorio-modal) {
+                display: none !important;
+            }
+
+            body.printing-modal .modal {
+                display: block !important;
+                position: static !important;
+                width: 100% !important;
+                height: auto !important;
+                background: none !important;
+                overflow: visible !important;
+            }
+
+            html, body.printing-modal {
+                height: auto !important;
+                overflow: visible !important;
+            }
+
+            body.printing-modal .modal-content {
+                border: none !important;
+                box-shadow: none !important;
+                margin: 0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow: visible !important;
+            }
+
+            body.printing-modal .close-modal,
+            body.printing-modal .button-group,
+            body.printing-modal .btn-print-report {
+                display: none !important;
+            }
+
+            /* Layout de Impressão (Tabela para Margens) */
+            body.printing-modal .print-layout-table {
+                max-width: none;
+            }
+
+            body.printing-modal .print-header-space,
+            body.printing-modal .print-footer-space {
+                height: 1.5cm;
+                border: none !important;
+            }
+
+            body.printing-modal .print-content-cell {
+                padding: 0 1.5cm;
+                border: none !important;
+            }
+
+            body.printing-modal .report-section-title {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            body.printing-modal .report-table th,
+            body.printing-modal .report-table tfoot tr {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+        }
+
+        /* ======================================================= */
+        /* RESPONSIVIDADE (MOBILE) */
+        /* ======================================================= */
+        @media screen and (max-width: 992px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px 10px;
+            }
+
+            /* Header */
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .header img {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .header-titles {
+                flex-direction: column;
+                width: 100%;
+                gap: 15px;
+            }
+
+            .header-item {
+                width: 100%;
+            }
+
+            .btn-help-icon {
+                top: 5px;
+                right: 5px;
+            }
+
+            .header-input {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .tabs-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+                -ms-overflow-style: none; /* IE e Edge */
+                scrollbar-width: none; /* Firefox */
+            }
+
+            .tabs-container::-webkit-scrollbar {
+                display: none; /* Chrome, Safari e Opera */
+            }
+
+            .tab-button {
+                flex: 0 0 auto;
+                text-align: center;
+                padding: 10px 15px;
+                font-size: 0.95em;
+            }
+
+            .tab-pane {
+                padding: 15px 10px !important;
+            }
+
+            /* Process Block */
+            .info-block.process-block {
+                min-width: 0;
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px;
+            }
+
+            .process-input-group {
+                flex-wrap: wrap;
+                justify-content: center !important;
+                gap: 5px;
+            }
+
+            .header-input.process-part,
+            .header-input.process-subpart,
+            .header-input.process-year,
+            .header-input.process-unit {
+                margin-bottom: 5px;
+            }
+            
+            .header-input.process-part {
+                width: 60px;
+            }
+            
+            .header-input.process-subpart {
+                width: 35px;
+            }
+            
+            .header-input.process-year {
+                width: 50px;
+            }
+
+            /* Form Grid & Layout */
+            .form-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+
+            /* Força empilhamento vertical nas linhas de dados adicionais e blocos de formulário */
+            div[style*="align-items: flex-end"] {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 10px !important;
+            }
+
+            /* Ajusta a largura das colunas baseadas em flex-basis */
+            div[style*="flex-basis"] {
+                flex-basis: auto !important;
+                width: 100% !important;
+            }
+
+            /* Permite que elementos flexíveis inline quebrem linha quando o filho ocupa 100% */
+            div[style*="display: flex"] {
+                flex-wrap: wrap;
+            }
+
+            /* Info Items */
+            .info-item {
+                flex-direction: column;
+                align-items: stretch;
+                min-width: 0;
+            }
+
+            .info-item label {
+                margin-bottom: 5px;
+            }
+
+            /* Garante que os inputs de valores e displays fiquem em 100% da largura na versão mobile */
+            .info-item input[type="text"],
+            .info-item input[type="number"],
+            .info-item .valor-display-style,
+            .info-item .valor-input,
+            .valor-input,
+            .valor-display-style,
+            input[id^="input-honorarios-"],
+            input[id^="input-irrf-"] {
+                width: 100% !important;
+                max-width: none;
+                box-sizing: border-box;
+            }
+
+            .header-bruto-display {
+                width: 100%;
+            }
+
+            /* Honorarios */
+            .honorarios-options {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .honorarios-fields {
+                flex-direction: row !important;
+            }
+
+            .honorarios-fields .field-group {
+                align-items: flex-start;
+            }
+
+            /* Tables */
+            .creditos-table {
+                display: block;
+                overflow-x: auto;
+                white-space: nowrap;
+            }
+
+            /* Modal */
+            .modal-content {
+                width: 95%;
+                padding: 15px;
+                margin: 5% auto;
+            }
+
+            .report-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .report-logo {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .report-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .report-date {
+                text-align: center;
+                margin-top: 5px;
+            }
+
+            /* Buttons */
+            .button-group {
+                flex-direction: column;
+            }
+
+            .button-group button {
+                width: 100%;
+            }
+        }
