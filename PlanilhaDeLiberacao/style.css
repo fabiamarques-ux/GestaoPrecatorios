@@ -501,8 +501,8 @@
         /* Botão Inline (ex: Adicionar Honorários) */
         .btn-calc-honorarios {
             background-color: white;
-            color: var(--primary-color);
-            border: 1px solid var(--info-border);
+            color: #d35400; /* Laranja escuro para destacar a edição */
+            border: 1px solid #f39c12; /* Borda laranja suave */
             padding: 8px 12px;
             border-radius: 6px;
             cursor: pointer;
@@ -517,9 +517,44 @@
         }
 
         .btn-calc-honorarios:hover {
+            background-color: #fdf5e6; /* Fundo creme/laranja super claro no hover */
+            border-color: #d35400;
+            color: #a04000;
+        }
+
+        /* Botões de Ação na Tabela de Planilhas */
+        .btn-table-action {
+            background-color: white;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s, color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-table-action:active {
+            transform: scale(0.95);
+        }
+
+        .btn-table-action.action-primary {
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-table-action.action-primary:hover {
             background-color: var(--light-bg);
-            border-color: var(--primary-color);
             color: var(--dark-accent);
+        }
+
+        .btn-table-action.action-history {
+            border: 1px solid #6c757d;
+            color: #6c757d;
+        }
+
+        .btn-table-action.action-history:hover {
+            background-color: #f8f9fa;
+            color: #495057;
         }
 
         /* Estilos das Abas */
@@ -789,8 +824,8 @@
             right: -20px;
             background-color: transparent;
             border: none;
-            color: var(--primary-color);
-            opacity: 0.5;
+        color: #000000; /* Preto */
+        opacity: 0.8;
             cursor: pointer;
             font-size: 1.6em;
             transition: color 0.3s, transform 0.2s, opacity 0.3s;
@@ -798,7 +833,7 @@
         }
 
         .btn-help-icon:hover {
-            color: var(--dark-accent);
+        color: #333333; /* Preto um pouco mais claro no hover */
             opacity: 1;
             transform: scale(1.1);
         }
@@ -1465,26 +1500,11 @@
                 box-sizing: border-box;
             }
 
-            .tabs-container {
-                overflow-x: auto;
-                -webkit-overflow-scrolling: touch;
-                -ms-overflow-style: none; /* IE e Edge */
-                scrollbar-width: none; /* Firefox */
-            }
-
-            .tabs-container::-webkit-scrollbar {
-                display: none; /* Chrome, Safari e Opera */
-            }
-
             .tab-button {
-                flex: 0 0 auto;
+                flex: 1 1 auto;
                 text-align: center;
-                padding: 10px 15px;
+                padding: 10px;
                 font-size: 0.95em;
-            }
-
-            .tab-pane {
-                padding: 15px 10px !important;
             }
 
             /* Process Block */

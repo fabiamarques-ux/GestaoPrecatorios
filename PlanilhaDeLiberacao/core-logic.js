@@ -3,13 +3,14 @@
 // =======================================================================
 function atualizarSomaLiquido() {
     const liquidoPlanilha = getNumericValue('liquido-reclamante-calculo');
+    const previdencia = getNumericValue('valor-previdencia-privada');
     const honorarios = getNumericValue('input-honorarios-advocaticios');
     const irrf = getNumericValue('input-irrf-honorarios');
     const honorariosPericiais = getNumericValue('input-honorarios-periciais');
     const irrfPericiais = getNumericValue('input-irrf-periciais');
     const custasJudiciais = getNumericValue('input-custas-judiciais');
 
-    let novoLiquido = liquidoPlanilha + honorarios + irrf + custasJudiciais + honorariosPericiais + irrfPericiais;
+    let novoLiquido = liquidoPlanilha + previdencia + honorarios + irrf + custasJudiciais + honorariosPericiais + irrfPericiais;
 
     document.getElementById('valor-deposito-judicial').value = formatarMoedaParaExibicao(novoLiquido);
     atualizarTotalDevidoReclamada();
@@ -61,15 +62,15 @@ function calcularHonorarios(prefix) {
 
     if (prefix === 'adv') {
         const liquido = getNumericValue('liquido-reclamante-calculo');
+        const previdencia = getNumericValue('valor-previdencia-privada');
         const inssReclamante = getNumericValue('inss-reclamante');
         const irValor = getNumericValue('ir-valor');
         const fgts = getNumericValue('fgts-viculada');
-        const periciais = getNumericValue('input-honorarios-periciais') + getNumericValue('input-irrf-periciais');                
         
         const optSim = document.querySelector('input[name="incluir-fgts-base"][value="sim"]');
         const incluirFgts = optSim ? optSim.checked : false;
         
-        const baseCalculoReal = liquido + inssReclamante + irValor + periciais + (incluirFgts ? fgts : 0);
+        const baseCalculoReal = liquido + previdencia + inssReclamante + irValor + (incluirFgts ? fgts : 0);
 
         if (isPercentual) {
             const percentual = getNumericValue(`adv-percentual`) / 100;
@@ -88,14 +89,6 @@ function calcularHonorarios(prefix) {
             let percentualCalculado = baseCalculoReal > 0 ? (resultado / baseCalculoReal) * 100 : 0;
             let textoPercentual = `(${percentualCalculado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}%)`;
             if (spanPercFix) spanPercFix.textContent = textoPercentual;
-        }
-        
-        if (resultado > 0) {
-            const advPrincBlock = document.getElementById('adv-principal-block');
-            if (advPrincBlock && advPrincBlock.style.display === 'none') {
-                advPrincBlock.style.display = 'block';
-                advPrincBlock.open = true;
-            }
         }
         
         atualizarCredoresAdicionais();
@@ -519,10 +512,10 @@ function atualizarQuadroResumo() {
     const outras = getNumericValue('outras-retencoes');
     const totalRetencoesReclamante = pensao + outras;
     const liquidoReclamanteCalculo = getNumericValue('liquido-reclamante-calculo');
+    const previdencia = getNumericValue('valor-previdencia-privada');
     const fgts = getNumericValue('fgts-viculada');
     
-    const honPer = getNumericValue('input-honorarios-periciais') + getNumericValue('input-irrf-periciais');
-    const brutoReclamanteCalculadoParaPerc = liquidoReclamanteCalculo + inssReclamante + irValor + honPer;
+    const brutoReclamanteCalculadoParaPerc = liquidoReclamanteCalculo + previdencia + inssReclamante + irValor;
 
     const optFgtsAdv = document.querySelector('input[name="incluir-fgts-base"][value="sim"]');
     const incluirFgtsBase = optFgtsAdv ? optFgtsAdv.checked : false;
@@ -1267,6 +1260,16 @@ function atualizarQuadroResumo() {
     }
     globalRecolher += subTotalRecolhimentos;
 
+    // 5. Previdência Privada
+    if (previdencia > 0.005) {
+        const fundoPrevidencia = extrairValorSeguro('nome-fundo-previdencia');
+        const cnpjFundo = extrairValorSeguro('cnpj-fundo-previdencia');
+        addGroupHeader('Previdência Privada');
+        addRow(`<strong>${fundoPrevidencia || 'Fundo de Previdência'}</strong>`, cnpjFundo || 'Depósito / Transferência', previdencia);
+        html += getGroupFooterHtml();
+        globalLiberado += previdencia;
+    }
+
     html += `<tr class="spacer-row"><td colspan="3" style="height: 20px; border: none; background: transparent; padding: 0;"></td></tr>`;
     tbody.innerHTML = html;
 
@@ -1448,6 +1451,27 @@ function validarFormulario() {
                 if (container) container.classList.add('input-error');
             }
         }
+    }
+
+    const previdenciaValidar = getNumericValue('valor-previdencia-privada');
+    const nomeFundo = extrairValorSeguro('nome-fundo-previdencia');
+    const cnpjFundo = extrairValorSeguro('cnpj-fundo-previdencia');
+    
+    if (previdenciaValidar > 0) {
+        if (nomeFundo === '') {
+            camposFaltantes.push('Nome do Fundo de Previdência');
+            const el = document.getElementById('nome-fundo-previdencia');
+            if (el) el.classList.add('input-error');
+        }
+        if (cnpjFundo === '') {
+            camposFaltantes.push('CNPJ do Fundo de Previdência');
+            const el = document.getElementById('cnpj-fundo-previdencia');
+            if (el) el.classList.add('input-error');
+        }
+    } else if ((nomeFundo !== '' || cnpjFundo !== '') && previdenciaValidar <= 0) {
+        camposFaltantes.push('Valor da Previdência Privada');
+        const el = document.getElementById('valor-previdencia-privada');
+        if (el) el.classList.add('input-error');
     }
 
     const honAdvTotal = getNumericValue('adv-resultado');
@@ -1690,7 +1714,7 @@ function validarFormulario() {
     const diferenca = getNumericValue('diferenca-valor');
     const observacoesStr = extrairValorSeguro('observacoes-gerais');
     if (Math.abs(diferenca) > 0.005 && observacoesStr === '') {
-        mensagensEspecificas.push('O campo "Observações" é obrigatório, pois existe uma diferença entre o valor depositado e o liberado. Por favor, informe o motivo.');
+        mensagensEspecificas.push('O campo "Observações" é obrigatório, pois existe uma diferença entre o valor depositado e o liberado. Por favor, informe o motivo de forma detalhada e clara (Ex.: a) Diferença relativa a Juros da Conta Corrente; b) Diferença relativa ao Pagamento Parcial referente a "Parcela nº ___ do Acordo nº _________).');
         const obsEl = document.getElementById('observacoes-gerais');
         if (obsEl) obsEl.classList.add('input-error');
     }
@@ -1712,9 +1736,7 @@ function validarFormulario() {
     return true;
 }
 
-function gerarRelatorio() {
-    if (!validarFormulario()) return;
-    
+function gerarRelatorioStr() {
     const dataLiberacao = extrairValorSeguro('data-liberacao-header');
     const procNum = ('0000000' + extrairValorSeguro('proc-num')).slice(-7);
     const procDigito = ('00' + extrairValorSeguro('proc-digito')).slice(-2);
@@ -1733,6 +1755,7 @@ function gerarRelatorio() {
 
     const liquidoExequente = extrairValorSeguro('liquido-reclamante-calculo');
     const fgts = extrairValorSeguro('fgts-viculada');
+    const previdencia = extrairValorSeguro('valor-previdencia-privada');
     const irValor = extrairValorSeguro('ir-valor');
     const inssReclamante = extrairValorSeguro('inss-reclamante');
     const inssReclamada = extrairValorSeguro('inss-reclamada');
@@ -1788,6 +1811,7 @@ function gerarRelatorio() {
     const planFields = [
         { label: 'Líquido Reclamante', value: liquidoExequente },
         { label: 'FGTS a Depositar', value: fgts },
+        { label: 'Previdência Privada', value: previdencia },
         { label: 'IRRF Reclamante', value: irValor },
         { label: 'INSS Reclamante', value: inssReclamante },
         { label: 'INSS Executada', value: inssReclamada },
@@ -1914,6 +1938,12 @@ function gerarRelatorio() {
             
         </div>
     `;
+    return html;
+}
+
+function gerarRelatorio(skipValidation = false) {
+    if (!skipValidation && !validarFormulario()) return;
+    const html = gerarRelatorioStr();
 
     const printHtml = `
         <table class="print-layout-table">
@@ -2032,6 +2062,12 @@ function limparCampos() {
     advSucumbencialCount = 0;
     sucumbenciaisConfirmado = false;
     
+    window.currentLoadedKey = null;
+    window.loadedProcNumBase = null;
+    window.processoDuplicadoConfirmado = false;
+    window.motivoProcessoDuplicado = '';
+    window.confirmedProcNumBase = null;
+
     const advPercOpt = document.getElementById('adv-percentual-opt');
     if (advPercOpt) advPercOpt.checked = true;
     
@@ -2059,7 +2095,7 @@ document.addEventListener('DOMContentLoaded', function () {
         'ir-valor', 'inss-reclamante', 'inss-reclamada', 'fgts-viculada', 'valor-deposito',
         'input-honorarios-advocaticios', 'input-irrf-honorarios',
         'input-honorarios-periciais', 'input-irrf-periciais',
-        'input-custas-judiciais', 'liquido-reclamante-calculo'
+        'input-custas-judiciais', 'liquido-reclamante-calculo', 'valor-previdencia-privada'
     ];
     inputsParaObservar.forEach(id => {
         const el = document.getElementById(id);
@@ -2117,12 +2153,20 @@ window.onclick = function (event) {
     const modalPeritos = document.getElementById('modal-peritos');
     const modalConfirm = document.getElementById('custom-confirm-modal');
     const modalAlert = document.getElementById('custom-alert-modal');
+    const modalPrompt = document.getElementById('custom-prompt-modal');
     const modalAjuda = document.getElementById('modal-ajuda');
+    const modalPrevidencia = document.getElementById('modal-previdencia');
+    const modalBanco = document.getElementById('modal-banco-rascunhos');
+    const modalOpcoesSalvamento = document.getElementById('modal-opcoes-salvamento');
 
     if (event.target == modalRelatorio) fecharRelatorio();
     if (event.target == modalAdvogados) fecharModalAdvogados();
     if (event.target == modalPeritos) fecharModalPeritos();
     if (event.target == modalConfirm) closeCustomConfirm(false);
     if (event.target == modalAlert) closeCustomAlert();
+    if (event.target == modalPrompt) closeCustomPrompt(null);
     if (event.target == modalAjuda) fecharPainelAjuda();
+    if (event.target == modalPrevidencia) fecharModalPrevidencia();
+    if (event.target == modalBanco) fecharModalBancoRascunhos();
+    if (event.target == modalOpcoesSalvamento) fecharOpcoesSalvamento();
 };

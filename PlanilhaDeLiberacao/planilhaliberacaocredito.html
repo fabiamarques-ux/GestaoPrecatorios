@@ -174,6 +174,17 @@
                                     <input type="text" id="fgts-viculada" class="valor-input" placeholder="0,00"
                                         style="width: 130px; background-color: #f9f9f9;">
                                 </div>
+                                <div class="info-item"
+                                    style="background-color: white; padding: 8px 11px; border: 1px solid var(--info-border); border-radius: 8px; margin: 0;">
+                                    <label for="valor-previdencia-privada" style="font-size: 0.9em;">Prev. Privada:</label>
+                                    <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
+                                        <input type="text" id="valor-previdencia-privada" class="valor-input" placeholder="0,00"
+                                            oninput="formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'previdencia')"
+                                            style="width: 130px; background-color: white;"
+                                            title="Informe o valor">
+                                        <button type="button" onclick="abrirModalPrevidencia()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Informar Fundo"><i class="fas fa-edit"></i></button>
+                                    </div>
+                                </div>
                                 <input type="hidden" id="valor-deposito-judicial" value="0,00">
                             </div>
 
@@ -218,7 +229,7 @@
                                     <label for="input-honorarios-advocaticios" style="font-size: 0.9em;">Hon. Advocatícios:</label>
                                     <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
                                         <input type="text" id="input-honorarios-advocaticios" class="valor-input"
-                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();"
+                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'advogado')"
                                             style="width: 130px; background-color: white;"
                                             title="Informe os valores">
                                         <button type="button" onclick="abrirModalAdvogados()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
@@ -229,7 +240,7 @@
                                     <label for="input-irrf-honorarios" style="font-size: 0.9em;">IRRF Advocatícios:</label>
                                     <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
                                         <input type="text" id="input-irrf-honorarios" class="valor-input" placeholder="0,00"
-                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();"
+                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'advogado')"
                                             style="width: 130px; background-color: white;"
                                             title="Informe os valores">
                                         <button type="button" onclick="abrirModalAdvogados()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
@@ -240,7 +251,7 @@
                                     <label for="input-honorarios-periciais" style="font-size: 0.9em;">Hon. Peritos:</label>
                                     <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
                                         <input type="text" id="input-honorarios-periciais" class="valor-input"
-                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();"
+                                            placeholder="0,00" oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'perito')"
                                             style="width: 130px; background-color: white;"
                                             title="Informe os valores">
                                         <button type="button" onclick="abrirModalPeritos()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
@@ -251,7 +262,7 @@
                                     <label for="input-irrf-periciais" style="font-size: 0.9em;">IRRF Peritos:</label>
                                     <div style="display: flex; align-items: center; gap: 5px; justify-content: flex-end; flex-grow: 1;">
                                         <input type="text" id="input-irrf-periciais" class="valor-input" placeholder="0,00"
-                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();"
+                                            oninput="this.dataset.fromModal='false'; formatarMoeda(this); atualizarSomaLiquido();" onblur="alertarPreenchimentoBeneficiario(this, 'perito')"
                                             style="width: 130px; background-color: white;"
                                             title="Informe os valores">
                                         <button type="button" onclick="abrirModalPeritos()" class="btn-calc-honorarios no-print" style="padding: 5px 8px; margin: 0;" title="Abrir Lançamento"><i class="fas fa-edit"></i></button>
@@ -360,8 +371,8 @@
                             <span id="adv-base-calculo" class="valor-display-style" style="background-color: #e9ecef; width: 220px; text-align: right; font-size: 1.05em;">0,00</span>
                         </div>
                         <div style="font-size: 0.85em; color: #555; margin-bottom: 15px; background-color: white; padding: 8px 12px; border-left: 4px solid var(--primary-color); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4;">
-                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é composta pela fórmula: <strong>TOTAL BRUTO DO RECLAMANTE = LÍQUIDO + IRRF E INSS RECLAMANTE + HON. PERICIAIS</strong>.<br>
-                            <span style="display: inline-block; margin-top: 4px; margin-left: 18px;">Caso a base de cálculo dos honorários divirja da regra acima, os valores deverão ser inseridos nos campos <strong>Valor Fixado</strong> e/ou <strong>Honorários Bruto</strong> (na seção de Adição dos Advogados).</span>
+                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é composta pela fórmula: <strong>TOTAL BRUTO DO RECLAMANTE = LÍQUIDO + PREV. PRIVADA + IRRF E INSS RECLAMANTE</strong>.<br>
+                            <span style="display: inline-block; margin-top: 4px; margin-left: 18px;">Caso a base de cálculo dos honorários divirja da regra acima, os valores deverão ser inseridos logo a seguir nos campos <strong>Valor Fixado</strong> e/ou <strong>Honorários Bruto</strong> (na seção de Adição dos Advogados).</span>
                         </div>
                     </div>
 
@@ -625,6 +636,21 @@
         </div>
     </div>
 
+    <!-- MODAL DE PROMPT CUSTOMIZADO -->
+    <div id="custom-prompt-modal" class="modal" style="z-index: 1250;">
+        <div class="modal-content" style="max-width: 450px; text-align: center; border-radius: 8px; padding: 25px;">
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-question-circle" style="color: #ffc107; margin-right: 8px;"></i>INFORMAÇÃO NECESSÁRIA
+            </h3>
+            <p id="custom-prompt-message" style="font-size: 1.05em; color: var(--text-dark); margin: 20px 0 10px 0; line-height: 1.5;"></p>
+            <input type="text" id="custom-prompt-input" class="valor-input" style="width: 100%; text-align: left; margin-bottom: 20px;" maxlength="30" oninput="formatarTextoMaiusculo(this)" onkeypress="if(event.key === 'Enter') closeCustomPrompt(this.value)">
+            <div style="display: flex; justify-content: center; gap: 15px;">
+                <button type="button" class="secondary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold;" onclick="closeCustomPrompt(null)">Cancelar</button>
+                <button type="button" class="primary" style="padding: 10px 25px; border-radius: 6px; font-weight: bold; background: var(--primary-color); color: white; border: none;" onclick="closeCustomPrompt(document.getElementById('custom-prompt-input').value)">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
 
         <!-- QUADRO RESUMO DA LIBERAÇÃO -->
         <div class="relatorio-final"
@@ -678,8 +704,32 @@
 
 
         <div class="button-group">
-            <button type="button" class="primary" onclick="gerarRelatorio()">Gerar Relatório</button>
+            <button type="button" class="primary" onclick="abrirOpcoesSalvamento()"><i class="fas fa-save"></i> Salvar Planilha</button>
+            <button type="button" class="secondary" onclick="carregarRascunho()"><i class="fas fa-database"></i> Banco de Planilhas</button>
             <button type="button" class="secondary" onclick="limparCampos()">Limpar Tudo</button>
+        </div>
+    </div>
+
+    <!-- MODAL OPÇÕES DE SALVAMENTO -->
+    <div id="modal-opcoes-salvamento" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 500px; text-align: center; border-radius: 8px; padding: 30px;">
+            <span class="close-modal" onclick="fecharOpcoesSalvamento()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px; font-size: 1.3em;">
+                <i class="fas fa-save" style="margin-right: 8px;"></i> Salvar Planilha
+            </h3>
+            <p style="font-size: 1.1em; color: var(--text-dark); margin: 25px 0;">Como você deseja salvar os dados atuais?</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 25px;">
+                <button type="button" class="primary" style="padding: 12px 25px; border-radius: 6px; font-size: 1.05em; font-weight: bold; border: none; background-color: var(--primary-color); color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center;" onclick="executarSalvamento('final')">
+                    <div style="display: flex; align-items: center;"><i class="fas fa-check-circle" style="margin-right: 8px;"></i> Salvar como Planilha Final</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 4px; opacity: 0.9;">Valida o preenchimento e habilita a emissão do Relatório</div>
+                </button>
+                
+                <button type="button" class="secondary" style="padding: 12px 25px; border-radius: 6px; font-size: 1.05em; font-weight: bold; border: 1px solid var(--primary-color); color: var(--primary-color); background-color: white; cursor: pointer; display: flex; flex-direction: column; align-items: center;" onclick="executarSalvamento('rascunho')">
+                    <div style="display: flex; align-items: center;"><i class="fas fa-file-alt" style="margin-right: 8px;"></i> Salvar como Rascunho</div>
+                    <div style="font-size: 0.8em; font-weight: normal; margin-top: 4px; opacity: 0.9;">Salva o progresso parcial para continuar editando depois</div>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -776,9 +826,75 @@
                 <!-- Conteúdo gerado via JS -->
             </div>
             <div class="button-group" style="margin-top: 30px; justify-content: center;">
-                <button type="button" class="primary btn-print-report" onclick="window.print()">Imprimir
-                    Relatório</button>
+                <button type="button" class="primary btn-print-report" onclick="window.print()"><i class="fas fa-print" style="margin-right: 5px;"></i> Imprimir / Gerar PDF</button>
                 <button type="button" class="secondary btn-print-report" onclick="fecharRelatorio()">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PREVIDÊNCIA PRIVADA -->
+    <div id="modal-previdencia" class="modal" style="z-index: 1050;">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-modal" onclick="fecharModalPrevidencia()">&times;</span>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                Fundo de Previdência Privada
+            </h3>
+            <div style="margin-top: 20px; display: flex; gap: 15px; align-items: flex-end;">
+                <div style="flex: 2;">
+                    <label for="nome-fundo-previdencia" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">Nome do Fundo de Previdência:</label>
+                    <input type="text" id="nome-fundo-previdencia" class="valor-input" spellcheck="true" oninput="formatarTextoMaiusculo(this); atualizarQuadroResumo()"
+                        style="width: 100%; text-align: left; background-color: white;">
+                </div>
+                <div style="flex: 1;">
+                    <label for="cnpj-fundo-previdencia" style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">CNPJ do Fundo:</label>
+                    <input type="text" id="cnpj-fundo-previdencia" class="valor-input" maxlength="18" oninput="formatarDocumento(this, 'CNPJ'); atualizarQuadroResumo()"
+                        style="width: 100%; text-align: left; background-color: white;">
+                </div>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-end; padding-top: 15px; border-top: 1px solid var(--info-border);">
+                <button type="button" class="primary"
+                    style="padding: 10px 20px; border-radius: 6px; border: none; background: var(--primary-color); color: white; font-weight: bold; cursor: pointer;"
+                    onclick="fecharModalPrevidencia()">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL BANCO DE RASCUNHOS -->
+    <div id="modal-banco-rascunhos" class="modal" style="z-index: 1100;">
+        <div class="modal-content" style="max-width: 1050px;">
+            <button type="button" onclick="fecharModalBancoRascunhos()" style="position: absolute; top: 20px; right: 25px; padding: 6px 15px; border-radius: 4px; font-weight: bold; font-size: 0.95em; cursor: pointer; border: 1px solid #555; color: #333; background-color: #f8f9fa; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#e2e6ea'" onmouseout="this.style.backgroundColor='#f8f9fa'" title="Fechar Janela">Fechar</button>
+            <h3 style="color: var(--primary-color); margin-top: 0; border-bottom: 2px solid var(--info-border); padding-bottom: 10px;">
+                <i class="fas fa-database" style="margin-right: 8px;"></i> Banco de Planilhas Salvas
+            </h3>
+            <div style="margin-top: 15px; display: flex; align-items: center; gap: 10px; background-color: var(--very-light-bg); padding: 10px; border-radius: 6px; border: 1px solid var(--info-border);">
+                <i class="fas fa-search" style="color: var(--primary-color); font-size: 1.1em; margin-left: 5px;"></i>
+                <input type="text" id="pesquisa-rascunhos" placeholder="Pesquisar por Nº do Processo ou Nome..." style="flex: 1; padding: 8px 12px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em; outline: none;" oninput="filtrarRascunhos()">
+            </div>
+            <div style="max-height: 600px; overflow-y: auto; margin-top: 15px; border: 1px solid var(--info-border); border-radius: 8px;">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background-color: var(--light-bg); position: sticky; top: 0; z-index: 1;">
+                        <tr>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 40px; text-align: center;"><input type="checkbox" id="chk-select-all-export" onclick="toggleSelectAllExport(this)" title="Selecionar Todas"></th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent);">Processo / Reclamante</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 140px; text-align: center;">Status</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 160px;">Data da Modificação</th>
+                            <th style="padding: 12px; border-bottom: 2px solid var(--info-border); color: var(--dark-accent); width: 180px; text-align: center;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="lista-rascunhos-tbody">
+                        <!-- Inserido via JS -->
+                    </tbody>
+                </table>
+            </div>
+            <div style="margin-top: 20px; display: flex; justify-content: flex-start; align-items: center;">
+                <div style="display: flex; gap: 10px;">
+                    <button type="button" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; background-color: #dc3545; border: none; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#c82333'" onmouseout="this.style.backgroundColor='#dc3545'" onclick="excluirRascunhosSelecionados()"><i class="fas fa-trash-alt" style="margin-right: 5px;"></i> Excluir</button>
+                    <button type="button" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; color: white; background-color: var(--primary-color); border: none; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='var(--dark-accent)'" onmouseout="this.style.backgroundColor='var(--primary-color)'" onclick="imprimirRascunhosSelecionados()"><i class="fas fa-file-pdf" style="margin-right: 5px;"></i> Gerar PDF</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid #28a745; color: black;" onclick="exportarExcelSelecionados()"><i class="fas fa-file-excel" style="color: black; margin-right: 5px;"></i> Exportar Excel</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-color);" onclick="exportarBackup()"><i class="fas fa-download" style="margin-right: 5px;"></i> Exportar Json</button>
+                    <button type="button" class="secondary" style="padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-color);" onclick="importarBackup()"><i class="fas fa-upload" style="margin-right: 5px;"></i> Importar Json</button>
+                    <input type="file" id="input-importar-backup" accept=".json" style="display: none;" onchange="processarImportacaoBackup(event)">
+                </div>
             </div>
         </div>
     </div>
@@ -795,11 +911,18 @@
                 <h4 style="color: var(--dark-accent); margin-top: 0;">Bem-vindo à Planilha de Liberação de Crédito!</h4>
                 <p>Este sistema foi desenvolvido para facilitar a geração da Planilha de Liberação de Crédito em Precatórios. O sistema também proporciona a auditoria das informações relativas aos valores da planilha de atualização de cálculos e dos depósitos judiciais, garantindo maior segurança na liberação dos valores, além de consolidar as informações para melhor organização do processo.<br><br>Siga as instruções abaixo para um preenchimento correto:</p>
 
+                <div style="margin: 20px 0; text-align: center; background-color: #f4f8f8; padding: 15px; border-radius: 8px; border: 1px solid var(--info-border);">
+                    <h5 style="color: var(--primary-color); margin-top: 0; margin-bottom: 15px; font-size: 1.05em;"><i class="fas fa-play-circle" style="margin-right: 5px;"></i> Vídeo Tutorial</h5>
+                    <iframe width="100%" height="350" src="SUBSTITUA_PELA_URL_DO_SEU_VIDEO_AQUI" title="Vídeo Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="max-width: 600px; border-radius: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);"></iframe>
+                </div>
+
                 <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">1. Dados Básicos, Processo e Valores</h5>
                 <ul style="margin-top: 5px;">
                     <li>Preencha os dados do Processo, Reclamante e Depósito Judicial. Você pode <strong>copiar e colar</strong> o número do processo, e a formatação será aplicada automaticamente.</li>
                     <li>O <strong>ID da Planilha</strong> e o <strong>ID do Depósito</strong> são importantes para facilitar a localização rápida dos documentos nos autos.</li>
                     <li>Insira os valores exatos oriundos da <strong>Planilha de Atualização de Cálculos</strong> (Líquido, INSS, IRRF, Custas, Honorários).</li>
+                    <li><strong>Previdência Privada:</strong> Preencha o valor retido e clique no ícone do lápis (<i class="fas fa-edit"></i>) para abrir a caixa de diálogo e informar o Nome e o CNPJ do Fundo de Previdência.</li>
+                    <li><strong>Proteção contra Duplicidade:</strong> Se você digitar um Número de Processo que já existe no Banco de Planilhas, o sistema emitirá um alerta. Caso confirme a necessidade de criar uma planilha adicional para o mesmo processo, será exigido um <strong>Motivo (máx. 30 caracteres)</strong>, que aparecerá entre parênteses ao lado do nome na listagem para facilitar a identificação.</li>
                     <li>O sistema calculará de forma automática o <strong>Total Devido pela Reclamada</strong>. <strong><span style="color: #dc3545;">Certifique-se de que os valores batem com a Última Planilha de Atualização de Cálculos dos autos.</span></strong></li>
                 </ul>
 
@@ -811,10 +934,18 @@
 
                 <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">3. Honorários Advocatícios e Periciais</h5>
                 <ul style="margin-top: 5px;">
-                    <li><strong>Honorários da Planilha de Cálculos:</strong> Valores já presentes na planilha devem ser informados utilizando a caixa de diálogo (clicando no ícone do lápis <i class="fas fa-edit"></i>). Eles aparecerão na respectiva Aba (Advogados ou Peritos) <strong>sem permissão de edição</strong> para valores (apenas para retenções e seus motivos). Qualquer alteração do valor principal deve ser feita retornando à caixa de diálogo.</li>
+                    <li><strong>Honorários da Planilha de Cálculos:</strong> Valores já presentes na planilha devem ser informados utilizando a caixa de diálogo (clicando no ícone do lápis <i class="fas fa-edit"></i>). Eles aparecerão na respectiva Aba (Advogados ou Peritos) <strong>sem permissão de edição</strong> para valores. <strong>Nota:</strong> Nesta situação, a opção de rateio por "Percentual (%)" é desabilitada automaticamente para manter a fidelidade aos valores absolutos calculados; o rateio deverá ser feito inserindo o valor bruto de cada advogado.</li>
                     <li><strong>Honorários Habilitados nos Autos:</strong> Caso haja documentos de habilitação de advogados/peritos (contratuais extras) não presentes na planilha de atualização, estes devem ser adicionados diretamente na respectiva Aba. Podem ser calculados por <strong>Percentual</strong> sobre o bruto ou <strong>Valor Fixado</strong>.</li>
                     <li><strong>Rateios:</strong>No caso de mais de 1 advogado habititado/credor, será necessário ratear os valores dos honorários para cada credor. O sistema possibilita a inclusão de Advogados adicionais</li>
-                    <li><strong>Honorários Sucumbenciais:</strong> A norma orienta que possuam um Precatório próprio. A inclusão neste sistema (via opção habilitável na caixa de diálogo <i class="fas fa-edit"></i>) é uma adequação não recomendável devido à realidade de alguns processos do Tribunal. Ao utilizá-la, um alerta orientará que a Vara de origem seja informada sobre a ocorrência.</li>
+                        <li><strong>Honorários Sucumbenciais:</strong> A norma orienta que possuam um Precatório próprio. No entanto, caso haja determinação para liberação conjunta, siga os passos:
+                            <ol style="margin-top: 5px; margin-bottom: 5px; padding-left: 20px;">
+                                <li>Clique no ícone do lápis (<i class="fas fa-edit"></i>) no campo de Hon. Advocatícios na tela principal.</li>
+                                <li>Marque a caixa <strong>"Incluir Honorários Sucumbenciais"</strong> no topo da janela.</li>
+                                <li>Confirme o aviso de recomendação/segurança.</li>
+                                <li>Preencha os dados do(s) advogado(s) na nova seção que aparecerá na parte inferior da caixa de diálogo.</li>
+                            </ol>
+                            <em>O sistema calculará as retenções de forma independente. Ao utilizar essa função, lembre-se de informar a Vara de origem sobre a ocorrência para fins de melhorias processuais.</em>
+                        </li>
                 </ul>
 
                 <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">4. Rateio para Herdeiros e Cessionários</h5>
@@ -830,6 +961,18 @@
                     <li><strong>Limpeza e Exclusão:</strong> O botão com ícone de vassoura (<i class="fas fa-broom"></i>) zera os dados inseridos dentro de um bloco sem apagá-lo da tela. Já o botão vermelho com o ícone de X (<i class="fas fa-times"></i>) exclui e remove a gaveta por completo.</li>
                     <li><strong>Diferenças de Valores (Conciliação):</strong> Se houver diferença entre o valor total depositado (Conta Judicial) e o valor total devido (Calculado), o campo <strong>Observações</strong> no final da tela passará a ser de preenchimento obrigatório para justificativas antes da geração do relatório.</li>
                     <li><strong>Validação Automática:</strong> Antes de montar a via de impressão, o sistema fará uma varredura para garantir que todos os percentuais de rateios fechem 100% e verificará pendências vitais de preenchimento.</li>
+                </ul>
+
+                <h5 style="color: var(--text-primary); border-bottom: 1px dashed #ccc; padding-bottom: 5px;">6. Armazenamento, Histórico e Banco de Planilhas</h5>
+                <ul style="margin-top: 5px;">
+                    <li><strong>Salvar Rascunho / Planilha Final:</strong> O Rascunho salva o progresso parcial sobrescrevendo a edição atual, sem poluir o seu histórico de versões. Já o salvamento como <strong>Planilha Final</strong> cria uma versão validada e definitiva. Se você alterar uma planilha que já era Final e salvá-la novamente, o sistema automaticamente moverá a versão anterior para o <strong>Histórico</strong>.</li>
+                    <li><strong>Ações da Planilha (Ícones na Tabela):</strong> 
+                        <br>- <i class="fas fa-eye"></i> <strong>Visualizar:</strong> Abre a planilha bloqueada para evitar alterações acidentais.
+                        <br>- <i class="fas fa-copy"></i> <strong>Duplicar (Criar Versão):</strong> Cria uma cópia com a tag <strong>(Versão 1, 2...)</strong>. Esta ação <strong>limpa automaticamente</strong> dados sensíveis (Nº Processo, Reclamante, CPF, Depósito, Retenções e Observações), preservando apenas a estrutura de honorários, herdeiros e partes adicionais para agilizar o lançamento de processos parecidos.
+                        <br>- <i class="fas fa-edit"></i> <strong>Alterar:</strong> Carrega a planilha destravada para edição.
+                        <br>- <i class="fas fa-history"></i> <strong>Histórico:</strong> Exibe as versões "Finais" antigas daquela mesma planilha, permitindo visualizá-las novamente.
+                    </li>
+                    <li><strong>Ações em Lote (Caixas de Seleção):</strong> Marque as caixas no início de cada linha para selecionar várias planilhas de uma vez e utilize os botões do rodapé para <strong>Excluir</strong>, <strong>Gerar PDF</strong> (imprime todas as marcadas em sequência), <strong>Exportar Excel</strong> (cria uma tabela com todos os dados) ou manipular backups em <strong>Json</strong>.</li>
                 </ul>
             </div>
             

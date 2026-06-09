@@ -527,10 +527,47 @@ function verificarTravasHonorarios() {
     const btnHon = inputPlanHon ? inputPlanHon.parentElement.querySelector('button') : null;
     const btnIrrf = inputPlanIrrf ? inputPlanIrrf.parentElement.querySelector('button') : null;
 
-    if (manualHonNet > 0 || valFixadoManual > 0) {
+    const temHonPlanilha = valPlanilha > 0;
+
+    if (manualHonNet > 0 || valFixadoManual > 0 || temHonPlanilha) {
         if (optPerc) optPerc.disabled = true;
+        if (optPerc && optPerc.checked && temHonPlanilha) {
+            optPerc.checked = false;
+            if (optFix) optFix.checked = true;
+            toggleAdvHonorariosFields();
+        }
     } else {
         if (optPerc) optPerc.disabled = false;
+    }
+
+    const disableRateio = temHonPlanilha;
+    
+    const advPrincPerc = document.getElementById('adv-principal-percentual');
+    if (advPrincPerc) {
+        advPrincPerc.disabled = disableRateio;
+        advPrincPerc.style.backgroundColor = disableRateio ? '#e9ecef' : '';
+        if (disableRateio) {
+            advPrincPerc.value = '';
+            advPrincPerc.placeholder = 'Bloqueado';
+            advPrincPerc.placeholder = '';
+        } else {
+            advPrincPerc.placeholder = '0,00%';
+        }
+    }
+
+    for (let i = 1; i <= advogadoAdicionalCount; i++) {
+        const advAdPerc = document.getElementById(`adv-ad-percentual-${i}`);
+        if (advAdPerc) {
+            advAdPerc.disabled = disableRateio;
+            advAdPerc.style.backgroundColor = disableRateio ? '#e9ecef' : '';
+            if (disableRateio) {
+                advAdPerc.value = '';
+                advAdPerc.placeholder = 'Bloqueado';
+                advAdPerc.placeholder = '';
+            } else {
+                advAdPerc.placeholder = '0,00%';
+            }
+        }
     }
 
     if (valPercentual > 0) {
@@ -672,13 +709,10 @@ function atualizarNumeracaoVisuais() {
 
 function adicionarPeritoAdicional(isManual = false) {
     if (isManual) {
-        const honPerPlanilha = getNumericValue('input-honorarios-periciais');
-        if (honPerPlanilha > 0) {
-            showCustomConfirm("<strong>Atenção:</strong> Você está incluindo um perito adicional.<br><br>Confirma que se tratam de honorários EXTRAS aos já informados na Planilha de Atualização de Cálculos e que estes serão descontados do crédito do Reclamante?", function(confirmacao) {
-                if (confirmacao) executarAdicionarPeritoAdicional();
-            });
-            return;
-        }
+        showCustomConfirm("<strong>Atenção:</strong> Caso o perito esteja presente na Planilha de Atualização de Cálculos utilize a edição presente no quadro da planilha na aba Dados e Valores.<br><br>Deseja continuar?", function(confirmacao) {
+            if (confirmacao) executarAdicionarPeritoAdicional();
+        });
+        return;
     }
     executarAdicionarPeritoAdicional();
 }
@@ -745,26 +779,10 @@ function executarAdicionarPeritoAdicional() {
 
 function adicionarAdvogadoAdicional(isManual = false) {
     if (isManual) {
-        const honPlanilha = getNumericValue('input-honorarios-advocaticios');
-        
-        let hasAdvogadosContratuaisDoModal = false;
-        const checkBlock = (suffix) => {
-            const resEl = document.getElementById(suffix === 'principal' ? 'adv-principal-resultado' : `adv-ad-resultado-${suffix}`);
-            if (resEl && resEl.readOnly) {
-                hasAdvogadosContratuaisDoModal = true;
-            }
-        };
-        checkBlock('principal');
-        for (let i = 1; i <= advogadoAdicionalCount; i++) {
-            checkBlock(i);
-        }
-
-        if (honPlanilha > 0 && hasAdvogadosContratuaisDoModal) {
-            showCustomConfirm("<strong>Atenção:</strong> Você está incluindo um advogado adicional.<br><br>Confirma que se tratam de honorários EXTRAS aos já informados na Planilha de Atualização de Cálculos e que estes serão descontados do crédito do Reclamante?", function(confirmacao) {
-                if (confirmacao) executarAdicionarAdvogadoAdicional();
-            });
-            return;
-        }
+        showCustomConfirm("<strong>Atenção:</strong> Caso o advogado esteja presente na Planilha de Atualização de Cálculos utilize a edição presente no quadro da planilha na aba Dados e Valores.<br><br>Deseja continuar?", function(confirmacao) {
+            if (confirmacao) executarAdicionarAdvogadoAdicional();
+        });
+        return;
     }
     executarAdicionarAdvogadoAdicional();
 }
@@ -831,6 +849,7 @@ function executarAdicionarAdvogadoAdicional() {
     listDiv.insertAdjacentHTML('beforeend', newAdvHTML);
     atualizarNumeracaoVisuais();
     atualizarCredoresAdicionais();
+    verificarTravasHonorarios();
 }
 
 function adicionarAdvogadoSucumbencial(isManual = false) {
@@ -955,7 +974,7 @@ function adicionarHerdeiro() {
                     </div>
 
                     <div id="her-adv-info-base-${herdeiroCount}" style="font-size: 0.85em; color: #555; margin-bottom: 15px; background-color: white; padding: 8px 12px; border-left: 4px solid var(--primary-color); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4;">
-                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é proporcional à cota do Herdeiro sobre a Base Global (LÍQUIDO + IRRF + INSS + HON. PERICIAIS).<br>
+                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é proporcional à cota do Herdeiro sobre a Base Global (LÍQUIDO + PREV. PRIVADA + IRRF + INSS RECLAMANTE).<br>
                         <span style="display: inline-block; margin-top: 4px; margin-left: 18px;">Caso a base de cálculo dos honorários divirja da regra acima, os valores deverão ser inseridos nos campos <strong>Valor Fixado</strong> e/ou <strong>Honorários Bruto</strong> (na seção de Adição dos Advogados).</span>
                     </div>
 
@@ -1066,7 +1085,7 @@ function adicionarCessionario() {
                     </div>
 
                     <div id="ces-adv-info-base-${cessionarioCount}" style="font-size: 0.85em; color: #555; margin-bottom: 15px; background-color: white; padding: 8px 12px; border-left: 4px solid var(--primary-color); border-radius: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); line-height: 1.4;">
-                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é proporcional à cota do Cessionário sobre a Base Global (LÍQUIDO + IRRF + INSS + HON. PERICIAIS).<br>
+                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 5px;"></i> A Base de Cálculo é proporcional à cota do Cessionário sobre a Base Global (LÍQUIDO + PREV. PRIVADA + IRRF + INSS RECLAMANTE).<br>
                         <span style="display: inline-block; margin-top: 4px; margin-left: 18px;">Caso a base de cálculo dos honorários divirja da regra acima, os valores deverão ser inseridos nos campos <strong>Valor Fixado</strong> e/ou <strong>Honorários Bruto</strong> (na seção de Adição dos Advogados).</span>
                     </div>
 
@@ -1450,19 +1469,28 @@ function sincronizarSucumbenciaisParaGeral() {
 }
 
 function sincronizarAdvogadosParaGeral() {
-    let totalHonModal = 0;
+    let totalHonGeral = 0;
     let totalIrrfModal = 0;
     let hasModalBlock = false;
+    let hasManualBlock = false;
 
     const calcBlock = (suffix) => {
         const resEl = document.getElementById(suffix === 'principal' ? 'adv-principal-resultado' : `adv-ad-resultado-${suffix}`);
         const irEl = document.getElementById(suffix === 'principal' ? 'adv-principal-ir' : `adv-ad-ir-${suffix}`);
-        if (resEl && resEl.readOnly) {
-            hasModalBlock = true;
+        const percEl = document.getElementById(suffix === 'principal' ? 'adv-principal-percentual' : `adv-ad-percentual-${suffix}`);
+        if (resEl) {
             const hon = getNumericValueFromInput(resEl);
             const ir = getNumericValueFromInput(irEl);
-            totalHonModal += hon;
-            totalIrrfModal += ir;
+            const hasPerc = percEl && percEl.value.trim() !== '';
+            
+            if (resEl.readOnly) {
+                hasModalBlock = true;
+                totalHonGeral += hon;
+                totalIrrfModal += ir;
+            } else if (hon > 0 && !hasPerc) {
+                hasManualBlock = true;
+                totalHonGeral += hon;
+            }
         }
     };
 
@@ -1473,7 +1501,7 @@ function sincronizarAdvogadosParaGeral() {
 
     const advValorFixado = document.getElementById('adv-valor-fixado');
 
-    if (hasModalBlock || (advValorFixado && advValorFixado.dataset.origem === 'modal')) {
+    if (hasModalBlock || hasManualBlock || (advValorFixado && (advValorFixado.dataset.origem === 'modal' || advValorFixado.dataset.origem === 'manual'))) {
         const btnFixado = document.getElementById('adv-valor-fixado-opt');
         if (btnFixado && !btnFixado.checked) {
             btnFixado.checked = true;
@@ -1481,12 +1509,12 @@ function sincronizarAdvogadosParaGeral() {
         }
 
         if (advValorFixado) {
-            if (totalHonModal === 0 && totalIrrfModal === 0) {
+            if (totalHonGeral === 0 && totalIrrfModal === 0) {
                 advValorFixado.value = '';
                 advValorFixado.dataset.origem = '';
             } else {
-                advValorFixado.value = formatarMoedaParaExibicao(totalHonModal);
-                advValorFixado.dataset.origem = 'modal';
+                advValorFixado.value = formatarMoedaParaExibicao(totalHonGeral);
+                advValorFixado.dataset.origem = hasModalBlock ? 'modal' : 'manual';
             }
         }
         calcularHonorarios('adv');
@@ -2072,6 +2100,14 @@ function abrirModalPeritos() {
 
 function fecharModalPeritos() {
     document.getElementById('modal-peritos').style.display = 'none';
+}
+
+function abrirModalPrevidencia() {
+    document.getElementById('modal-previdencia').style.display = 'block';
+}
+
+function fecharModalPrevidencia() {
+    document.getElementById('modal-previdencia').style.display = 'none';
 }
 
 function abrirPainelAjuda() {
